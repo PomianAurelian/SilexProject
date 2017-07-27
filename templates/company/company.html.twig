@@ -1,0 +1,123 @@
+{% extends "base_layout.html.twig" %}
+
+{% block styles %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">	
+{% endblock %}
+
+{% block content %}
+	<div class="nav-menu">
+		<a href="index.html.twig" class="nav-item fa fa-home" aria-hidden="true"></a>
+	</div>
+	<h1>Company Name</h1>
+	<h2>
+		<i class="fa fa-star" aria-hidden="true"></i>
+		<i class="fa fa-star" aria-hidden="true"></i>
+		<i class="fa fa-star" aria-hidden="true"></i>
+		<i class="fa fa-star" aria-hidden="true"></i>
+		<i class="fa fa-star-o" aria-hidden="true"> 4/5</i>
+	</h2>
+	<img class="homebg" src="../images/square5.jpg">
+
+	<div class="description-box">
+		<h2>Description</h2> <hr>
+		<p>A short description of this given company. A short description of this given company. A short description of this given company.</p>
+		<p>A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company.</p>
+		<p>A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company.</p>
+		<p>A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company.</p>
+		<hr>
+	</div>
+
+	<h4>Reviews</h4>
+
+	<!-- Review #1 -->
+	<div class="review-container">
+		<div class="info-box">
+			<div class="star-box">
+				<h5>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star-half-o" aria-hidden="true"></i>
+					<i class="fa fa-star-o" aria-hidden="true"> 3.5/5</i>
+				</h5>
+			</div>
+			
+			<p class="name-box">Jannet Morrison</p>
+			<p class="date-box">03/23/2017 13:45</p>
+		</div>
+		<div class="comment-box">
+			<p>
+				This is a review.
+			</p>
+		</div>
+		<div class="comment-index">
+			<p>#1</p>
+		</div>
+	</div>
+
+	<!-- Review #2 -->
+	<div class="review-container">
+		<div class="info-box">
+			<div class="star-box">
+				<h5>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star-o" aria-hidden="true"> 4/5</i>
+				</h5>
+			</div>
+			
+			<p class="name-box">Tommy G.</p>
+			<p class="date-box">03/23/2017 11:21</p>
+		</div>
+		<div class="comment-box">
+			<p>
+				This is another review.
+			</p>
+		</div>
+		<div class="comment-index">
+			<p>#2</p>
+		</div>
+	</div>
+
+	<!-- Review #3 -->
+	<div class="review-container">
+		<div class="info-box">
+			<div class="star-box">
+				<h5>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star" aria-hidden="true"></i>
+					<i class="fa fa-star-half-o" aria-hidden="true"> 4.5/5</i>
+				</h5>
+			</div>
+			
+			<p class="name-box">Mandy Doe</p>
+			<p class="date-box">03/22/2017 21:55</p>
+		</div>
+		<div class="comment-box">
+			<p>
+				This is one more review added to the review pile.
+			</p>
+		</div>
+		<div class="comment-index">
+			<p>#3</p>
+		</div>
+	</div>
+
+	<!-- Add review -->
+	<div class="form-style-2">
+		<div class="form-style-2-heading">Review this company</div>
+
+		<form action="" method="post">
+			<label for="field1"><span>Name <span class="required">*</span></span><input type="text" class="input-field" name="field1" value="" required /></label>
+			<label for="field6"><span>Review</span><textarea name="field6" class="textarea-field"></textarea></label>
+			<label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
+		</form>
+	</div>
+{% endblock %}
+
+{% block scripts %}{% endblock %}

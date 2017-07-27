@@ -8,15 +8,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Silex\ControllerProviderInterface;
 
-class HomepageControllerProvider implements ControllerProviderInterface
+class HomeControllerProvider implements ControllerProviderInterface
 {
 	public function connect(Application $app)
 	{
 		$controllers = $app['controllers_factory'];
 		
 		$controllers
-		->get('/', 'SilexProject\src\controllers\HomepageController::indexAction')
-		->bind('homepage');
+		->get('/', 'SilexProject\src\controllers\HomeController::indexAction')
+		->bind('home');
 
 		return $controllers;
 	}

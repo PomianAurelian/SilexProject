@@ -5,18 +5,25 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Provider\HomepageControllerProvider;
-use Controller\HomepageController;
+use Provider\HomeControllerProvider;
+use Provider\CompanyControllerProvider;
+use Controller\HomeController;
+use Controller\CompanyController;
 
 
-use Homepage\Provider;
+use Home\Provider;
+
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
-$app['homepage.controller'] = function() use ($app) {
-    return new HomepageController();
-};
 
-$app->get('/homepage', "homepage.controller:indexAction");
+$app['home.controller'] = function() use ($app) {
+    return new HomeController();
+};
+$app['company.controller'] = function() use ($app) {
+    return new CompanyController();
+};
+$app->get('/home', "home.controller:indexAction");
+$app->get('/company', "company.controller:indexAction");
 
 // $app->mount('/', new HomepageControllerProvider());
 //Request::setTrustedProxies(array('127.0.0.1'));
@@ -26,10 +33,10 @@ $app->get('/homepage', "homepage.controller:indexAction");
 // })
 // ->bind('homepage');
 
-$app->get('/home', function () use ($app) {
-    return $app['twig']->render('home.html', array());
-})
-->bind('home');
+// $app->get('/home', function () use ($app) {
+//     return $app['twig']->render('home.html', array());
+// })
+// ->bind('home');
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
