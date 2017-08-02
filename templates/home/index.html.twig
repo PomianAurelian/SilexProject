@@ -19,35 +19,35 @@
 		<button class="play-button fa fa-pause" aria-hidden="true" onclick="play = false"></button>
 	</div>
 
-{% for companiesInEachCategory in companiesGroupedByCategory %}
+	{% for companiesInEachCategory in companiesGroupedByCategory %}
 
-	{% set categoryName = '' %}
-	{% set categoryIndex = loop.index %}
+		{% set categoryName = '' %}
+		{% set categoryIndex = loop.index %}
 
-	{% for category in categories %}
+		{% for category in categories %}
 
-		{% if categoryIndex == category.id %}
-			{% set categoryName = category.category %}
-		{% endif %}
+			{% if categoryIndex == category.id %}
+				{% set categoryName = category.category %}
+			{% endif %}
 
-	{% endfor %}
+		{% endfor %}
 
-	<h2>{{ categoryName }}</h2>
-	<div class="maincontent">
-	{% for company in companiesInEachCategory %}
-		<div class="company">
-			<div class="company-text">
-				<h3>{{ company.name }}</h3>
-				<p>{{ company.description }}</p>
-			</div>	
-			<div class="company-img">
-				<img src="../images/{{ company.logo_src }}">
+		<h2>{{ categoryName }}</h2>
+		<div class="maincontent">
+		{% for company in companiesInEachCategory %}
+			<div class="company">
+				<div class="company-text">
+					<h3>{{ company.name }}</h3>
+					<p>{{ company.description }}</p>
+				</div>	
+				<div class="company-img">
+					<img src="../images/{{ company.logo_src }}">
+				</div>
 			</div>
-		</div>
-    {% endfor %}
-    </div>
-    <hr>
-{% endfor %}
+	    {% endfor %}
+	    </div>
+	    <hr>
+	{% endfor %}
 
 	<div align="left">
 
