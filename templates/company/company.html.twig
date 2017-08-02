@@ -9,15 +9,16 @@
 	<div class="nav-menu">
 		<a href="index.html.twig" class="nav-item fa fa-home" aria-hidden="true"></a>
 	</div>
-	<h1>Company Name</h1>
+
+	<h1>{{ company.name }}</h1>
 	<h2>
 		<i class="fa fa-star" aria-hidden="true"></i>
 		<i class="fa fa-star" aria-hidden="true"></i>
 		<i class="fa fa-star" aria-hidden="true"></i>
-		<i class="fa fa-star" aria-hidden="true"></i>
-		<i class="fa fa-star-o" aria-hidden="true"> 4/5</i>
+		<i class="fa fa-star-half-o" aria-hidden="true"></i>
+		<i class="fa fa-star-o" aria-hidden="true"></i>
 	</h2>
-	<img class="homebg" src="../images/square5.jpg">
+	<img class="homebg" src="../images/{{ company.logo_src }}">
 
 	<div class="description-box">
 		<h2>Description</h2> <hr>
