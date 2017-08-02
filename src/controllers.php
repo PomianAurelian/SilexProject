@@ -7,14 +7,51 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Provider\HomeControllerProvider;
 use Provider\CompanyControllerProvider;
+use Provider\DatabaseControllerProvider;
 use Controller\HomeController;
 use Controller\CompanyController;
-
-
+use Controller\DatabaseController;
+use AppBundle\DependencyInjection\Configuration;
 use Home\Provider;
 
+$app->register(new Silex\Provider\DoctrineServiceProvider(), array(
+    'dbs.options' => array (
+        'mysql_read' => array(
+            'driver'    => 'pdo_mysql',
+            'host'      => 'localhost',
+            'dbname'    => 'silex_project',
+            'user'      => 'root',
+            'password'  => '',
+            'charset'   => 'utf8mb4',
+        ),
+        'mysql_write' => array(
+            'driver'    => 'pdo_mysql',
+            'host'      => 'localhost',
+            'dbname'    => 'silex_project',
+            'user'      => 'root',
+            'password'  => '',
+            'charset'   => 'utf8mb4',
+        ),
+    ),
+));
 
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+
+
+// THIS WORKS
+// 
+$app->get('/company/{id}', function ($id) use ($app) {
+    $sql = "SELECT * FROM company WHERE id = ?";
+    $company = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
+
+    return  "<h1>{$company['name']}</h1>".
+            "<p>{$company['email']}</p>".
+            "<p>{$company['description']}</p>";
+});
+
+// $app['database.controller'] = function() use ($app) {
+//     return new DatabaseController();
+// };
 
 $app['home.controller'] = function() use ($app) {
     return new HomeController();
@@ -24,8 +61,8 @@ $app['company.controller'] = function() use ($app) {
 };
 $app->get('/home', "home.controller:indexAction");
 $app->get('/company', "company.controller:indexAction");
+$app->get('/company/{id}', "database.controller::indexAction");
 
-// $app->mount('/', new HomepageControllerProvider());
 //Request::setTrustedProxies(array('127.0.0.1'));
 
 // $app->get('/', function () use ($app) {

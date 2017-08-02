@@ -1,0 +1,35 @@
+<?php
+
+namespace Repository;
+
+use Silex\Application;
+use Entity\RadioButton;
+
+
+class RadioButtonRepository 
+{	
+	protected $app;
+
+	public function __construct(Application $app) 
+	{
+		$this->app = $app;
+	}
+
+	public function find($id) use ($app)
+	{
+		$sql = "SELECT choice FROM radioChoices WHERE id = ?";
+    	$radioBtnArr = $this->app['dbs']['mysql_read']->fetchAssoc($sql, [(int) $id]);
+    	return $this->convertArraysToObjects($radioBtnArr);
+	}
+
+	protected function convertArraysToObjects($radioBtnArr)
+	{
+		$objects = [];
+		foreach ($radioBtnArr as $choice) {
+			$radioBtn = new RadioButton();
+			$radioBtn->setFromArray($choice);
+			$objects[] = $radioBtn;
+		}
+		return $objects;
+	}
+}
