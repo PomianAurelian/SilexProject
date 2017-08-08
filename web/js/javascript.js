@@ -10,6 +10,6 @@ for (var i = 0; i < slides.length; i++) {
     };
 
     slides[i].onclick = function() {
-       location.href = '/company';
+       location.href = '/company/' + this.getAttribute("data-id");
     };
 }

@@ -1,4 +1,8 @@
-{% extends "base_layout.html.twig" %}
+{% extends "company_layout.html.twig" %}
+
+{% block title %}
+{{ company.name }}
+{% endblock %}
 
 {% block styles %}
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
@@ -7,107 +11,61 @@
 
 {% block content %}
 	<div class="nav-menu">
-		<a href="index.html.twig" class="nav-item fa fa-home" aria-hidden="true"></a>
+		<a href="/home" class="nav-item fa fa-home" aria-hidden="true"></a>
 	</div>
 
 	<h1>{{ company.name }}</h1>
 	<h2>
-		<i class="fa fa-star" aria-hidden="true"></i>
-		<i class="fa fa-star" aria-hidden="true"></i>
-		<i class="fa fa-star" aria-hidden="true"></i>
-		<i class="fa fa-star-half-o" aria-hidden="true"></i>
-		<i class="fa fa-star-o" aria-hidden="true"></i>
+		{% for starIndex in 1..5 %}
+			{% if average >= starIndex %}
+				<i class="fa fa-star" aria-hidden="true"></i>
+			{% elseif average < starIndex  and average > starIndex-1 %}
+				<i class="fa fa-star-half-o" aria-hidden="true"></i>
+			{% else %}
+				<i class="fa fa-star-o" aria-hidden="true"></i>
+			{% endif %}
+		{% endfor %}
 	</h2>
 	<img class="homebg" src="../images/{{ company.logo_src }}">
 
 	<div class="description-box">
 		<h2>Description</h2> <hr>
-		<p>A short description of this given company. A short description of this given company. A short description of this given company.</p>
-		<p>A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company.</p>
-		<p>A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company.</p>
-		<p>A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company. A short description of this given company.</p>
+		<p>
+		{{ company.description }}
+		</p>
 		<hr>
 	</div>
 
 	<h4>Reviews</h4>
 
-	<!-- Review #1 -->
+	{% for review in reviews %}
+
 	<div class="review-container">
 		<div class="info-box">
 			<div class="star-box">
 				<h5>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star-half-o" aria-hidden="true"></i>
-					<i class="fa fa-star-o" aria-hidden="true"> 3.5/5</i>
+					{% for starIndex in 1..5 %}
+						{% if review.rating >= starIndex %}
+							<i class="fa fa-star" aria-hidden="true"></i>
+						{% elseif review.rating < starIndex  and  review.rating > starIndex-1 %}
+							<i class="fa fa-star-half-o" aria-hidden="true"></i>
+						{% else %}
+							<i class="fa fa-star-o" aria-hidden="true"></i>
+						{% endif %}
+					{% endfor %}
 				</h5>
 			</div>
-			
-			<p class="name-box">Jannet Morrison</p>
-			<p class="date-box">03/23/2017 13:45</p>
+			<p class="name-box">{{ review.name }}</p>
+			<p class="date-box">{{ review.review_date }}</p>
 		</div>
 		<div class="comment-box">
 			<p>
-				This is a review.
+				{{ review.comment }}
 			</p>
-		</div>
-		<div class="comment-index">
-			<p>#1</p>
 		</div>
 	</div>
 
-	<!-- Review #2 -->
-	<div class="review-container">
-		<div class="info-box">
-			<div class="star-box">
-				<h5>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star-o" aria-hidden="true"> 4/5</i>
-				</h5>
-			</div>
-			
-			<p class="name-box">Tommy G.</p>
-			<p class="date-box">03/23/2017 11:21</p>
-		</div>
-		<div class="comment-box">
-			<p>
-				This is another review.
-			</p>
-		</div>
-		<div class="comment-index">
-			<p>#2</p>
-		</div>
-	</div>
-
-	<!-- Review #3 -->
-	<div class="review-container">
-		<div class="info-box">
-			<div class="star-box">
-				<h5>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star" aria-hidden="true"></i>
-					<i class="fa fa-star-half-o" aria-hidden="true"> 4.5/5</i>
-				</h5>
-			</div>
-			
-			<p class="name-box">Mandy Doe</p>
-			<p class="date-box">03/22/2017 21:55</p>
-		</div>
-		<div class="comment-box">
-			<p>
-				This is one more review added to the review pile.
-			</p>
-		</div>
-		<div class="comment-index">
-			<p>#3</p>
-		</div>
-	</div>
+	{% endfor %}
 
 	<!-- Add review -->
 	<div class="form-style-2">

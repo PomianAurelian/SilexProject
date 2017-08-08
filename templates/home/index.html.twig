@@ -39,7 +39,7 @@
 		<h2>{{ categoryName }}</h2>
 		<div class="maincontent">
 		{% for company in companiesInEachCategory %}
-			<div class="company">
+			<div class="company" data-id="{{ company.id }}">
 				<div class="company-text">
 					<h3>{{ company.name }}</h3>
 					<p>{{ company.description }}</p>

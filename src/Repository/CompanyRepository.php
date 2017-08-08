@@ -5,6 +5,7 @@ namespace Repository;
 use Silex\Application;
 use Entity\Company;
 use Repository\CategoryRepository;
+use Repository\ReviewRepository;
 
 class CompanyRepository 
 {	
@@ -35,11 +36,6 @@ class CompanyRepository
 			}
 			$companyMapByCategory[$category][] = $company;
 		}
-
-		// echo '<pre>';
-		// var_dump($companyMapByCategory);
-		// echo '</pre>';
-		// die;
 		return $companyMapByCategory;
 	}
 
@@ -48,6 +44,20 @@ class CompanyRepository
 		$sql = "SELECT * FROM company";
     	$companiesArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
     	return $this->convertArraysToObjects($companiesArr);
+	}
+
+	public function findCompanyById($id)
+	{
+		$sql = "SELECT * FROM company WHERE id = ?";
+		$companyArr = $this->app['dbs']['mysql_read']->fetchAssoc($sql, [(int) $id]);
+		return $this->convertArrayToObject($companyArr);
+	}
+
+	protected function convertArrayToObject($array)
+	{
+		$object = new Company();
+		$object->setFromArray($array);
+		return $object;
 	}
 
 	protected function convertArraysToObjects($arrays)

@@ -1,0 +1,1 @@
+ALTER TABLE company ADD average_rating int NOT NULL DEFAULT 0;

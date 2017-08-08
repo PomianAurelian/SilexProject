@@ -21,8 +21,8 @@ INSERT INTO category VALUES (NULL, 'Market');
 INSERT INTO category VALUES (NULL, 'Drug Store');
 INSERT INTO category VALUES (NULL, 'Other');
 
-INSERT INTO company VALUES (NULL, 'Company #1', 'First@mail.com', true, 4, 1, 'Company #1 Description: something something something something something something ');
-INSERT INTO company VALUES (NULL, 'Company #2', 'Second@mail.com', false, 3, 2, 'Company #2 Description: something something something something something something ');
-INSERT INTO company VALUES (NULL, 'Company #3', 'Third@mail.com', false, 1, 1, 'Company #3 Description: something something something something something something ');
-INSERT INTO company VALUES (NULL, 'Company #4', 'Fourth@mail.com', false, 5, 3, 'Company #4 Description: something something something something something something ');
-INSERT INTO company VALUES (NULL, 'Company #5', 'Fifth@mail.com', true, 2, 3, 'Company #5 Description: something something something something something something ');
+INSERT INTO company VALUES (NULL, 'Company #1', 'First@mail.com', true, 4, 'Company #1 Description: something something something something something something ');
+INSERT INTO company VALUES (NULL, 'Company #2', 'Second@mail.com', false, 3, 'Company #2 Description: something something something something something something ');
+INSERT INTO company VALUES (NULL, 'Company #3', 'Third@mail.com', false, 1, 'Company #3 Description: something something something something something something ');
+INSERT INTO company VALUES (NULL, 'Company #4', 'Fourth@mail.com', false, 5, 'Company #4 Description: something something something something something something ');
+INSERT INTO company VALUES (NULL, 'Company #5', 'Fifth@mail.com', true, 2, 'Company #5 Description: something something something something something something ');

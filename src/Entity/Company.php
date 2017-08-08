@@ -30,11 +30,19 @@ class Company
 	/**
 	 * @var int(10)
 	 */
-	public $radioBtn_id;
+	public $description;
 	/**
 	 * @var varchar(255)
 	 */
-	public $description;
+	public $logo_src;
+	/**
+	 * @var ENUM('A', 'B', 'C')
+	 */
+	public $radio_choice;
+	/**
+	 * @var int
+	 */
+	public $average_rating;
 	
 	public function setFromArray($array) 
 	{

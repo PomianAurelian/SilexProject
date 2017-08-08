@@ -60,8 +60,7 @@ $app['company.controller'] = function() use ($app) {
     return new CompanyController();
 };
 $app->get('/home', "home.controller:indexAction");
-$app->get('/company', "company.controller:indexAction");
-$app->get('/company/{id}', "database.controller::indexAction");
+$app->get('/company/{id}', "company.controller:indexAction");
 
 //Request::setTrustedProxies(array('127.0.0.1'));
 
