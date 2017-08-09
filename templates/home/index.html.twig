@@ -55,21 +55,8 @@
 
 	<div align="left">
 
-	<div class="form-style-2">
-	<div class="form-style-2-heading">Register company here</div>
-		{{ form_start(form) }}
-			<label for="field1"><span>Name <span class="required">*</span></span>{{ form_row(form.name) }}</label>
-			<label for="field2"><span>Email <span class="required">*</span></span>{{ form_row(form.email) }}</label>
-			<label for="field3"><span>Category</span>
-			{{ form_row(form.category) }}</label>
-			<label for="field4"><span>Delivery service </span>{{ form_row(form.delivery) }}</label>
-			<label for="field5"><span>Radio sample </span>{{ form_row(form.radio) }}</label>
-			<label for="field6"><span>Description</span>{{ form_row(form.description) }}</label>
-			<label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
-
-		{{ form_end(form) }}
-	</div>
-
+	<div align="left">
+		<a href="company-save" class="nav-item fa fa-building" aria-hidden="true">Register</a>
 	</div>
 	<hr>
 {% endblock %}

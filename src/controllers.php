@@ -10,6 +10,7 @@ use Provider\HomeControllerProvider;
 use Provider\CompanyControllerProvider;
 use Provider\DatabaseControllerProvider;
 use Controller\HomeController;
+use Controller\CompanyFormController;
 use Controller\CompanyController;
 use Controller\DatabaseController;
 use AppBundle\DependencyInjection\Configuration;
@@ -45,22 +46,6 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 ));
 $app->register(new FormServiceProvider());
 
-
-// THIS WORKS
-// 
-$app->get('/company/{id}', function ($id) use ($app) {
-    $sql = "SELECT * FROM company WHERE id = ?";
-    $company = $app['dbs']['mysql_read']->fetchAssoc($sql, array((int) $id));
-
-    return  "<h1>{$company['name']}</h1>".
-            "<p>{$company['email']}</p>".
-            "<p>{$company['description']}</p>";
-});
-
-// $app['database.controller'] = function() use ($app) {
-//     return new DatabaseController();
-// };
-
 $app['home.controller'] = function() use ($app) {
     return new HomeController();
 };
@@ -69,19 +54,10 @@ $app['company.controller'] = function() use ($app) {
 };
 
 $app->get('/home', "home.controller:indexAction");
+$app->get('/company', "company.controller:indexAction");
 $app->get('/company/{id}', "company.controller:indexAction");
-
-//Request::setTrustedProxies(array('127.0.0.1'));
-
-// $app->get('/', function () use ($app) {
-//     return $app['twig']->render('index.html.twig', array());
-// })
-// ->bind('homepage');
-
-// $app->get('/home', function () use ($app) {
-//     return $app['twig']->render('home.html', array());
-// })
-// ->bind('home');
+$app->get('/company-save', "company.controller:saveAction");
+$app->post('/company-save', "company.controller:saveAction");
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

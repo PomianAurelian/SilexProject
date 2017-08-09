@@ -1,14 +1,15 @@
-<?php 
+<?php
 
 namespace Entity;
 
 use Entity\Category;
 use Repository\CategoryRepository;
+use Doctrine\ORM\Mapping as ORM;
 
-class Company 
+class Company
 {
 	/**
-	 * @var int 
+	 * @var int
 	 */
 	public $id;
 	/**
@@ -30,7 +31,7 @@ class Company
 	/**
 	 * @var int(10)
 	 */
-	public $description;
+	public $radioBtn_id;
 	/**
 	 * @var varchar(255)
 	 */
@@ -39,16 +40,21 @@ class Company
 	 * @var ENUM('A', 'B', 'C')
 	 */
 	public $radio_choice;
-	/**
-	 * @var int
-	 */
-	public $average_rating;
-	
-	public function setFromArray($array) 
+
+	public function setFromArray($array)
 	{
 		foreach ($array as $key => $value) {
 			$this->{$key} = $value;
 		}
+	}
+
+	public function setToArray()
+	{
+		$array = [];
+		foreach ($this as $key => $value) {
+			$array[$key] = $value;
+		}
+		return $array;
 	}
 
 }
