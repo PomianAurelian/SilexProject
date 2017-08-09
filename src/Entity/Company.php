@@ -51,10 +51,4 @@ class Company
 		}
 	}
 
-	public function getCategory() 
-	{
-		$categoryRepository = new CategoryRepository($app);
-		return $categoryRepository->find($this->category_id);
-	}
-
 }

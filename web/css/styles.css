@@ -171,8 +171,9 @@ a.nav-item {
     text-align: center;
 }
 .form-style-2 input.input-field,
-.form-style-2 input.select-field{
-    width: 48%;
+.form-style-2 input.select-field,
+.form-style-2 input.textarea-field{
+    width: 60%;
 }
 .form-style-2 select.select-field{
     margin-top: 7px;

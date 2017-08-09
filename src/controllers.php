@@ -1,5 +1,6 @@
 <?php
 
+use Silex\Provider\FormServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -13,6 +14,7 @@ use Controller\CompanyController;
 use Controller\DatabaseController;
 use AppBundle\DependencyInjection\Configuration;
 use Home\Provider;
+
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'dbs.options' => array (
@@ -35,7 +37,13 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     ),
 ));
 
+$app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+$app->register(new Silex\Provider\TranslationServiceProvider(), array(
+    'locale_fallbacks' => array('en'),
+    'translator.domains' => array(),
+));
+$app->register(new FormServiceProvider());
 
 
 // THIS WORKS
@@ -59,6 +67,7 @@ $app['home.controller'] = function() use ($app) {
 $app['company.controller'] = function() use ($app) {
     return new CompanyController();
 };
+
 $app->get('/home', "home.controller:indexAction");
 $app->get('/company/{id}', "company.controller:indexAction");
 
