@@ -66,7 +66,8 @@ class CompanyController
 	    }
 
 		return new Response($app['twig']->render('form/company_form.html.twig' ,[
-			'form' => $form->createView()
+			'form' => $form->createView(),
+			'action' => 'Register company here'
 		]));
 	}
 
@@ -98,9 +99,91 @@ class CompanyController
 		]));
 	}
 
-	protected function getCompanyForm($app)
+	public function editAction(Application $app, Request $request, $id)
+	{
+		$companyRepository = new CompanyRepository($app);
+		$company = $companyRepository->findCompanyById($id);
+		$form = $this->getEditCompanyForm($app, $company);
+
+		if ($request->isMethod('POST')) {
+
+			$newCompany = new Company();
+			$newCompany->setFromArray($request->request->get($form->getName()));
+			if ($newCompany->delivery === NULL)
+				$newCompany->delivery = 0;
+			$newCompany->id = $id;
+			$app['dbs']['mysql_read']->update('company', $newCompany->setToArray(), ['id' => $id]);
+
+			if ($form->isSubmitted() && $form->isValid()) {
+	            // perform some action...
+
+	            return $this->redirectToRoute('task_success');
+	        }
+		}
+
+		return new Response($app['twig']->render('form/company_form.html.twig' ,[
+			'form' => $form->createView(),
+			'company' => $company,
+			'action' => 'Edit company '.$company->name
+		]));
+	}
+
+
+
+	protected function getEditCompanyForm($app, $company)
 	{
         $form = $app['form.factory']->createBuilder(FormType::class)
+           	->add('name', TextType::class, array(
+           		'data'  => $company->name,
+	            'label'  => ' ',
+	            'attr'   =>  array(
+	                'class'   => 'input-field')
+            ))
+            ->add('email', EmailType::class, array(
+            	'data'  => $company->email,
+	            'label'  => ' ',
+	            'attr'   =>  array(
+	                'class'   => 'input-field')
+            ))
+            ->add('category_id', ChoiceType::class, array(
+            	'data'  => $company->category_id,
+            	'choices' => array('Restaurant' => 1, 'Fast Food' => 2, 'Market' => 3, 'Drug Store' => 4, 'Other' => 5),
+            	'label'  => ' ',
+	            'attr'   =>  array(
+	                'class'   => 'select-field')
+            ))
+            ->add('delivery', CheckboxType::class, array(
+            	'data'  => (Boolean)$company->delivery,
+	            'label'  => ' ',
+	            'required' => false,
+	            'attr'   =>  array(
+	                'class'   => 'checkbox-field')
+            ))
+            ->add('radio_choice', ChoiceType::class, array (
+            	'data'  => $company->radio_choice,
+            	'choices' => array ('Choice A' => 1,
+					            	'Choice B' => 2,
+					            	'Choice C' => 3),
+            	// 'expanded' => true,
+            	'label'  => ' ',
+	            'attr'   =>  array(
+	                'class'   => 'radio-field')
+            ))
+            ->add('description', TextareaType::class, array(
+            	'data'  => $company->description,
+	            'label'  => ' ',
+	            'required' => false,
+	            'attr'   =>  array(
+	                'class'  => 'textarea-field')
+            ))
+            ->getForm();
+
+    	return $form;
+	}
+
+	protected function getCompanyForm($app)
+	{
+		$form = $app['form.factory']->createBuilder(FormType::class)
            	->add('name', TextType::class, array(
 	            'label'  => ' ',
 	            'attr'   =>  array(

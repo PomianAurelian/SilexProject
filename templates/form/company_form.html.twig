@@ -12,10 +12,10 @@
 
 {% block content %}
 	<div class="nav-menu">
-		<a href="home" class="nav-item fa fa-home" aria-hidden="true"></a>
+		<a href="/home" class="nav-item fa fa-home" aria-hidden="true"></a>
 	</div>
 	<div class="form-style-2">
-		<div class="form-style-2-heading">Register company here</div>
+		<div class="form-style-2-heading">{{ action }}</div>
 		{{ form_start(form) }}
 			<label for="field1"><span>Name <span class="required">*</span></span>{{ form_row(form.name) }}</label>
 			<label for="field2"><span>Email <span class="required">*</span></span>{{ form_row(form.email) }}</label>

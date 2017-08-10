@@ -58,6 +58,10 @@ $app->get('/company', "company.controller:indexAction");
 $app->get('/company/{id}', "company.controller:indexAction");
 $app->get('/company-save', "company.controller:saveAction");
 $app->post('/company-save', "company.controller:saveAction");
+$app->get('/review/{id}', "company.controller:reviewAction");
+$app->post('/review/{id}', "company.controller:reviewAction");
+$app->get('/company-edit/{id}', "company.controller:editAction");
+$app->post('/company-edit/{id}', "company.controller:editAction");
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
