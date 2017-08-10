@@ -48,7 +48,6 @@ class CompanyController
 			$company = $companyRepository->findCompanyById($id);
 			$form = $this->getEditCompanyForm($app, $company);
 		}
-
 		if ($request->isMethod('POST')) {
 			$newCompany = new Company();
 			$newCompany->setFromArray($request->request->get($form->getName()));
@@ -56,25 +55,16 @@ class CompanyController
 				$newCompany->delivery = 0;
 			$form->handleRequest($request);
 			if($id === NULL) {
-				$app['dbs']['mysql_read']->insert('company', $newCompany->setToArray());
-				return new Response($app['twig']->render('form/company_form.html.twig' ,[
-					'message' => '-- Company created! --',
-					'form' => $form->createView(),
-					'action' => 'Register company here'
-				]));
+				$app['dbs']['mysql_write']->insert('company', $newCompany->setToArray());
+				$id = $app['dbs']['mysql_write']->lastInsertId();
+				return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
 			} else {
 				$newCompany->id = $id;
 				$newCompany->logo_src = $company->logo_src;
-				$app['dbs']['mysql_read']->update('company', $newCompany->setToArray(), ['id' => $id]);
-				return new Response($app['twig']->render('form/company_form.html.twig' ,[
-					'message' => '-- Succesfull update! --',
-					'form' => $form->createView(),
-					'company' => $newCompany,
-					'action' => 'Edit company '.$newCompany->name
-				]));
+				$app['dbs']['mysql_write']->update('company', $newCompany->setToArray(), ['id' => $id]);
+				return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
 			}
 	    }
-
 	    $form->handleRequest($request);
 	    if($id === NULL) {
 			return new Response($app['twig']->render('form/company_form.html.twig' ,[
@@ -107,18 +97,12 @@ class CompanyController
 			$newReview->company_id = $id;
 
 			$app['dbs']['mysql_read']->insert('review', $newReview->setToArray());
-			
+
 			$form->handleRequest($request);
-			$form = $this->getReviewForm($app);
 
-			return new Response($app['twig']->render('form/review_form.html.twig' ,[
-				'form' => $form->createView(),
-				'company' => $company
-			]));
+			return return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
 		}
-		
 		$form->handleRequest($request);
-
 		return new Response($app['twig']->render('form/review_form.html.twig' ,[
 			'form' => $form->createView(),
 			'company' => $company
@@ -159,7 +143,6 @@ class CompanyController
             	'choices' => array ('Choice A' => 1,
 					            	'Choice B' => 2,
 					            	'Choice C' => 3),
-            	// 'expanded' => true,
             	'label'  => ' ',
 	            'attr'   =>  array(
 	                'class'   => 'radio-field')

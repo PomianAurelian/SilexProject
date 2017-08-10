@@ -54,9 +54,8 @@ $app['company.controller'] = function() use ($app) {
 };
 
 $app->get('/home', "home.controller:indexAction");
-$app->get('/company', "company.controller:indexAction");
-$app->get('/company/{id}', "company.controller:indexAction");
-$app->get('/company-save', "company.controller:saveAction");
+$app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
+$app->get('/company-save', "company.controller:saveAction")->bind('company_save');
 $app->post('/company-save', "company.controller:saveAction");
 $app->get('/review/{id}', "company.controller:reviewAction");
 $app->post('/review/{id}', "company.controller:reviewAction");
