@@ -8,7 +8,7 @@ CREATE TABLE company (
 	id int(10) NOT NULL AUTO_INCREMENT,
     name varchar(255) NOT NULL,
     email varchar(255) NOT NULL,
-    delivery tinyint(1) NOT NULL DEFAULT false,
+    delivery tinyint(1) DEFAULT false,
     category_id int(10) NOT NULL,
     description varchar(255),
     PRIMARY KEY (id),

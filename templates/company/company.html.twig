@@ -11,7 +11,7 @@
 
 {% block content %}
 	<div class="nav-menu">
-		<a href="/home" class="nav-item fa fa-home" aria-hidden="true"></a>
+		<a href="/index_dev.php/home" class="nav-item fa fa-home" aria-hidden="true"></a>
 	</div>
 
 	<h1>{{ company.name }}</h1>
@@ -68,15 +68,9 @@
 	{% endfor %}
 
 	<!-- Add review -->
-	<div class="form-style-2">
-		<div class="form-style-2-heading">Review this company</div>
+	<hr>
+	<a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
 
-		<form action="" method="post">
-			<label for="field1"><span>Name <span class="required">*</span></span><input type="text" class="input-field" name="field1" value="" required /></label>
-			<label for="field6"><span>Review</span><textarea name="field6" class="textarea-field"></textarea></label>
-			<label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
-		</form>
-	</div>
 {% endblock %}
 
 {% block scripts %}{% endblock %}

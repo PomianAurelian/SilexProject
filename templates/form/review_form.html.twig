@@ -1,2 +1,28 @@
-<?php
+{% extends "base_layout.html.twig" %}
 
+{% block title  %}
+	Review Page
+{% endblock %}
+
+{% block styles %}
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">	
+	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% endblock %}
+
+{% block content %}
+	<div class="nav-menu">
+		<a href="/home" class="nav-item fa fa-home" aria-hidden="true"></a>
+		<a href="/company/{{ company.id }}" class="nav-item fa fa-undo" aria-hidden="true"></a>
+	</div>
+	<img class="review-page" src="/images/{{ company.logo_src }}">
+	<div class="form-style-2">
+		<div class="form-style-2-heading">Review for {{ company.name }}:</div>
+		{{ form_start(form) }}
+			<label for="field1"><span>Name <span class="required">*</span></span>{{ form_row(form.name) }}</label>
+			<label for="field3"><span>Rating</span>{{ form_row(form.rating) }}</label>
+			<label for="field6"><span>Comment</span>{{ form_row(form.comment) }}</label>
+			<label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
+		{{ form_end(form) }}
+	</div>
+{% endblock %}

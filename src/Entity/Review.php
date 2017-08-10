@@ -35,4 +35,13 @@ class Review
 			$this->{$key} = $value;
 		}
 	}
+
+	public function setToArray()
+	{
+		$array = [];
+		foreach ($this as $key => $value) {
+			$array[$key] = $value;
+		}
+		return $array;
+	}
 }

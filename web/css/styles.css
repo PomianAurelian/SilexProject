@@ -140,7 +140,7 @@ a.nav-item {
 }
 
 .form-style-2{
-    max-width: 500px;
+    max-width: 700px;
     padding: 20px 12px 10px 20px;
     font: 13px Arial, Helvetica, sans-serif;
 }
@@ -211,7 +211,7 @@ a.nav-item {
 }
 .form-style-2 .textarea-field{
     height:100px;
-    width: 55%;
+    width: 60%;
 }
 .form-style-2 input[type=submit],
 .form-style-2 input[type=button]{
