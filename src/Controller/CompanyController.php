@@ -54,7 +54,7 @@ class CompanyController
 			$newCompany->setFromArray($request->request->get($form->getName()));
 			if ($newCompany->delivery === NULL)
 				$newCompany->delivery = 0;
-
+			$form->handleRequest($request);
 			if($id === NULL) {
 				$app['dbs']['mysql_read']->insert('company', $newCompany->setToArray());
 				return new Response($app['twig']->render('form/company_form.html.twig' ,[
@@ -75,6 +75,7 @@ class CompanyController
 			}
 	    }
 
+	    $form->handleRequest($request);
 	    if($id === NULL) {
 			return new Response($app['twig']->render('form/company_form.html.twig' ,[
 				'message' => '',
@@ -95,6 +96,9 @@ class CompanyController
 	{
 		$form = $this->getReviewForm($app);
 
+		$companyRepository = new CompanyRepository($app);
+		$company = $companyRepository->findCompanyById($id);
+
 		if ($request->isMethod('POST')) {
 			$newReview = new Review();
 			$newReview->setFromArray($request->request->get($form->getName()));
@@ -103,9 +107,17 @@ class CompanyController
 			$newReview->company_id = $id;
 
 			$app['dbs']['mysql_read']->insert('review', $newReview->setToArray());
+			
+			$form->handleRequest($request);
+			$form = $this->getReviewForm($app);
+
+			return new Response($app['twig']->render('form/review_form.html.twig' ,[
+				'form' => $form->createView(),
+				'company' => $company
+			]));
 		}
-		$companyRepository = new CompanyRepository($app);
-		$company = $companyRepository->findCompanyById($id);
+		
+		$form->handleRequest($request);
 
 		return new Response($app['twig']->render('form/review_form.html.twig' ,[
 			'form' => $form->createView(),
@@ -160,7 +172,6 @@ class CompanyController
 	                'class'  => 'textarea-field')
             ))
             ->getForm();
-
     	return $form;
 	}
 
@@ -205,7 +216,6 @@ class CompanyController
 	                'class'  => 'textarea-field')
             ))
             ->getForm();
-
     	return $form;
 	}
 
