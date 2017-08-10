@@ -60,8 +60,8 @@ $app->get('/company-save', "company.controller:saveAction");
 $app->post('/company-save', "company.controller:saveAction");
 $app->get('/review/{id}', "company.controller:reviewAction");
 $app->post('/review/{id}', "company.controller:reviewAction");
-$app->get('/company-edit/{id}', "company.controller:editAction");
-$app->post('/company-edit/{id}', "company.controller:editAction");
+$app->get('/company-save/{id}', "company.controller:saveAction");
+$app->post('/company-save/{id}', "company.controller:saveAction");
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

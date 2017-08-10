@@ -23,17 +23,8 @@ class CompanyController
 {
 	public function indexAction(Application $app, Request $request)
 	{
-		return new Response($app['twig']->render('company/company.html.twig'));
-	}
-
-	public function saveAction(Application $app, Request $request)
-	{
-		$form = $this->getCompanyForm($app);
-
-		if ($request->isMethod('POST')) {
-			$newCompany = new Company();
-			$newCompany->setFromArray($request->request->get($form->getName()));
-			$app['dbs']['mysql_read']->insert('company', $newCompany->setToArray());
+		$companyRepository = new CompanyRepository($app);
+		$company = $companyRepository->findCompanyById($id);
 
 			if ($form->isSubmitted() && $form->isValid()) {
 	            // perform some action...
@@ -47,28 +38,57 @@ class CompanyController
 		]));
 	}
 
-	public function saveAction(Application $app, Request $request)
+	public function saveAction(Application $app, Request $request, $id = NULL)
 	{
-		$form = $this->getCompanyForm($app);
+		if($id === NULL) {
+			$form = $this->getCompanyForm($app);
+		}
+		else {
+			$companyRepository = new CompanyRepository($app);
+			$company = $companyRepository->findCompanyById($id);
+			$form = $this->getEditCompanyForm($app, $company);
+		}
 
 		if ($request->isMethod('POST')) {
 			$newCompany = new Company();
 			$newCompany->setFromArray($request->request->get($form->getName()));
 			if ($newCompany->delivery === NULL)
 				$newCompany->delivery = 0;
-			$app['dbs']['mysql_read']->insert('company', $newCompany->setToArray());
 
-			if ($form->isSubmitted() && $form->isValid()) {
-	            // perform some action...
-
-	            return $this->redirectToRoute('task_success');
-	        }
+			if($id === NULL) {
+				$app['dbs']['mysql_read']->insert('company', $newCompany->setToArray());
+				return new Response($app['twig']->render('form/company_form.html.twig' ,[
+					'message' => '-- Company created! --',
+					'form' => $form->createView(),
+					'action' => 'Register company here'
+				]));
+			} else {
+				$newCompany->id = $id;
+				$newCompany->logo_src = $company->logo_src;
+				$app['dbs']['mysql_read']->update('company', $newCompany->setToArray(), ['id' => $id]);
+				return new Response($app['twig']->render('form/company_form.html.twig' ,[
+					'message' => '-- Succesfull update! --',
+					'form' => $form->createView(),
+					'company' => $newCompany,
+					'action' => 'Edit company '.$newCompany->name
+				]));
+			}
 	    }
 
-		return new Response($app['twig']->render('form/company_form.html.twig' ,[
-			'form' => $form->createView(),
-			'action' => 'Register company here'
-		]));
+	    if($id === NULL) {
+			return new Response($app['twig']->render('form/company_form.html.twig' ,[
+				'message' => '',
+				'form' => $form->createView(),
+				'action' => 'Register company here'
+			]));
+		} else {
+			return new Response($app['twig']->render('form/company_form.html.twig' ,[
+				'message' => '',
+				'form' => $form->createView(),
+				'company' => $company,
+				'action' => 'Edit company '.$company->name
+			]));
+		}
 	}
 
 	public function reviewAction(Application $app, Request $request, $id)
@@ -83,12 +103,6 @@ class CompanyController
 			$newReview->company_id = $id;
 
 			$app['dbs']['mysql_read']->insert('review', $newReview->setToArray());
-
-			if ($form->isSubmitted() && $form->isValid()) {
-	            // perform some action...
-
-	            return $this->redirectToRoute('task_success');
-	        }
 		}
 		$companyRepository = new CompanyRepository($app);
 		$company = $companyRepository->findCompanyById($id);
@@ -98,37 +112,6 @@ class CompanyController
 			'company' => $company
 		]));
 	}
-
-	public function editAction(Application $app, Request $request, $id)
-	{
-		$companyRepository = new CompanyRepository($app);
-		$company = $companyRepository->findCompanyById($id);
-		$form = $this->getEditCompanyForm($app, $company);
-
-		if ($request->isMethod('POST')) {
-
-			$newCompany = new Company();
-			$newCompany->setFromArray($request->request->get($form->getName()));
-			if ($newCompany->delivery === NULL)
-				$newCompany->delivery = 0;
-			$newCompany->id = $id;
-			$app['dbs']['mysql_read']->update('company', $newCompany->setToArray(), ['id' => $id]);
-
-			if ($form->isSubmitted() && $form->isValid()) {
-	            // perform some action...
-
-	            return $this->redirectToRoute('task_success');
-	        }
-		}
-
-		return new Response($app['twig']->render('form/company_form.html.twig' ,[
-			'form' => $form->createView(),
-			'company' => $company,
-			'action' => 'Edit company '.$company->name
-		]));
-	}
-
-
 
 	protected function getEditCompanyForm($app, $company)
 	{
