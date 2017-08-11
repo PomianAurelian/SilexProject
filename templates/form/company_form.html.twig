@@ -26,6 +26,10 @@
 			<label for="field4"><span>Delivery service </span>{{ form_row(form.delivery) }}</label>
 			<label for="field5"><span>Radio sample </span>{{ form_row(form.radio_choice) }}</label>
 			<label for="field6"><span>Description</span>{{ form_row(form.description) }}</label>
+			{% if company != null %}
+			    <img class="company-form-page" src="/images/company/{{ company.logo_src }}">
+			{% endif %}
+			<label for="field7"><span>Upload logo</span>{{ form_row(form.FileUpload) }}</label>
 			<label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
 		{{ form_end(form) }}
 	</div>

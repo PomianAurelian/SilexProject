@@ -43,6 +43,11 @@ a.nav-item {
     text-decoration: none;
 }
 
+.company-form-page {
+    width: 200px;
+    height: 200px;
+}
+
 .description-box {
     padding: 15px;
     margin: 50px;

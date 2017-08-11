@@ -36,7 +36,7 @@ class Review
 		}
 	}
 
-	public function setToArray()
+	public function toArray()
 	{
 		$array = [];
 		foreach ($this as $key => $value) {

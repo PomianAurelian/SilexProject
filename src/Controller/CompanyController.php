@@ -3,6 +3,9 @@
 namespace Controller;
 
 use Silex\Application;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Repository\CompanyRepository;
@@ -18,6 +21,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -56,19 +60,30 @@ class CompanyController
 			if ($newCompany->delivery === NULL)
 				$newCompany->delivery = 0;
 			$form->handleRequest($request);
-			// var_dump($form->getErrors());
-			// var_dump($form->isValid());die;
 
 			if ($form->isValid())
 			{
+				$files = $request->files->get($form->getName());
+	            $path = 'images/company/';
+	            if( $files['FileUpload'] != null ){
+	            	$filename = $files['FileUpload']->getClientOriginalName();
+	            	$files['FileUpload']->move($path,$filename);
+					$newCompany->logo_src = $filename;
+	            } else {
+	            	$newCompany->logo_src = $company->logo_src;
+	            }
+	            // echo '<pre>';
+	            // var_dump($newCompany, $newCompany->toArray());
+	            // echo '</pre>';
+	            // die;
+
 				if($id === NULL) {
-					$app['dbs']['mysql_write']->insert('company', $newCompany->setToArray());
+					$app['dbs']['mysql_write']->insert('company', $newCompany->toArray());
 					$id = $app['dbs']['mysql_write']->lastInsertId();
 					return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
 				} else {
 					$newCompany->id = $id;
-					$newCompany->logo_src = $company->logo_src;
-					$app['dbs']['mysql_write']->update('company', $newCompany->setToArray(), ['id' => $id]);
+					$app['dbs']['mysql_write']->update('company', $newCompany->toArray(), ['id' => $id]);
 					return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
 				}
 			}
@@ -78,6 +93,7 @@ class CompanyController
 			return new Response($app['twig']->render('form/company_form.html.twig' ,[
 				'message' => '',
 				'form' => $form->createView(),
+				'company' => null,
 				'action' => 'Register company here'
 			]));
 		} else {
@@ -140,6 +156,10 @@ class CompanyController
 	                'class'  => 'textarea-field'),
 	            'constraints' => new Assert\Length(array('max' => 255))
             ))
+            ->add('FileUpload', FileType::class, array (
+            	'label' => ' ',
+            	'required' => false,
+            ))
             ->getForm();
     	return $form;
 	}
@@ -188,6 +208,9 @@ class CompanyController
 	            'attr'   =>  array(
 	                'class'  => 'textarea-field'),
 	            'constraints' => new Assert\Length(array('max' => 255))
+            ))
+            ->add('FileUpload', FileType::class, array (
+            	'label' => ' '
             ))
             ->getForm();
     	return $form;

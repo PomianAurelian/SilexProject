@@ -6,7 +6,7 @@
 
 {% block styles %}
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">	
+	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
 	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 {% endblock %}
 
@@ -43,7 +43,7 @@
 				<div class="company-text">
 					<h3>{{ company.name }}</h3>
 					<p>{{ company.description }}</p>
-				</div>	
+				</div>
 				<div class="company-img">
 					<img src="../images/{{ company.logo_src }}">
 				</div>
@@ -52,8 +52,6 @@
 	    </div>
 	    <hr>
 	{% endfor %}
-
-	<div align="left">
 
 	<div align="left">
 		<a href="company-save" class="nav-item fa fa-building" aria-hidden="true">Register</a>

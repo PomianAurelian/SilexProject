@@ -47,7 +47,7 @@ class Company
 		}
 	}
 
-	public function setToArray()
+	public function toArray()
 	{
 		$array = [];
 		foreach ($this as $key => $value) {

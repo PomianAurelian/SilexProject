@@ -39,7 +39,7 @@ class ReviewController
 			$form->handleRequest($request);
 			if($form->isValid())
 			{
-				$app['dbs']['mysql_read']->insert('review', $newReview->setToArray());
+				$app['dbs']['mysql_read']->insert('review', $newReview->toArray());
 				return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
 			}
 		}
