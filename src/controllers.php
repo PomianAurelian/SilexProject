@@ -12,6 +12,7 @@ use Provider\DatabaseControllerProvider;
 use Controller\HomeController;
 use Controller\CompanyFormController;
 use Controller\CompanyController;
+use Controller\ReviewController;
 use Controller\DatabaseController;
 use AppBundle\DependencyInjection\Configuration;
 use Home\Provider;
@@ -53,13 +54,16 @@ $app['home.controller'] = function() use ($app) {
 $app['company.controller'] = function() use ($app) {
     return new CompanyController();
 };
+$app['review.controller'] = function() use ($app) {
+    return new ReviewController();
+};
 
 $app->get('/home', "home.controller:indexAction");
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
 $app->get('/company-save', "company.controller:saveAction")->bind('company_save');
 $app->post('/company-save', "company.controller:saveAction");
-$app->get('/review/{id}', "company.controller:reviewAction");
-$app->post('/review/{id}', "company.controller:reviewAction");
+$app->get('/review/{id}', "review.controller:reviewAction");
+$app->post('/review/{id}', "review.controller:reviewAction");
 $app->get('/company-save/{id}', "company.controller:saveAction");
 $app->post('/company-save/{id}', "company.controller:saveAction");
 

@@ -20,7 +20,6 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class CompanyController
 {
@@ -72,7 +71,7 @@ class CompanyController
 					$app['dbs']['mysql_write']->update('company', $newCompany->setToArray(), ['id' => $id]);
 					return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
 				}
-			} 
+			}
 	    }
 
 	    if($id === NULL) {
@@ -89,33 +88,6 @@ class CompanyController
 				'action' => 'Edit company '.$company->name
 			]));
 		}
-	}
-
-	public function reviewAction(Application $app, Request $request, $id)
-	{
-		$form = $this->getReviewForm($app);
-
-		$companyRepository = new CompanyRepository($app);
-		$company = $companyRepository->findCompanyById($id);
-
-		if ($request->isMethod('POST')) {
-			$newReview = new Review();
-			$newReview->setFromArray($request->request->get($form->getName()));
-
-			$newReview->review_date = date('Y-m-d H:i:s');
-			$newReview->company_id = $id;
-
-			$app['dbs']['mysql_read']->insert('review', $newReview->setToArray());
-
-			$form->handleRequest($request);
-
-			return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
-		}
-		$form->handleRequest($request);
-		return new Response($app['twig']->render('form/review_form.html.twig' ,[
-			'form' => $form->createView(),
-			'company' => $company
-		]));
 	}
 
 	protected function getEditCompanyForm($app, $company)
@@ -136,7 +108,7 @@ class CompanyController
 		            'message' => 'The email "{{ value }}" is not a valid email.',
 		            'checkMX' => true,
 		        )), new Assert\NotBlank())
-            ))	
+            ))
             ->add('category_id', ChoiceType::class, array(
             	'data'  => $company->category_id,
             	'choices' => array('Restaurant' => 1, 'Fast Food' => 2, 'Market' => 3, 'Drug Store' => 4, 'Other' => 5),
@@ -218,42 +190,6 @@ class CompanyController
 	            'constraints' => new Assert\Length(array('max' => 255))
             ))
             ->getForm();
-    	return $form;
-	}
-
-	protected function getReviewForm($app)
-	{
-        $form = $app['form.factory']->createBuilder(FormType::class)
-           	->add('name', TextType::class, array(
-	            'label'  => ' ',
-	            'attr'   =>  array(
-	                'class'   => 'input-field')
-	            'constraints' => new Assert\NotBlank();
-            ))
-            ->add('rating', ChoiceType::class, array (
-            	'choices' => array (
-            		'0.5' => 0.5,
-            		'1.0' => 1,
-            		'1.5' => 1.5,
-            		'2.0' => 2,
-            		'2.5' => 2.5,
-            		'3.0' => 3,
-            		'3.5' => 3.5,
-            		'4.0' => 4,
-            		'4.5' => 4.5,
-            		'5.0' => 5
-            	),
-            	'label' => ' '
-            	'constraints' => new Assert\Length(array('min' => 0.5, 'max' => 5))
-            ))
-            ->add('comment', TextareaType::class, array(
-	            'label'  => ' ',
-	            'attr'   =>  array(
-	                'class'  => 'textarea-field'),
-	            'constraints' => new Assert\Length(['max' => 150])
-            ))
-            ->getForm();
-
     	return $form;
 	}
 }
