@@ -18,6 +18,9 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 class CompanyController
 {
@@ -54,18 +57,24 @@ class CompanyController
 			if ($newCompany->delivery === NULL)
 				$newCompany->delivery = 0;
 			$form->handleRequest($request);
-			if($id === NULL) {
-				$app['dbs']['mysql_write']->insert('company', $newCompany->setToArray());
-				$id = $app['dbs']['mysql_write']->lastInsertId();
-				return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
-			} else {
-				$newCompany->id = $id;
-				$newCompany->logo_src = $company->logo_src;
-				$app['dbs']['mysql_write']->update('company', $newCompany->setToArray(), ['id' => $id]);
-				return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
-			}
+			// var_dump($form->getErrors());
+			// var_dump($form->isValid());die;
+
+			if ($form->isValid())
+			{
+				if($id === NULL) {
+					$app['dbs']['mysql_write']->insert('company', $newCompany->setToArray());
+					$id = $app['dbs']['mysql_write']->lastInsertId();
+					return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
+				} else {
+					$newCompany->id = $id;
+					$newCompany->logo_src = $company->logo_src;
+					$app['dbs']['mysql_write']->update('company', $newCompany->setToArray(), ['id' => $id]);
+					return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
+				}
+			} 
 	    }
-	    $form->handleRequest($request);
+
 	    if($id === NULL) {
 			return new Response($app['twig']->render('form/company_form.html.twig' ,[
 				'message' => '',
@@ -100,7 +109,7 @@ class CompanyController
 
 			$form->handleRequest($request);
 
-			return return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
+			return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
 		}
 		$form->handleRequest($request);
 		return new Response($app['twig']->render('form/review_form.html.twig' ,[
@@ -116,14 +125,18 @@ class CompanyController
            		'data'  => $company->name,
 	            'label'  => ' ',
 	            'attr'   =>  array(
-	                'class'   => 'input-field')
+	                'class'   => 'input-field'),
+	            'constraints' => array(new Assert\NotBlank()),
             ))
             ->add('email', EmailType::class, array(
             	'data'  => $company->email,
 	            'label'  => ' ',
-	            'attr'   =>  array(
-	                'class'   => 'input-field')
-            ))
+	            'attr'   =>  array('class'   => 'input-field'),
+	            'constraints' => array(new Assert\Email(array(
+		            'message' => 'The email "{{ value }}" is not a valid email.',
+		            'checkMX' => true,
+		        )), new Assert\NotBlank())
+            ))	
             ->add('category_id', ChoiceType::class, array(
             	'data'  => $company->category_id,
             	'choices' => array('Restaurant' => 1, 'Fast Food' => 2, 'Market' => 3, 'Drug Store' => 4, 'Other' => 5),
@@ -152,7 +165,8 @@ class CompanyController
 	            'label'  => ' ',
 	            'required' => false,
 	            'attr'   =>  array(
-	                'class'  => 'textarea-field')
+	                'class'  => 'textarea-field'),
+	            'constraints' => new Assert\Length(array('max' => 255))
             ))
             ->getForm();
     	return $form;
@@ -164,12 +178,16 @@ class CompanyController
            	->add('name', TextType::class, array(
 	            'label'  => ' ',
 	            'attr'   =>  array(
-	                'class'   => 'input-field')
+	                'class'   => 'input-field'),
+	            'constraints' => array(new Assert\NotBlank()),
             ))
             ->add('email', EmailType::class, array(
 	            'label'  => ' ',
-	            'attr'   =>  array(
-	                'class'   => 'input-field')
+	            'attr'   =>  array('class'   => 'input-field'),
+	            'constraints' => array(new Assert\Email(array(
+		            'message' => 'The email "{{ value }}" is not a valid email.',
+		            'checkMX' => true,
+		        )), new Assert\NotBlank())
             ))
             ->add('category_id', ChoiceType::class, array(
             	'choices' => array('Restaurant' => 1, 'Fast Food' => 2, 'Market' => 3, 'Drug Store' => 4, 'Other' => 5),
@@ -196,7 +214,8 @@ class CompanyController
 	            'label'  => ' ',
 	            'required' => false,
 	            'attr'   =>  array(
-	                'class'  => 'textarea-field')
+	                'class'  => 'textarea-field'),
+	            'constraints' => new Assert\Length(array('max' => 255))
             ))
             ->getForm();
     	return $form;
@@ -209,6 +228,7 @@ class CompanyController
 	            'label'  => ' ',
 	            'attr'   =>  array(
 	                'class'   => 'input-field')
+	            'constraints' => new Assert\NotBlank();
             ))
             ->add('rating', ChoiceType::class, array (
             	'choices' => array (
@@ -224,11 +244,13 @@ class CompanyController
             		'5.0' => 5
             	),
             	'label' => ' '
+            	'constraints' => new Assert\Length(array('min' => 0.5, 'max' => 5))
             ))
             ->add('comment', TextareaType::class, array(
 	            'label'  => ' ',
 	            'attr'   =>  array(
-	                'class'  => 'textarea-field')
+	                'class'  => 'textarea-field'),
+	            'constraints' => new Assert\Length(['max' => 150])
             ))
             ->getForm();
 

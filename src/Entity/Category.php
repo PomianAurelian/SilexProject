@@ -2,6 +2,7 @@
 
 namespace Entity;
 
+
 class Category 
 {
 	/**

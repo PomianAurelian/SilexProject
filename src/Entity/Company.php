@@ -4,7 +4,6 @@ namespace Entity;
 
 use Entity\Category;
 use Repository\CategoryRepository;
-use Doctrine\ORM\Mapping as ORM;
 
 class Company
 {
@@ -56,5 +55,4 @@ class Company
 		}
 		return $array;
 	}
-
 }
