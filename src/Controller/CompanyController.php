@@ -27,20 +27,20 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class CompanyController
 {
-	public function indexAction(Application $app, Request $request)
+	public function indexAction(Application $app, Request $request, $id)
 	{
 		$companyRepository = new CompanyRepository($app);
 		$company = $companyRepository->findCompanyById($id);
 
-			if ($form->isSubmitted() && $form->isValid()) {
-	            // perform some action...
+        $reviewRepository = new ReviewRepository($app);
+        $reviews = $reviewRepository->findAllForThisCompanyId($id);
 
-	            return $this->redirectToRoute('task_success');
-	        }
-	    }
+        $average = $reviewRepository->getAverageRatingForThisCompanyId($id);
 
-		return new Response($app['twig']->render('form/company_form.html.twig' ,[
-			'form' => $form->createView()
+		return new Response($app['twig']->render('company/company.html.twig' ,[
+            'company' => $company,
+            'reviews' => $reviews,
+            'average' => $average
 		]));
 	}
 
@@ -72,10 +72,6 @@ class CompanyController
 	            } else {
 	            	$newCompany->logo_src = $company->logo_src;
 	            }
-	            // echo '<pre>';
-	            // var_dump($newCompany, $newCompany->toArray());
-	            // echo '</pre>';
-	            // die;
 
 				if($id === NULL) {
 					$app['dbs']['mysql_write']->insert('company', $newCompany->toArray());

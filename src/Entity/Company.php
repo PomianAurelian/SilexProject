@@ -28,10 +28,6 @@ class Company
 	 */
 	public $category_id;
 	/**
-	 * @var int(10)
-	 */
-	public $radioBtn_id;
-	/**
 	 * @var varchar(255)
 	 */
 	public $logo_src;
