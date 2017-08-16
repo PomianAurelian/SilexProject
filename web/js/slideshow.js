@@ -14,7 +14,6 @@ setInterval(function() {
     }
 }, 100);
 
-
 function plusDivs(n) {
     showDivs(slideIndex += n);
     changed = true;

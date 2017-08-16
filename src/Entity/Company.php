@@ -32,7 +32,7 @@ class Company
 	 */
 	public $logo_src;
 	/**
-	 * @var ENUM('A', 'B', 'C')
+	 * @var string
 	 */
 	public $radio_choice;
 
