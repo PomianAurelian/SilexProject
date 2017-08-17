@@ -15,7 +15,7 @@ class CompanyControllerProvider implements ControllerProviderInterface
     /**
      * Connect route.
      *
-     * @param  Application  $app
+     * @param  Application                     $app
      * @return Application/controllers_factory
      */
 	public function connect(Application $app)

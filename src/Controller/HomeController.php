@@ -20,8 +20,8 @@ class HomeController
 	 * Handle home page action and request.
 	 * Route: /home
 	 *
-	 * @param  Application 		$app
-	 * @param  Request     		$request
+	 * @param  Application $app
+	 * @param  Request     $request
 	 * @return Response
 	 */
 	public function indexAction(Application $app, Request $request)

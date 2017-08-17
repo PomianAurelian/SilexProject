@@ -2,12 +2,14 @@
 
 namespace Entity;
 
+use Entity\BaseEntity;
+
 /**
  * Category
  *
  * @author  Pomian Ghe. Aurelian
  */
-class Category
+class Category extends BaseEntity
 {
 	/**
 	 * @var int
@@ -17,16 +19,4 @@ class Category
 	 * @var string
 	 */
 	public $category;
-
-	/**
-	 * Set category from array form.
-	 *
-	 * @param array 	$array
-	 */
-	public function setFromArray($array)
-	{
-		foreach ($array as $key => $value) {
-			$this->{$key} = $value;
-		}
-	}
 }

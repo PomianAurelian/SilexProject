@@ -27,15 +27,15 @@ class CompanyController
      * Handle company page action and request.
      * Route: /company/{id}
      *
-     * @param  Application      $app
-     * @param  Request          $request
-     * @param  int              $id
+     * @param  Application $app
+     * @param  Request     $request
+     * @param  int         $id
      * @return Response
      */
 	public function indexAction(Application $app, Request $request, $id)
 	{
 		$companyRepository = new CompanyRepository($app);
-		$company = $companyRepository->findCompanyById($id);
+		$company = $companyRepository->find($id);
 
         $reviewRepository = new ReviewRepository($app);
         $reviews = $reviewRepository->findAllForThisCompanyId($id);
@@ -53,10 +53,10 @@ class CompanyController
      * Handle company form page action and request.
      * Route: /company-save | /company-save/{$id}
      *
-     * @param  Application      $app
-     * @param  Request          $request
-     * @param  int              $id
-     * @return Response | Application/redirect
+     * @param  Application $app
+     * @param  Request     $request
+     * @param  int         $id
+     * @return Response
      */
 	public function saveAction(Application $app, Request $request, $id = NULL)
 	{
@@ -65,7 +65,7 @@ class CompanyController
 		}
 		else {
 			$companyRepository = new CompanyRepository($app);
-			$company = $companyRepository->findCompanyById($id);
+			$company = $companyRepository->find($id);
 			$form = $this->getEditCompanyForm($app, $company);
 		}
 		if ($request->isMethod('POST')) {
@@ -119,11 +119,11 @@ class CompanyController
     /**
      * Create and get company form for editing.
      *
-     * @param  Application      $app
-     * @param  Company          $company
-     * @return Application/form.factory
+     * @param  Application                 $app
+     * @param  Company                     $company
+     * @return Symfony\Component\Form\Form
      */
-	protected function getEditCompanyForm($app, $company)
+	protected function getEditCompanyForm($app, $company = null)
 	{
         $form = $app['form.factory']->createBuilder(FormType::class)
            	->add('name', TextType::class, array(
@@ -178,14 +178,15 @@ class CompanyController
             	'required' => false,
             ))
             ->getForm();
+            var_dump($form);die;
     	return $form;
 	}
 
     /**
      * Create and get company form.
      *
-     * @param  Application      $app
-     * @return Application/form.factory
+     * @param  Application                 $app
+     * @return Symfony\Component\Form\Form
      */
 	protected function getCompanyForm($app)
 	{
@@ -220,7 +221,6 @@ class CompanyController
             	'choices' => array ('Choice A' => 1,
 					            	'Choice B' => 2,
 					            	'Choice C' => 3),
-            	// 'expanded' => true,
             	'label'  => ' ',
 	            'attr'   =>  array(
 	                'class'   => 'radio-field')

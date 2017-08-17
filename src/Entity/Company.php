@@ -2,12 +2,14 @@
 
 namespace Entity;
 
+use Entity\BaseEntity;
+
 /**
  * Company
  *
  * @author  Pomian Ghe. Aurelian
  */
-class Company
+class Company extends BaseEntity
 {
 	/**
 	 * @var int
@@ -37,30 +39,4 @@ class Company
 	 * @var string
 	 */
 	public $radio_choice;
-
-	/**
-	 * Set company from array form.
-	 *
-	 * @param array 	$array
-	 */
-	public function setFromArray($array)
-	{
-		foreach ($array as $key => $value) {
-			$this->{$key} = $value;
-		}
-	}
-
-	/**
-	 * Convert company to array form.
-	 *
-	 * @return array
-	 */
-	public function toArray()
-	{
-		$array = [];
-		foreach ($this as $key => $value) {
-			$array[$key] = $value;
-		}
-		return $array;
-	}
 }

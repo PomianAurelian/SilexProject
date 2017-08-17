@@ -24,17 +24,17 @@ class ReviewController
      * Handle review form page action and request.
      * Route: /review/{id}
      *
-     * @param  Application      $app
-     * @param  Request          $request
-     * @param  int              $id
-     * @return Response | Application/redirect
+     * @param  Application $app
+     * @param  Request     $request
+     * @param  int         $id
+     * @return Response
      */
 	public function reviewAction(Application $app, Request $request, $id)
 	{
 		$form = $this->getReviewForm($app);
 
 		$companyRepository = new CompanyRepository($app);
-		$company = $companyRepository->findCompanyById($id);
+		$company = $companyRepository->find($id);
 
 		if ($request->isMethod('POST')) {
 			$newReview = new Review();
@@ -59,8 +59,8 @@ class ReviewController
     /**
      * Create and get review form.
      *
-     * @param  Application      $app
-     * @return Application/form.factory
+     * @param  Application                 $app
+     * @return Symfony\Component\Form\Form
      */
 	protected function getReviewForm($app)
 	{

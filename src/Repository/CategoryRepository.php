@@ -4,54 +4,31 @@ namespace Repository;
 
 use Silex\Application;
 use Entity\Category;
+use Repository\BaseRepository;
 
 /**
  * Category Repository
  *
  * @author  Pomian Ghe. Aurelian
  */
-class CategoryRepository
+class CategoryRepository extends BaseRepository
 {
 	/**
-	 * @var Application
+	 * {@inheritdoc}
 	 */
-	protected $app;
-
-	/**
-	 * Constructor
-	 * @param Application 	$app
-	 */
-	public function __construct(Application $app)
+	protected function convertArrayToObject($array)
 	{
-		$this->app = $app;
+		$object = new Category();
+		$object->setFromArray($array);
+
+		return $object;
 	}
 
 	/**
-	 * Find all categories.
-	 *
-	 * @return Category[]
+	 * {@inheritdoc}
 	 */
-	public function findAll()
+	protected function getTableName()
 	{
-		$sql = "SELECT * FROM category";
-    	$categoriesArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
-    	return $this->convertArraysToObjects($categoriesArr);
-	}
-
-	/**
-	 * Convert categories from array form to object form.
-	 *
-	 * @param  array[] 		$categoriesArr
-	 * @return Category[]
-	 */
-	protected function convertArraysToObjects($categoriesArr)
-	{
-		$objects = [];
-		foreach ($categoriesArr as $cat) {
-			$category = new Category();
-			$category->setFromArray($cat);
-			$objects[] = $category;
-		}
-		return $objects;
+		return 'category';
 	}
 }
