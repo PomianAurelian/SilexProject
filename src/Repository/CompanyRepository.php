@@ -5,27 +5,43 @@ namespace Repository;
 use Silex\Application;
 use Entity\Company;
 use Repository\CategoryRepository;
-use Repository\ReviewRepository;
 
-class CompanyRepository 
-{	
+/**
+ * Company Repository
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class CompanyRepository
+{
+	/**
+	 * @var Application
+	 */
 	protected $app;
 
-	public function __construct(Application $app) 
+	/**
+	 * Constructor
+	 * @param Application 	$app
+	 */
+	public function __construct(Application $app)
 	{
 		$this->app = $app;
 	}
 
+	/**
+	 * Find all companies as arrays grouped by category.
+	 *
+	 * @return Company[category][]
+	 */
 	public function findAllAsArraysGroupedByCategory()
 	{
 		$sql = "SELECT * FROM company ORDER BY category_id";
 		$companiesArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
 		$companiesArr = $this->convertArraysToObjects($companiesArr);
 		$companyMapByCategory = [];
-		
+
 		$categoryRepository = new CategoryRepository($this->app);
 		$categories = $categoryRepository->findAll();
-		
+
 		foreach($companiesArr as $company) {
 			$category = '';
 			foreach($categories as $cat) {
@@ -39,13 +55,24 @@ class CompanyRepository
 		return $companyMapByCategory;
 	}
 
-	public function findAll() 
+	/**
+	 * Find all companies.
+	 *
+	 * @return Company[]
+	 */
+	public function findAll()
 	{
 		$sql = "SELECT * FROM company";
     	$companiesArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
     	return $this->convertArraysToObjects($companiesArr);
 	}
 
+	/**
+	 * Find company by id.
+	 *
+	 * @param  int 			$id
+	 * @return Company
+	 */
 	public function findCompanyById($id)
 	{
 		$sql = "SELECT * FROM company WHERE id = ?";
@@ -53,6 +80,12 @@ class CompanyRepository
 		return $this->convertArrayToObject($companyArr);
 	}
 
+	/**
+	 * Convert company from array form to object form.
+	 *
+	 * @param  array 		$array
+	 * @return Company
+	 */
 	protected function convertArrayToObject($array)
 	{
 		$object = new Company();
@@ -60,6 +93,12 @@ class CompanyRepository
 		return $object;
 	}
 
+	/**
+	 * Convert companies from array form to object form.
+	 *
+	 * @param  array[] 		$arrays
+	 * @return Company[]
+	 */
 	protected function convertArraysToObjects($arrays)
 	{
 		$objects = [];

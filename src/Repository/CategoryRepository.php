@@ -5,30 +5,45 @@ namespace Repository;
 use Silex\Application;
 use Entity\Category;
 
-
-class CategoryRepository 
-{	
+/**
+ * Category Repository
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class CategoryRepository
+{
+	/**
+	 * @var Application
+	 */
 	protected $app;
 
-	public function __construct(Application $app) 
+	/**
+	 * Constructor
+	 * @param Application 	$app
+	 */
+	public function __construct(Application $app)
 	{
 		$this->app = $app;
 	}
 
-	public function find($id)
-	{
-		$sql = "SELECT category FROM category WHERE id = ?";
-    	$categoryArr = $this->app['dbs']['mysql_read']->fetchAssoc($sql, [(int) $id]);
-    	return $this->convertArraysToObjects($categoryArr);
-	}
-
-	public function findAll() 
+	/**
+	 * Find all categories.
+	 *
+	 * @return Category[]
+	 */
+	public function findAll()
 	{
 		$sql = "SELECT * FROM category";
     	$categoriesArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
     	return $this->convertArraysToObjects($categoriesArr);
 	}
 
+	/**
+	 * Convert categories from array form to object form.
+	 *
+	 * @param  array[] 		$categoriesArr
+	 * @return Category[]
+	 */
 	protected function convertArraysToObjects($categoriesArr)
 	{
 		$objects = [];

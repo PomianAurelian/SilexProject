@@ -3,30 +3,35 @@
 namespace Controller;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Repository\CompanyRepository;
 use Repository\ReviewRepository;
-use Entity\Company;
-use Entity\Review;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Review Repository
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
 class CompanyController
 {
+    /**
+     * Handle company page action and request.
+     * Route: /company/{id}
+     *
+     * @param  Application      $app
+     * @param  Request          $request
+     * @param  int              $id
+     * @return Response
+     */
 	public function indexAction(Application $app, Request $request, $id)
 	{
 		$companyRepository = new CompanyRepository($app);
@@ -44,6 +49,15 @@ class CompanyController
 		]));
 	}
 
+    /**
+     * Handle company form page action and request.
+     * Route: /company-save | /company-save/{$id}
+     *
+     * @param  Application      $app
+     * @param  Request          $request
+     * @param  int              $id
+     * @return Response | Application/redirect
+     */
 	public function saveAction(Application $app, Request $request, $id = NULL)
 	{
 		if($id === NULL) {
@@ -102,6 +116,13 @@ class CompanyController
 		}
 	}
 
+    /**
+     * Create and get company form for editing.
+     *
+     * @param  Application      $app
+     * @param  Company          $company
+     * @return Application/form.factory
+     */
 	protected function getEditCompanyForm($app, $company)
 	{
         $form = $app['form.factory']->createBuilder(FormType::class)
@@ -160,6 +181,12 @@ class CompanyController
     	return $form;
 	}
 
+    /**
+     * Create and get company form.
+     *
+     * @param  Application      $app
+     * @return Application/form.factory
+     */
 	protected function getCompanyForm($app)
 	{
 		$form = $app['form.factory']->createBuilder(FormType::class)

@@ -1,20 +1,29 @@
-<?php 
+<?php
 
 namespace Entity;
 
-
-class Category 
+/**
+ * Category
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class Category
 {
 	/**
-	 * @var int 
+	 * @var int
 	 */
 	public $id;
 	/**
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $category;
 
-	public function setFromArray($array) 
+	/**
+	 * Set category from array form.
+	 *
+	 * @param array 	$array
+	 */
+	public function setFromArray($array)
 	{
 		foreach ($array as $key => $value) {
 			$this->{$key} = $value;

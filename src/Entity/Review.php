@@ -2,40 +2,55 @@
 
 namespace Entity;
 
-class Review 
+/**
+ * Review
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class Review
 {
 	/**
-	 * @var int 
+	 * @var int
 	 */
 	public $id;
 	/**
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $name;
 	/**
-	 * @var varchar(255)
+	 * @var float
 	 */
 	public $rating;
 	/**
-	 * @var tinyint(1)
+	 * @var datetime
 	 */
 	public $review_date;
 	/**
-	 * @var int(10)
+	 * @var string
 	 */
 	public $comment;
 	/**
-	 * @var int(10)
+	 * @var int
 	 */
 	public $company_id;
 
-	public function setFromArray($array) 
+	/**
+	 * Set review from array form.
+	 *
+	 * @param array 	$array
+	 */
+	public function setFromArray($array)
 	{
 		foreach ($array as $key => $value) {
 			$this->{$key} = $value;
 		}
 	}
 
+	/**
+	 * Convert review to array form.
+	 *
+	 * @return array
+	 */
 	public function toArray()
 	{
 		$array = [];

@@ -2,9 +2,11 @@
 
 namespace Entity;
 
-use Entity\Category;
-use Repository\CategoryRepository;
-
+/**
+ * Company
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
 class Company
 {
 	/**
@@ -12,23 +14,23 @@ class Company
 	 */
 	public $id;
 	/**
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $name;
 	/**
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $email;
 	/**
-	 * @var tinyint(1)
+	 * @var bool
 	 */
 	public $delivery;
 	/**
-	 * @var int(10)
+	 * @var int
 	 */
 	public $category_id;
 	/**
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $logo_src;
 	/**
@@ -36,6 +38,11 @@ class Company
 	 */
 	public $radio_choice;
 
+	/**
+	 * Set company from array form.
+	 *
+	 * @param array 	$array
+	 */
 	public function setFromArray($array)
 	{
 		foreach ($array as $key => $value) {
@@ -43,6 +50,11 @@ class Company
 		}
 	}
 
+	/**
+	 * Convert company to array form.
+	 *
+	 * @return array
+	 */
 	public function toArray()
 	{
 		$array = [];
