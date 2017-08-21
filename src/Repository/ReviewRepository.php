@@ -42,20 +42,17 @@ class ReviewRepository extends BaseRepository
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function convertArrayToObject($array)
+	protected function getTableName()
 	{
-		$object = new Review();
-		$object->setFromArray($array);
-
-		return $object;
+		return 'review';
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function getTableName()
+	protected function getNewEntityInstance()
 	{
-		return 'review';
+		return new Review();
 	}
 }
 

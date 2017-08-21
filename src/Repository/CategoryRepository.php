@@ -16,19 +16,16 @@ class CategoryRepository extends BaseRepository
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function convertArrayToObject($array)
+	protected function getTableName()
 	{
-		$object = new Category();
-		$object->setFromArray($array);
-
-		return $object;
+		return 'category';
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function getTableName()
+	protected function getNewEntityInstance()
 	{
-		return 'category';
+		return new Category();
 	}
 }

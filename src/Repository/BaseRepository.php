@@ -29,11 +29,16 @@ abstract class BaseRepository
     /**
      * Find all records.
      *
-     * @return Record[]
+     * @param  string       $order
+     * @param  int          $sort
+     * @return BaseEntity[]
      */
-    public function findAll()
+    public function findAll(string $order = null)
     {
         $sql = "SELECT * FROM " . $this->getTableName();
+        $sql = $this->applyOrder($sql, $order);
+        $sql .= ';';
+
         $recordsArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
 
         return $this->convertArraysToObjects($recordsArr);
@@ -42,8 +47,8 @@ abstract class BaseRepository
     /**
      * Find record by id.
      *
-     * @param  int    $id
-     * @return Record
+     * @param  int        $id
+     * @return BaseEntity
      */
     public function find(int $id)
     {
@@ -55,8 +60,8 @@ abstract class BaseRepository
     /**
      * Convert records from array to object.
      *
-     * @param  array[]  $arrays
-     * @return Record[]
+     * @param  array[]      $arrays
+     * @return BaseEntity[]
      */
     protected function convertArraysToObjects(array $arrays)
     {
@@ -71,12 +76,43 @@ abstract class BaseRepository
     }
 
     /**
+     * Apply order.
+     *
+     * @param  string $sql
+     * @param  string $order
+     * @return string
+     */
+    protected function applyOrder(string $sql, string $order = null)
+    {
+        if (null === $order) {
+            return $sql;
+        }
+
+        $sql .= " ORDER BY " . $order;
+
+        return $sql;
+    }
+
+    /**
+     * Get new entity instance.
+     *
+     * @return BaseEntity
+     */
+    abstract protected function getNewEntityInstance();
+
+    /**
      * Convert record from array to object.
      *
-     * @param  array  $array
-     * @return Record
+     * @param  array      $array
+     * @return BaseEntity
      */
-    abstract protected function convertArrayToObject(array $array);
+    protected function convertArrayToObject(array $array)
+    {
+        $object = $this->getNewEntityInstance();
+        $object->setFromArray($array);
+
+        return $object;
+    }
 
     /**
      * Get table name.

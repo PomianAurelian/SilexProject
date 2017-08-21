@@ -15,19 +15,30 @@ use Repository\CategoryRepository;
 class CompanyRepository extends BaseRepository
 {
 	/**
+	 * @var CategoryRepository
+	 */
+	protected $categoryRepository;
+
+	/**
+	 * {@inheritdoc}
+	 */
+	public function __construct(Application $app)
+    {
+        parent::__construct($app);
+        $this->categoryRepository = new CategoryRepository($this->app);
+    }
+
+	/**
 	 * Find all companies as arrays grouped by category.
 	 *
 	 * @return Company[category][]
 	 */
 	public function findAllAsArraysGroupedByCategory()
 	{
-		$sql = "SELECT * FROM company ORDER BY category_id";
-		$companiesArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
-		$companiesArr = $this->convertArraysToObjects($companiesArr);
+		$companiesArr = $this->findAll('category_id');
 		$companyMapByCategory = [];
 
-		$categoryRepository = new CategoryRepository($this->app);
-		$categories = $categoryRepository->findAll();
+		$categories = $this->categoryRepository->findAll();
 
 		foreach($companiesArr as $company) {
 			$category = '';
@@ -46,19 +57,16 @@ class CompanyRepository extends BaseRepository
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function convertArrayToObject($array)
+	protected function getTableName()
 	{
-		$object = new Company();
-		$object->setFromArray($array);
-
-		return $object;
+		return 'company';
 	}
 
 	/**
 	 * {@inheritdoc}
 	 */
-	protected function getTableName()
+	protected function getNewEntityInstance()
 	{
-		return 'company';
+		return new Company();
 	}
 }
