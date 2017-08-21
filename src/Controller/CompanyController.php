@@ -3,34 +3,39 @@
 namespace Controller;
 
 use Silex\Application;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Repository\CompanyRepository;
 use Repository\ReviewRepository;
-use Entity\Company;
-use Entity\Review;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Review Repository
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
 class CompanyController
 {
+    /**
+     * Handle company page action and request.
+     * Route: /company/{id}
+     *
+     * @param  Application $app
+     * @param  Request     $request
+     * @param  int         $id
+     * @return Response
+     */
 	public function indexAction(Application $app, Request $request, $id)
 	{
 		$companyRepository = new CompanyRepository($app);
-		$company = $companyRepository->findCompanyById($id);
+		$company = $companyRepository->find($id);
 
         $reviewRepository = new ReviewRepository($app);
         $reviews = $reviewRepository->findAllForThisCompanyId($id);
@@ -44,6 +49,15 @@ class CompanyController
 		]));
 	}
 
+    /**
+     * Handle company form page action and request.
+     * Route: /company-save | /company-save/{$id}
+     *
+     * @param  Application $app
+     * @param  Request     $request
+     * @param  int         $id
+     * @return Response
+     */
 	public function saveAction(Application $app, Request $request, $id = NULL)
 	{
 		if($id === NULL) {
@@ -51,7 +65,7 @@ class CompanyController
 		}
 		else {
 			$companyRepository = new CompanyRepository($app);
-			$company = $companyRepository->findCompanyById($id);
+			$company = $companyRepository->find($id);
 			$form = $this->getEditCompanyForm($app, $company);
 		}
 		if ($request->isMethod('POST')) {
@@ -102,7 +116,14 @@ class CompanyController
 		}
 	}
 
-	protected function getEditCompanyForm($app, $company)
+    /**
+     * Create and get company form for editing.
+     *
+     * @param  Application                 $app
+     * @param  Company                     $company
+     * @return Symfony\Component\Form\Form
+     */
+	protected function getEditCompanyForm($app, $company = null)
 	{
         $form = $app['form.factory']->createBuilder(FormType::class)
            	->add('name', TextType::class, array(
@@ -157,9 +178,16 @@ class CompanyController
             	'required' => false,
             ))
             ->getForm();
+            var_dump($form);die;
     	return $form;
 	}
 
+    /**
+     * Create and get company form.
+     *
+     * @param  Application                 $app
+     * @return Symfony\Component\Form\Form
+     */
 	protected function getCompanyForm($app)
 	{
 		$form = $app['form.factory']->createBuilder(FormType::class)
@@ -193,7 +221,6 @@ class CompanyController
             	'choices' => array ('Choice A' => 1,
 					            	'Choice B' => 2,
 					            	'Choice C' => 3),
-            	// 'expanded' => true,
             	'label'  => ' ',
 	            'attr'   =>  array(
 	                'class'   => 'radio-field')

@@ -19,14 +19,14 @@ use Home\Provider;
 
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-    'dbs.options' => array (
+    'dbs.options' => array(
         'mysql_read' => array(
             'driver'    => 'pdo_mysql',
             'host'      => 'localhost',
             'dbname'    => 'silex_project',
             'user'      => 'root',
             'password'  => '',
-            'charset'   => 'utf8mb4',
+            'charset'   => 'utf8mb4'
         ),
         'mysql_write' => array(
             'driver'    => 'pdo_mysql',
@@ -34,9 +34,9 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
             'dbname'    => 'silex_project',
             'user'      => 'root',
             'password'  => '',
-            'charset'   => 'utf8mb4',
-        ),
-    ),
+            'charset'   => 'utf8mb4'
+        )
+    )
 ));
 
 $app->register(new Silex\Provider\LocaleServiceProvider());

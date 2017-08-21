@@ -4,24 +4,21 @@ namespace Repository;
 
 use Silex\Application;
 use Entity\Review;
+use Repository\BaseRepository;
 
-
-class ReviewRepository 
-{	
-	protected $app;
-
-	public function __construct(Application $app) 
-	{
-		$this->app = $app;
-	}
-
-	public function findAll() 
-	{
-		$sql = "SELECT * FROM review";
-    	$reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
-    	return $this->convertArraysToObjects($reviewsArr);
-	}
-
+/**
+ * Review Repository
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class ReviewRepository extends BaseRepository
+{
+	/**
+	 * Find all reviews for given company id.
+	 *
+	 * @param  int      $id
+	 * @return Review[]
+	 */
 	public function findAllForThisCompanyId($id)
 	{
 		$sql = "SELECT * FROM review WHERE company_id = ?";
@@ -29,6 +26,12 @@ class ReviewRepository
     	return $this->convertArraysToObjects($reviewsArr);
 	}
 
+	/**
+	 * Get average rating for given company id.
+	 *
+	 * @param  int   $id
+	 * @return float
+	 */
 	public function getAverageRatingForThisCompanyId($id)
 	{
 		$sql = "SELECT AVG(rating) FROM review WHERE company_id = ?";
@@ -36,15 +39,23 @@ class ReviewRepository
 		return (float)$ratingsArr[0]['AVG(rating)'];
 	}
 
-	protected function convertArraysToObjects($reviewsArr)
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function convertArrayToObject($array)
 	{
-		$objects = [];
-		foreach ($reviewsArr as $rev) {
-			$review = new Review();
-			$review->setFromArray($rev);
-			$objects[] = $review;
-		}
-		return $objects;
+		$object = new Review();
+		$object->setFromArray($array);
+
+		return $object;
+	}
+
+	/**
+	 * {@inheritdoc}
+	 */
+	protected function getTableName()
+	{
+		return 'review';
 	}
 }
 

@@ -4,30 +4,37 @@ namespace Controller;
 
 use Silex\Application;
 use Entity\Review;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Repository\CompanyRepository;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
-use Symfony\Component\Form\Extension\Core\Type\FormType;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\Validator\Constraints as Assert;
 
+/**
+ * Review Repository
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
 class ReviewController
 {
+    /**
+     * Handle review form page action and request.
+     * Route: /review/{id}
+     *
+     * @param  Application $app
+     * @param  Request     $request
+     * @param  int         $id
+     * @return Response
+     */
 	public function reviewAction(Application $app, Request $request, $id)
 	{
 		$form = $this->getReviewForm($app);
 
 		$companyRepository = new CompanyRepository($app);
-		$company = $companyRepository->findCompanyById($id);
+		$company = $companyRepository->find($id);
 
 		if ($request->isMethod('POST')) {
 			$newReview = new Review();
@@ -49,10 +56,16 @@ class ReviewController
 		]));
 	}
 
+    /**
+     * Create and get review form.
+     *
+     * @param  Application                 $app
+     * @return Symfony\Component\Form\Form
+     */
 	protected function getReviewForm($app)
 	{
         $form = $app['form.factory']->createBuilder(FormType::class)
-           	->add('name', TextType::class, array( 
+           	->add('name', TextType::class, array(
 	            'label'  => ' ',
 	            'attr'   =>  array(
 	                'class'   => 'input-field'),

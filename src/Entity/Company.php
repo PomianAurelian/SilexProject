@@ -2,53 +2,41 @@
 
 namespace Entity;
 
-use Entity\Category;
-use Repository\CategoryRepository;
+use Entity\BaseEntity;
 
-class Company
+/**
+ * Company
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class Company extends BaseEntity
 {
 	/**
 	 * @var int
 	 */
 	public $id;
 	/**
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $name;
 	/**
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $email;
 	/**
-	 * @var tinyint(1)
+	 * @var bool
 	 */
 	public $delivery;
 	/**
-	 * @var int(10)
+	 * @var int
 	 */
 	public $category_id;
 	/**
-	 * @var varchar(255)
+	 * @var string
 	 */
 	public $logo_src;
 	/**
 	 * @var string
 	 */
 	public $radio_choice;
-
-	public function setFromArray($array)
-	{
-		foreach ($array as $key => $value) {
-			$this->{$key} = $value;
-		}
-	}
-
-	public function toArray()
-	{
-		$array = [];
-		foreach ($this as $key => $value) {
-			$array[$key] = $value;
-		}
-		return $array;
-	}
 }
