@@ -6,17 +6,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Provider\HomeControllerProvider;
-use Provider\CompanyControllerProvider;
-use Provider\DatabaseControllerProvider;
 use Controller\HomeController;
 use Controller\CompanyFormController;
 use Controller\CompanyController;
 use Controller\ReviewController;
+use Controller\LoginController;
 use Controller\DatabaseController;
 use AppBundle\DependencyInjection\Configuration;
 use Home\Provider;
-
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'dbs.options' => array (
@@ -57,6 +54,9 @@ $app['company.controller'] = function() use ($app) {
 $app['review.controller'] = function() use ($app) {
     return new ReviewController();
 };
+$app['login.controller'] = function() use ($app) {
+    return new LoginController();
+};
 
 $app->get('/home', "home.controller:indexAction");
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
@@ -66,6 +66,8 @@ $app->get('/review/{id}', "review.controller:reviewAction");
 $app->post('/review/{id}', "review.controller:reviewAction");
 $app->get('/company-save/{id}', "company.controller:saveAction");
 $app->post('/company-save/{id}', "company.controller:saveAction");
+$app->get('/login',"login.controller:indexAction");
+$app->post('/login',"login.controller:indexAction");
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

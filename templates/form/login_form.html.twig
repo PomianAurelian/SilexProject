@@ -1,0 +1,27 @@
+{% extends "base_layout.html.twig" %}
+
+{% block title  %}
+    Login Page
+{% endblock %}
+
+{% block styles %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+{% endblock %}
+
+{% block content %}
+    <div class="form-style-2">
+        <div class="form-style-2-heading"> Login </div>
+        {{ form_start(form) }}
+            <label for="field1"><span>Username <span class="required">*</span></span>{{ form_row(form.username) }}</label>
+            <label for="field3"><span>Password </span>{{ form_row(form.password) }}</label>
+            <label for="field6"><span>Comment</span>{{ form_row(form.privilege) }}</label>
+            <label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
+        {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}
+
+{% block scripts %}
+{% endblock %}
