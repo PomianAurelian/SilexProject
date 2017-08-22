@@ -5,74 +5,65 @@
 {% endblock %}
 
 {% block styles %}
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
 {% endblock %}
 
 {% block content %}
-	<div class="nav-menu">
-		<a href="/index_dev.php/home" class="nav-item fa fa-home" aria-hidden="true"></a>
-	</div>
-
-	<h1>{{ company.name }}</h1>
-	<h2>
-		{% for starIndex in 1..5 %}
-			{% if average >= starIndex %}
-				<i class="fa fa-star" aria-hidden="true"></i>
-			{% elseif average < starIndex  and average > starIndex-1 %}
-				<i class="fa fa-star-half-o" aria-hidden="true"></i>
-			{% else %}
-				<i class="fa fa-star-o" aria-hidden="true"></i>
-			{% endif %}
-		{% endfor %}
-	</h2>
-	<img class="homebg" src="/images/{{ company.logo_src }}">
-
-	<div class="description-box">
-		<h2>Description</h2> <hr>
-		<p>
-		{{ company.description }}
-		</p>
-		<hr>
-	</div>
-
-	<h4>Reviews</h4>
-
-	{% for review in reviews %}
-
-	<div class="review-container">
-		<div class="info-box">
-			<div class="star-box">
-				<h5>
-					{% for starIndex in 1..5 %}
-						{% if review.rating >= starIndex %}
-							<i class="fa fa-star" aria-hidden="true"></i>
-						{% elseif review.rating < starIndex  and  review.rating > starIndex-1 %}
-							<i class="fa fa-star-half-o" aria-hidden="true"></i>
-						{% else %}
-							<i class="fa fa-star-o" aria-hidden="true"></i>
-						{% endif %}
-					{% endfor %}
-				</h5>
-			</div>
-			<p class="name-box">{{ review.name }}</p>
-			<p class="date-box">{{ review.review_date }}</p>
-		</div>
-		<div class="comment-box">
-			<p>
-				{{ review.comment }}
-			</p>
-		</div>
-	</div>
-
-	{% endfor %}
-
-	<!-- Add review -->
-	<hr>
-	<a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
-	<a href="/company-save/{{ company.id }}" class="nav-item fa fa-paperclip" aria-hidden="true">Edit</a>
-	
-
+    <div class="nav-menu">
+        <a href="/index_dev.php/home" class="nav-item fa fa-home" aria-hidden="true"></a>
+    </div>
+    <h1>{{ company.name }}</h1>
+    <h2>
+        {% for starIndex in 1..5 %}
+            {% if average >= starIndex %}
+                <i class="fa fa-star" aria-hidden="true"></i>
+            {% elseif average < starIndex  and average > starIndex-1 %}
+                <i class="fa fa-star-half-o" aria-hidden="true"></i>
+            {% else %}
+                <i class="fa fa-star-o" aria-hidden="true"></i>
+            {% endif %}
+        {% endfor %}
+    </h2>
+    <img class="homebg" src="/images/{{ company.logo_src }}">
+    <div class="description-box">
+        <h2>Description</h2> <hr>
+        <p>
+        {{ company.description }}
+        </p>
+        <hr>
+    </div>
+    <h4>Reviews</h4>
+    {% for review in reviews %}
+    <div class="review-container">
+        <div class="info-box">
+            <div class="star-box">
+                <h5>
+                    {% for starIndex in 1..5 %}
+                        {% if review.rating >= starIndex %}
+                            <i class="fa fa-star" aria-hidden="true"></i>
+                        {% elseif review.rating < starIndex  and  review.rating > starIndex-1 %}
+                            <i class="fa fa-star-half-o" aria-hidden="true"></i>
+                        {% else %}
+                            <i class="fa fa-star-o" aria-hidden="true"></i>
+                        {% endif %}
+                    {% endfor %}
+                </h5>
+            </div>
+            <p class="name-box">{{ review.name }}</p>
+            <p class="date-box">{{ review.review_date }}</p>
+        </div>
+        <div class="comment-box">
+            <p>
+                {{ review.comment }}
+            </p>
+        </div>
+    </div>
+    {% endfor %}
+    <!-- Add review -->
+    <hr>
+    <a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
+    <a href="/company-save/{{ company.id }}" class="nav-item fa fa-paperclip" aria-hidden="true">Edit</a>
 {% endblock %}
 
 {% block scripts %}{% endblock %}

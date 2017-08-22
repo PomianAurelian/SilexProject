@@ -1,23 +1,25 @@
-<?php 
+<?php
 
 namespace Entity;
 
+use Entity\BaseEntity;
 
-class Category 
+/**
+ * Category
+ *
+ * @see BaseEntity
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class Category extends BaseEntity
 {
-	/**
-	 * @var int 
-	 */
-	public $id;
-	/**
-	 * @var varchar(255)
-	 */
-	public $category;
+    /**
+     * @var int
+     */
+    public $id;
 
-	public function setFromArray($array) 
-	{
-		foreach ($array as $key => $value) {
-			$this->{$key} = $value;
-		}
-	}
+    /**
+     * @var string
+     */
+    public $category;
 }

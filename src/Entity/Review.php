@@ -2,46 +2,52 @@
 
 namespace Entity;
 
-class Review 
+use Entity\BaseEntity;
+
+/**
+ * Review
+ *
+ * @see BaseEntity
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class Review extends BaseEntity
 {
-	/**
-	 * @var int 
-	 */
-	public $id;
-	/**
-	 * @var varchar(255)
-	 */
-	public $name;
-	/**
-	 * @var varchar(255)
-	 */
-	public $rating;
-	/**
-	 * @var tinyint(1)
-	 */
-	public $review_date;
-	/**
-	 * @var int(10)
-	 */
-	public $comment;
-	/**
-	 * @var int(10)
-	 */
-	public $company_id;
+    /**
+     * @var int
+     */
+    public $id;
 
-	public function setFromArray($array) 
-	{
-		foreach ($array as $key => $value) {
-			$this->{$key} = $value;
-		}
-	}
+    /**
+     * @var string
+     */
+    public $name;
 
-	public function toArray()
-	{
-		$array = [];
-		foreach ($this as $key => $value) {
-			$array[$key] = $value;
-		}
-		return $array;
-	}
+    /**
+     * @var float
+     */
+    public $rating;
+
+    /**
+     * @var datetime
+     */
+    public $review_date;
+
+    /**
+     * @var string
+     */
+    public $comment;
+
+    /**
+     * @var int
+     */
+    public $company_id;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
+    {
+        $this->datetime = date('Y-m-d H:i:s');
+    }
 }

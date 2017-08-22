@@ -4,47 +4,59 @@ namespace Repository;
 
 use Silex\Application;
 use Entity\Review;
+use Repository\BaseRepository;
 
+/**
+ * Review Repository
+ *
+ * @see BaseRepository
+ *
+ * @author  Pomian Ghe. Aurelian
+ */
+class ReviewRepository extends BaseRepository
+{
+    /**
+     * Find all reviews for given company id.
+     *
+     * @param  int      $id
+     * @return Review[]
+     */
+    public function findAllForThisCompanyId($id)
+    {
+        $sql = "SELECT * FROM review WHERE company_id = ?";
+        $reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
 
-class ReviewRepository 
-{	
-	protected $app;
+        return $this->convertArraysToObjects($reviewsArr);
+    }
 
-	public function __construct(Application $app) 
-	{
-		$this->app = $app;
-	}
+    /**
+     * Get average rating for given company id.
+     *
+     * @param  int   $id
+     * @return float
+     */
+    public function getAverageRatingForThisCompanyId($id)
+    {
+        $sql = "SELECT AVG(rating) FROM review WHERE company_id = ?";
+        $ratingsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
 
-	public function findAll() 
-	{
-		$sql = "SELECT * FROM review";
-    	$reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
-    	return $this->convertArraysToObjects($reviewsArr);
-	}
+        return (float) $ratingsArr[0]['AVG(rating)'];
+    }
 
-	public function findAllForThisCompanyId($id)
-	{
-		$sql = "SELECT * FROM review WHERE company_id = ?";
-		$reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
-    	return $this->convertArraysToObjects($reviewsArr);
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTableName()
+    {
+        return 'review';
+    }
 
-	public function getAverageRatingForThisCompanyId($id)
-	{
-		$sql = "SELECT AVG(rating) FROM review WHERE company_id = ?";
-		$ratingsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
-		return (float)$ratingsArr[0]['AVG(rating)'];
-	}
-
-	protected function convertArraysToObjects($reviewsArr)
-	{
-		$objects = [];
-		foreach ($reviewsArr as $rev) {
-			$review = new Review();
-			$review->setFromArray($rev);
-			$objects[] = $review;
-		}
-		return $objects;
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function getNewEntityInstance()
+    {
+        return new Review();
+    }
 }
 
