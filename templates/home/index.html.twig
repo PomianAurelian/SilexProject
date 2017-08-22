@@ -1,65 +1,59 @@
 {% extends "base_layout.html.twig" %}
 
 {% block title  %}
-	Title
+    Title
 {% endblock %}
 
 {% block styles %}
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 {% endblock %}
 
 {% block content %}
+    <div class="navigation-bar">
+    </div>
     <div>
-	<h1>HOME</h1>
-	</div>
-	<div class="home-slideshow">
-		<img class="homebg mySlides" src="../images/home2.png">
-		<img class="homebg mySlides" src="../images/home.jpg">
-		<button class="w3-button w3-display-left fa fa-chevron-left" aria-hidden="true" onclick="plusDivs(-1)"></button>
-		<button class="w3-button w3-display-right fa fa-chevron-right" aria-hidden="true" onclick="plusDivs(+1)"></button>
-		<button class="play-button fa fa-play" aria-hidden="true" onclick="play = true"></button>
-		<button class="play-button fa fa-pause" aria-hidden="true" onclick="play = false"></button>
-	</div>
-
-	{% for companiesInEachCategory in companiesGroupedByCategory %}
-
-		{% set categoryName = '' %}
-		{% set categoryIndex = loop.index %}
-
-		{% for category in categories %}
-
-			{% if categoryIndex == category.id %}
-				{% set categoryName = category.category %}
-			{% endif %}
-
-		{% endfor %}
-
-		<h2>{{ categoryName }}</h2>
-		<div class="maincontent">
-		{% for company in companiesInEachCategory %}
-			<div class="company" data-id="{{ company.id }}">
-				<div class="company-text">
-					<h3>{{ company.name }}</h3>
-					<p>{{ company.description }}</p>
-				</div>
-				<div class="company-img">
-					<img src="../images/{{ company.logo_src }}">
-				</div>
-			</div>
-	    {% endfor %}
-	    </div>
-	    <hr>
-	{% endfor %}
-
-	<div align="left">
-		<a href="company-save" class="nav-item fa fa-building" aria-hidden="true">Register</a>
-	</div>
-	<hr>
+        <h1>HOME</h1>
+    </div>
+    <div class="home-slideshow">
+        <img class="homebg mySlides" src="../images/home2.png">
+        <img class="homebg mySlides" src="../images/home.jpg">
+        <button class="w3-button w3-display-left fa fa-chevron-left" aria-hidden="true" onclick="plusDivs(-1)"></button>
+        <button class="w3-button w3-display-right fa fa-chevron-right" aria-hidden="true" onclick="plusDivs(+1)"></button>
+        <button class="play-button fa fa-play" aria-hidden="true" onclick="play = true"></button>
+        <button class="play-button fa fa-pause" aria-hidden="true" onclick="play = false"></button>
+    </div>
+    {% for companiesInEachCategory in companiesGroupedByCategory %}
+        {% set categoryName = '' %}
+        {% set categoryIndex = loop.index %}
+        {% for category in categories %}
+            {% if categoryIndex == category.id %}
+                {% set categoryName = category.category %}
+            {% endif %}
+        {% endfor %}
+        <h2>{{ categoryName }}</h2>
+        <div class="maincontent">
+        {% for company in companiesInEachCategory %}
+            <div class="company" data-id="{{ company.id }}">
+                <div class="company-text">
+                    <h3>{{ company.name }}</h3>
+                    <p>{{ company.description }}</p>
+                </div>
+                <div class="company-img">
+                    <img src="../images/{{ company.logo_src }}">
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <hr>
+    {% endfor %}
+        <a href="company-save" class="nav-item fa fa-building" aria-hidden="true">Register</a>
+    </div>
+    <hr>
 {% endblock %}
 
 {% block scripts %}
-	<script src="../js/slideshow.js"></script>
-	<script src="../js/javascript.js"></script>
+    <script src="../js/slideshow.js"></script>
+    <script src="../js/javascript.js"></script>
 {% endblock %}

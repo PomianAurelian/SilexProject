@@ -10,63 +10,58 @@ use Repository\CategoryRepository;
 /**
  * Company Repository
  *
+ * @see BaseRepository
+ *
  * @author  Pomian Ghe. Aurelian
  */
 class CompanyRepository extends BaseRepository
 {
-	/**
-	 * @var CategoryRepository
-	 */
-	protected $categoryRepository;
+    /**
+     * @var CategoryRepository
+     */
+    protected $categoryRepository;
 
-	/**
-	 * {@inheritdoc}
-	 */
-	public function __construct(Application $app)
+    /**
+     * {@inheritdoc}
+     */
+    public function __construct(Application $app)
     {
         parent::__construct($app);
         $this->categoryRepository = new CategoryRepository($this->app);
     }
 
-	/**
-	 * Find all companies as arrays grouped by category.
-	 *
-	 * @return Company[category][]
-	 */
-	public function findAllAsArraysGroupedByCategory()
-	{
-		$companiesArr = $this->findAll('category_id');
-		$companyMapByCategory = [];
+    /**
+     * Find all companies as arrays grouped by category.
+     *
+     * @return Company[category][]
+     */
+    public function findAllAsArraysGroupedByCategory()
+    {
+        $companiesArr = $this->findAll('category_id');
+        $companyMapByCategory = [];
 
-		$categories = $this->categoryRepository->findAll();
+        $categories = $this->categoryRepository->findAll();
 
-		foreach($companiesArr as $company) {
-			$category = '';
-			foreach($categories as $cat) {
-				if($cat->id === $company->category_id) {
-					$category = $cat->id;
-					break;
-				}
-			}
-			$companyMapByCategory[$category][] = $company;
-		}
+        foreach ($companiesArr as $company) {
+            $companyMapByCategory[$company->category_id][] = $company;
+        }
 
-		return $companyMapByCategory;
-	}
+        return $companyMapByCategory;
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function getTableName()
-	{
-		return 'company';
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTableName()
+    {
+        return 'company';
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function getNewEntityInstance()
-	{
-		return new Company();
-	}
+    /**
+     * {@inheritdoc}
+     */
+    protected function getNewEntityInstance()
+    {
+        return new Company();
+    }
 }

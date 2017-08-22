@@ -7,6 +7,8 @@ use Silex\Application;
 /**
  * Base Repository
  *
+ * @abstract
+ *
  * @author  Pomian Ghe. Aurelian
  */
 abstract class BaseRepository
@@ -41,6 +43,10 @@ abstract class BaseRepository
 
         $recordsArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
 
+        if (0 === count($recordsArr)) {
+            return null;
+        }
+
         return $this->convertArraysToObjects($recordsArr);
     }
 
@@ -54,6 +60,10 @@ abstract class BaseRepository
     {
         $sql = "SELECT * FROM " . $this->getTableName() . " WHERE id = ?";
         $recordsArr = $this->app['dbs']['mysql_read']->fetchAssoc($sql, [(int) $id]);
+        if (!$recordsArr) {
+            return null;
+        }
+
         return $this->convertArrayToObject($recordsArr);
     }
 

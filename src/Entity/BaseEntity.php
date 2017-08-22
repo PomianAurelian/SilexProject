@@ -5,9 +5,11 @@ namespace Entity;
 /**
  * Base Entity
  *
+ * @abstract
+ *
  * @author  Pomian Ghe. Aurelian
  */
-class BaseEntity
+abstract class BaseEntity
 {
     /**
      * Set record values from array.
@@ -32,6 +34,7 @@ class BaseEntity
         foreach ($this as $key => $value) {
             $array[$key] = $value;
         }
+
         return $array;
     }
 }

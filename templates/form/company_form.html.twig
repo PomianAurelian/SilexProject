@@ -1,36 +1,37 @@
 {% extends "base_layout.html.twig" %}
 
 {% block title  %}
-	Form testing
+    Form testing
 {% endblock %}
 
 {% block styles %}
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
-	<link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">	
-	<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 {% endblock %}
 
 {% block content %}
-	<div class="nav-menu">
-		<a href="/home" class="nav-item fa fa-home" aria-hidden="true"></a>
-		<div align="center">
-			<h2>{{ message }}</h2>
-		</div>
-	</div>
-	<div class="form-style-2">
-		<div class="form-style-2-heading">{{ action }}</div>
-		{{ form_start(form) }}
-			<label for="field1"><span>Name <span class="required">*</span></span>{{ form_row(form.name) }}</label>
-			<label for="field2"><span>Email <span class="required">*</span></span>{{ form_row(form.email) }}</label>
-			<label for="field3"><span>Category</span>{{ form_row(form.category_id) }}</label>
-			<label for="field4"><span>Delivery service </span>{{ form_row(form.delivery) }}</label>
-			<label for="field5"><span>Radio sample </span>{{ form_row(form.radio_choice) }}</label>
-			<label for="field6"><span>Description</span>{{ form_row(form.description) }}</label>
-			{% if company != null %}
-			    <img class="company-form-page" src="/images/company/{{ company.logo_src }}">
-			{% endif %}
-			<label for="field7"><span>Upload logo</span>{{ form_row(form.FileUpload) }}</label>
-			<label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
-		{{ form_end(form) }}
-	</div>
+    <div class="nav-menu">
+        <a href="/home" class="nav-item fa fa-home" aria-hidden="true"></a>
+        <div align="center">
+            <h2>{{ message }}</h2>
+        </div>
+    </div>
+    <div class="form-style-2">
+        <div class="form-style-2-heading">{{ action }}</div>
+        {{ form_start(form) }}
+            <label for="field1"><span>Name <span class="required">*</span></span>{{ form_row(form.name) }}</label>
+            <label for="field2"><span>Email <span class="required">*</span></span>{{ form_row(form.email) }}</label>
+            <label for="field3"><span>Category</span>{{ form_row(form.category_id) }}</label>
+            <label for="field4"><span>Delivery service </span>{{ form_row(form.delivery) }}</label>
+            <label for="field5"><span>Radio sample </span>{{ form_row(form.radio_choice) }}</label>
+            <label for="field6"><span>Description</span>{{ form_row(form.description) }}</label>
+            {% if company != null %}
+                <img class="company-form-page" src="/images/company/{{ company.logo_src }}">
+            {% endif %}
+            <label for="field7"><span>Upload logo</span>{{ form_row(form.FileUpload) }}</label>
+            <label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
+        {{ form_end(form) }}
+        </div>
+    </div>
 {% endblock %}

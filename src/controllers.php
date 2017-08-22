@@ -60,12 +60,12 @@ $app['review.controller'] = function() use ($app) {
 
 $app->get('/home', "home.controller:indexAction");
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
-$app->get('/company-save', "company.controller:saveAction")->bind('company_save');
-$app->post('/company-save', "company.controller:saveAction");
-$app->get('/review/{id}', "review.controller:reviewAction");
-$app->post('/review/{id}', "review.controller:reviewAction");
-$app->get('/company-save/{id}', "company.controller:saveAction");
-$app->post('/company-save/{id}', "company.controller:saveAction");
+$app->get('/company-save', "company.controller:createEditCompany")->bind('company_save');
+$app->post('/company-save', "company.controller:createEditCompany");
+$app->get('/review/{id}', "review.controller:createReviewAction");
+$app->post('/review/{id}', "review.controller:createReviewAction");
+$app->get('/company-save/{id}', "company.controller:createEditCompany");
+$app->post('/company-save/{id}', "company.controller:createEditCompany");
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

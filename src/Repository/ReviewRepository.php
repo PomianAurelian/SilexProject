@@ -9,50 +9,54 @@ use Repository\BaseRepository;
 /**
  * Review Repository
  *
+ * @see BaseRepository
+ *
  * @author  Pomian Ghe. Aurelian
  */
 class ReviewRepository extends BaseRepository
 {
-	/**
-	 * Find all reviews for given company id.
-	 *
-	 * @param  int      $id
-	 * @return Review[]
-	 */
-	public function findAllForThisCompanyId($id)
-	{
-		$sql = "SELECT * FROM review WHERE company_id = ?";
-		$reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
-    	return $this->convertArraysToObjects($reviewsArr);
-	}
+    /**
+     * Find all reviews for given company id.
+     *
+     * @param  int      $id
+     * @return Review[]
+     */
+    public function findAllForThisCompanyId($id)
+    {
+        $sql = "SELECT * FROM review WHERE company_id = ?";
+        $reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
 
-	/**
-	 * Get average rating for given company id.
-	 *
-	 * @param  int   $id
-	 * @return float
-	 */
-	public function getAverageRatingForThisCompanyId($id)
-	{
-		$sql = "SELECT AVG(rating) FROM review WHERE company_id = ?";
-		$ratingsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
-		return (float)$ratingsArr[0]['AVG(rating)'];
-	}
+        return $this->convertArraysToObjects($reviewsArr);
+    }
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function getTableName()
-	{
-		return 'review';
-	}
+    /**
+     * Get average rating for given company id.
+     *
+     * @param  int   $id
+     * @return float
+     */
+    public function getAverageRatingForThisCompanyId($id)
+    {
+        $sql = "SELECT AVG(rating) FROM review WHERE company_id = ?";
+        $ratingsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
 
-	/**
-	 * {@inheritdoc}
-	 */
-	protected function getNewEntityInstance()
-	{
-		return new Review();
-	}
+        return (float) $ratingsArr[0]['AVG(rating)'];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getTableName()
+    {
+        return 'review';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    protected function getNewEntityInstance()
+    {
+        return new Review();
+    }
 }
 
