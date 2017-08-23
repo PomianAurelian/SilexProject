@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Log in form helper.
+ * Login form helper.
  *
  * @see BaseHelper
  *
@@ -30,14 +30,6 @@ class LoginFormHelper extends BaseHelper
                     'label'       => ' ',
                     'attr'        => array('class' => 'input-field'),
                     'constraints' => array(new Assert\NotBlank())
-        ))
-        ->add('privilege', ChoiceType::class, array(
-                    'label'   => ' ',
-                    'choices' => array(
-                        'User'  => 1,
-                        'Admin' => 2
-                    ),
-                    'attr' => array('class' => 'select-field')
         ))
         ->getForm();
 

@@ -29,7 +29,14 @@ class User extends BaseEntity
     public $password;
 
     /**
+     * @var string
+     */
+    public $email;
+
+    /**
      * @var int
+     *
+     * 0-user | 1-admin
      */
     public $privilege;
 }

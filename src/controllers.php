@@ -11,7 +11,7 @@ use Controller\CompanyFormController;
 use Controller\CompanyController;
 use Controller\ReviewController;
 use Controller\LoginController;
-use Controller\DatabaseController;
+use Controller\RegisterController;
 use AppBundle\DependencyInjection\Configuration;
 use Home\Provider;
 
@@ -57,6 +57,9 @@ $app['review.controller'] = function() use ($app) {
 $app['login.controller'] = function() use ($app) {
     return new LoginController();
 };
+$app['register.controller'] = function() use ($app) {
+    return new RegisterController();
+};
 
 $app->get('/home', "home.controller:indexAction");
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
@@ -66,8 +69,10 @@ $app->get('/review/{id}', "review.controller:reviewAction");
 $app->post('/review/{id}', "review.controller:reviewAction");
 $app->get('/company-save/{id}', "company.controller:saveAction");
 $app->post('/company-save/{id}', "company.controller:saveAction");
-$app->get('/login',"login.controller:indexAction");
-$app->post('/login',"login.controller:indexAction");
+$app->get('/login',"login.controller:loginAction");
+$app->post('/login',"login.controller:loginAction");
+$app->get('/register',"register.controller:registerAction");
+$app->post('/register',"register.controller:registerAction");
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
