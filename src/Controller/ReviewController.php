@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Repository\CompanyRepository;
 use Helper\ReviewFormHelper;
+use Controller\BaseController;
 
 /**
  * Review Controller
  *
  * @author  Pomian Ghe. Aurelian
  */
-class ReviewController
+class ReviewController extends BaseController
 {
     /**
      * Handle review form page action and request.

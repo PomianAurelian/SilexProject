@@ -36,6 +36,7 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     )
 ));
 
+$app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\LocaleServiceProvider());
 $app->register(new Silex\Provider\ValidatorServiceProvider());
 $app->register(new Silex\Provider\ServiceControllerServiceProvider());
@@ -60,6 +61,38 @@ $app['login.controller'] = function() use ($app) {
 $app['register.controller'] = function() use ($app) {
     return new RegisterController();
 };
+
+$app->get('/login2', function (Request $request) use ($app) {
+    $username = $request->server->get('PHP_AUTH_USER', false);
+    $password = $request->server->get('PHP_AUTH_PW');
+    if ('igor' === $username && 'password' === $password) {
+        $app['session']->set('user', array('username' => $username));
+        return $app->redirect('/account');
+    }
+
+    $response = new Response();
+    $response->headers->set('WWW-Authenticate', sprintf('Basic realm="%s"', 'site_login'));
+    $response->setStatusCode(401, 'Please sign in.');
+
+    return $response;
+});
+
+$app->get('/account', function () use ($app) {
+    $app['session']->start();
+
+    if (null === $user = $app['session']->get('user')) {
+        return $app->redirect('/login');
+    }
+
+    return "Welcome {$user['username']}!";
+});
+$app->get('/logout', function () use ($app) {
+    $app['session']->start();
+    $app['session']->invalidate();
+
+
+    return $app->redirect('/index_dev.php/home');
+});
 
 $app->get('/home', "home.controller:indexAction")->bind('homepage');
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');

@@ -8,13 +8,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Repository\CompanyRepository;
 use Repository\CategoryRepository;
+use Controller\BaseController;
 
 /**
  * Home Controller
  *
  * @author  Pomian Ghe. Aurelian
  */
-class HomeController
+class HomeController extends BaseController
 {
     /**
      * Handle home page action and request.
@@ -36,9 +37,12 @@ class HomeController
             return new Response($app['twig']->render('errors/default.html.twig'));
         }
 
+        $user = $this->getUser($app);
+
         return new Response($app['twig']->render('home/index.html.twig', [
             'companiesGroupedByCategory' => $companiesGroupedByCategory,
-            'categories' => $categories
+            'categories' => $categories,
+            'user' => $user
         ]));
     }
 }

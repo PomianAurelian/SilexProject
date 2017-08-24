@@ -7,13 +7,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Helper\RegisterFormHelper;
 use Entity\User;
+use Controller\BaseController;
 
 /**
  * Register controller
  *
  * @author  Pomian Ghe. Aurelian
  */
-class RegisterController
+class RegisterController extends BaseController
 {
     /**
      * Handle register action and request.

@@ -9,13 +9,14 @@ use Repository\CompanyRepository;
 use Repository\ReviewRepository;
 use Entity\Company;
 use Helper\CompanyFormHelper;
+use Controller\BaseController;
 
 /**
  * Company Controller
  *
  * @author  Pomian Ghe. Aurelian
  */
-class CompanyController
+class CompanyController extends BaseController
 {
     /**
      * Handle company page action and request.

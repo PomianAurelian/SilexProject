@@ -21,7 +21,7 @@ h3 {
 	color: yellow;
 	margin-left: 15px;
 }
- 
+
 h4 {
     color: darkblue;
     font-size: 25px;
@@ -38,7 +38,7 @@ h5 .avg-rating {
 }
 
 a.nav-item {
-    margin: 15px;   
+    margin: 15px;
     font-size: 50px;
     text-decoration: none;
 }
@@ -106,6 +106,10 @@ a.nav-item {
     cursor: pointer;
 }
 
+.error-message {
+    margin: 10px;
+    color: red;
+}
 
 .company-text {
     max-width: 250px;
@@ -189,9 +193,9 @@ a.nav-item {
 }
 
 
-.form-style-2 input.input-field, 
-.form-style-2 .tel-number-field, 
-.form-style-2 .textarea-field, 
+.form-style-2 input.input-field,
+.form-style-2 .tel-number-field,
+.form-style-2 .textarea-field,
 .form-style-2 .checkbox-field,
  .form-style-2 .select-field{
     box-sizing: border-box;
@@ -207,9 +211,9 @@ a.nav-item {
     padding: 7px;
     outline: none;
 }
-.form-style-2 .input-field:focus, 
-.form-style-2 .tel-number-field:focus, 
-.form-style-2 .textarea-field:focus,  
+.form-style-2 .input-field:focus,
+.form-style-2 .tel-number-field:focus,
+.form-style-2 .textarea-field:focus,
 .form-style-2 .checkbox-field,
 .form-style-2 .select-field:focus{
     border: 1px solid #0C0;
