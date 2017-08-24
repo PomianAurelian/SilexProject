@@ -44,10 +44,15 @@ class Review extends BaseEntity
     public $company_id;
 
     /**
+     * @var int
+     */
+    public $user_id;
+
+    /**
      * Constructor.
      */
     public function __construct()
     {
-        $this->datetime = date('Y-m-d H:i:s');
+        $this->review_date = date('Y-m-d H:i:s');
     }
 }

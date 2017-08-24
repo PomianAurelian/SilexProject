@@ -6,6 +6,7 @@ use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Helper\RegisterFormHelper;
+use Entity\User;
 
 /**
  * Register controller
@@ -24,13 +25,23 @@ class RegisterController
      */
     public function registerAction(Application $app, Request $request)
     {
-        $loginFormHelper = new RegisterFormHelper($app);
-        $form = $loginFormHelper->getRegisterForm($app);
-        $password = 'a';
+        $registerFormHelper = new RegisterFormHelper($app);
+        $form = $registerFormHelper->getRegisterForm($app);
+
+        if ($request->isMethod('POST')) {
+            $newUser = new User();
+            $newUser->setFromArray($request->request->get($form->getName()));
+
+            $form->handleRequest($request);
+            if ($form->isValid()) {
+                $app['dbs']['mysql_read']->insert('user', $newUser->toArray());
+
+                return $app->redirect($app["url_generator"]->generate("login"));
+            }
+        }
 
         return new Response($app['twig']->render('form/register_form.html.twig', [
-            'form' => $form->createView(),
-            'password' => $password
+            'form' => $form->createView()
         ]));
     }
 }

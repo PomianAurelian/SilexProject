@@ -61,15 +61,15 @@ $app['register.controller'] = function() use ($app) {
     return new RegisterController();
 };
 
-$app->get('/home', "home.controller:indexAction");
+$app->get('/home', "home.controller:indexAction")->bind('homepage');
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
-$app->get('/company-save', "company.controller:saveAction")->bind('company_save');
-$app->post('/company-save', "company.controller:saveAction");
-$app->get('/review/{id}', "review.controller:reviewAction");
-$app->post('/review/{id}', "review.controller:reviewAction");
-$app->get('/company-save/{id}', "company.controller:saveAction");
-$app->post('/company-save/{id}', "company.controller:saveAction");
-$app->get('/login',"login.controller:loginAction");
+$app->get('/company-save', "company.controller:createEditCompany")->bind('company_save');
+$app->post('/company-save', "company.controller:createEditCompany");
+$app->get('/review/{id}', "review.controller:createReviewAction");
+$app->post('/review/{id}', "review.controller:createReviewAction");
+$app->get('/company-save/{id}', "company.controller:createEditCompany");
+$app->post('/company-save/{id}', "company.controller:createEditCompany");
+$app->get('/login',"login.controller:loginAction")->bind('login');
 $app->post('/login',"login.controller:loginAction");
 $app->get('/register',"register.controller:registerAction");
 $app->post('/register',"register.controller:registerAction");

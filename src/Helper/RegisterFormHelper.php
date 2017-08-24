@@ -40,11 +40,6 @@ class RegisterFormHelper extends BaseHelper
                     'attr'        => array('class' => 'input-field'),
                     'constraints' => array(new Assert\NotBlank())
         ))
-        ->add('repeat_password', PasswordType::class, array(
-                    'label'       => ' ',
-                    'attr'        => array('class' => 'input-field'),
-                    'constraints' => array(new Assert\NotBlank())
-        ))
         ->add('privilege', ChoiceType::class, array(
                     'label'   => ' ',
                     'choices' => array(
