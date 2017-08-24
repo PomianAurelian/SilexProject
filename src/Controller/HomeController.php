@@ -45,4 +45,12 @@ class HomeController extends BaseController
             'user' => $user
         ]));
     }
+
+    public function logoutAction(Application $app, Request $request)
+    {
+        $app['session']->start();
+        $app['session']->invalidate();
+
+        return $app->redirect($app["url_generator"]->generate("homepage"));
+    }
 }

@@ -62,9 +62,4 @@ class LoginController extends BaseController
             'message' => $message
         ]));
     }
-
-    public function logoutAction(Application $app, Request $request)
-    {
-
-    }
 }

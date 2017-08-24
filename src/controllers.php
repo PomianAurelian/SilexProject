@@ -86,13 +86,6 @@ $app->get('/account', function () use ($app) {
 
     return "Welcome {$user['username']}!";
 });
-$app->get('/logout', function () use ($app) {
-    $app['session']->start();
-    $app['session']->invalidate();
-
-
-    return $app->redirect('/index_dev.php/home');
-});
 
 $app->get('/home', "home.controller:indexAction")->bind('homepage');
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
@@ -102,10 +95,11 @@ $app->get('/review/{id}', "review.controller:createReviewAction");
 $app->post('/review/{id}', "review.controller:createReviewAction");
 $app->get('/company-save/{id}', "company.controller:createEditCompany");
 $app->post('/company-save/{id}', "company.controller:createEditCompany");
-$app->get('/login',"login.controller:loginAction")->bind('login');
-$app->post('/login',"login.controller:loginAction");
-$app->get('/register',"register.controller:registerAction");
-$app->post('/register',"register.controller:registerAction");
+$app->get('/login', "login.controller:loginAction")->bind('login');
+$app->post('/login', "login.controller:loginAction");
+$app->get('/register', "register.controller:registerAction");
+$app->post('/register', "register.controller:registerAction");
+$app->get('/logout', "home.controller:logoutAction");
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {
