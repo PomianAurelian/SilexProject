@@ -54,6 +54,11 @@ class Company extends BaseEntity
     public $radio_choice;
 
     /**
+     * @var int
+     */
+    public $user_id;
+
+    /**
      * Constructor.
      */
     public function __construct()

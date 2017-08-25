@@ -36,7 +36,15 @@ class User extends BaseEntity
     /**
      * @var int
      *
-     * 0-user | 1-admin
+     * 1-user | 2-admin
      */
     public $privilege;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->privilege = 1;
+    }
 }

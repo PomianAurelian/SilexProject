@@ -31,13 +31,14 @@ abstract class BaseRepository
     /**
      * Find all records.
      *
+     * @param  string       $where
      * @param  string       $order
-     * @param  int          $sort
      * @return BaseEntity[]
      */
-    public function findAll(string $order = null)
+    public function findAll(string $where = null, string $order = null)
     {
         $sql = "SELECT * FROM " . $this->getTableName();
+        $sql = $this->applyWhere($sql, $where);
         $sql = $this->applyOrder($sql, $order);
         $sql .= ';';
 
@@ -93,6 +94,24 @@ abstract class BaseRepository
      * @return string
      */
     protected function applyOrder(string $sql, string $order = null)
+    {
+        if (null === $order) {
+            return $sql;
+        }
+
+        $sql .= " WHERE " . $order;
+
+        return $sql;
+    }
+
+    /**
+     * Apply where.
+     *
+     * @param  string $sql
+     * @param  string $order
+     * @return string
+     */
+    protected function applyWhere(string $sql, string $order = null)
     {
         if (null === $order) {
             return $sql;

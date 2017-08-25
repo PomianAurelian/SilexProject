@@ -1,14 +1,7 @@
 {% extends "base_layout.html.twig" %}
 
 {% block title  %}
-    Login Page
-{% endblock %}
-
-{% block styles %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    Register Page
 {% endblock %}
 
 {% block content %}
@@ -18,7 +11,6 @@
             <label for="field1"><span>Username <span class="required">*</span></span>{{ form_row(form.username) }}</label>
             <label for="field3"><span>Email <span class="required">*</span></span>{{ form_row(form.email) }}</label>
             <label for="field3"><span>Password <span class="required">*</span></span>{{ form_row(form.password) }}</label>
-            <label for="field6"><span>Privilege</span>{{ form_row(form.privilege) }}</label>
             <label><span>&nbsp;</span><input type="submit" value="Create Account" /></label>
         {{ form_end(form) }}
         </div>

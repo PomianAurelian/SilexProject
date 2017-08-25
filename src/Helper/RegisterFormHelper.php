@@ -40,14 +40,6 @@ class RegisterFormHelper extends BaseHelper
                     'attr'        => array('class' => 'input-field'),
                     'constraints' => array(new Assert\NotBlank())
         ))
-        ->add('privilege', ChoiceType::class, array(
-                    'label'   => ' ',
-                    'choices' => array(
-                        'User'  => 1,
-                        'Admin' => 2
-                    ),
-                    'attr' => array('class' => 'select-field')
-        ))
         ->getForm();
 
         return $form;

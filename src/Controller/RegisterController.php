@@ -41,8 +41,14 @@ class RegisterController extends BaseController
             }
         }
 
+        $user = $this->getUser($app);
+        if ($user != null) {
+            return $app->redirect($app["url_generator"]->generate("homepage"));
+        }
+
         return new Response($app['twig']->render('form/register_form.html.twig', [
-            'form' => $form->createView()
+            'form' => $form->createView(),
+            'user' => $user
         ]));
     }
 }

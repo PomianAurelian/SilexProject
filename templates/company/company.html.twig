@@ -1,13 +1,7 @@
-{% extends "company_layout.html.twig" %}
+{% extends "base_layout.html.twig" %}
 
 {% block title %}
-{{ company.name }}
-{% endblock %}
-
-{% block styles %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/styles.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/font-awesome.min.css') }}">
+    {{ company.name }}™
 {% endblock %}
 
 {% block content %}
@@ -63,8 +57,33 @@
     {% endfor %}
     <!-- Add review -->
     <hr>
-    <a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
-    <a href="/company-save/{{ company.id }}" class="nav-item fa fa-paperclip" aria-hidden="true">Edit</a>
+    {% if user is not null %}
+        {% if user.privilege == 1 %}
+            {% if reviewed %}
+                <h3>You have reviewed this company.</h3>
+            {% else %}
+                <a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
+            {% endif %}
+        {% elseif user.privilege == 2 %}
+            {% if reviewed %}
+                <h3>You have reviewed this company.</h3>
+            {% elseif company.user_id == user.id %}
+                <h3>You can't review your own company.</h3>
+            {% else %}
+                <a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
+            {% endif %}
+            <a href="/company-save/{{ company.id }}" class="nav-item fa fa-paperclip" aria-hidden="true">Edit</a>
+        {% else %}
+            {% if reviewed %}
+                <h3>You have reviewed this company.</h3>
+            {% elseif company.user_id == user.id %}
+                <h3>You can't review your own company.</h3>
+            {% else %}
+                <a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
+            {% endif %}
+            <a href="/company-save/{{ company.id }}" class="nav-item fa fa-paperclip" aria-hidden="true">Edit</a>
+        {% endif %}
+    {% endif %}
 {% endblock %}
 
 {% block scripts %}{% endblock %}

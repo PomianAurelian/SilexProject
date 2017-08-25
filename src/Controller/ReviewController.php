@@ -34,6 +34,8 @@ class ReviewController extends BaseController
         $companyRepository = new CompanyRepository($app);
         $company = $companyRepository->find($id);
 
+        $user = $this->getUser($app);
+
         if (null === $company) {
             return new Response($app['twig']->render('errors/404.html.twig'));
         }
@@ -45,6 +47,7 @@ class ReviewController extends BaseController
 
             $form->handleRequest($request);
             if ($form->isValid()) {
+                $newReview->user_id = $user['id'];
                 $app['dbs']['mysql_read']->insert('review', $newReview->toArray());
 
                 return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
@@ -53,7 +56,8 @@ class ReviewController extends BaseController
 
         return new Response($app['twig']->render('form/review_form.html.twig', [
             'form' => $form->createView(),
-            'company' => $company
+            'company' => $company,
+            'user' => $user
         ]));
     }
 }

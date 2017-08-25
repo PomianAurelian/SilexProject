@@ -40,11 +40,15 @@ class CompanyController extends BaseController
         $reviews = $reviewRepository->findAllForThisCompanyId($id);
 
         $average = $reviewRepository->getAverageRatingForThisCompanyId($id);
+        $user = $this->getUser($app);
+        $reviewed = $this->checkForReview($reviews, $user['id']);
 
         return new Response($app['twig']->render('company/company.html.twig', [
             'company' => $company,
             'reviews' => $reviews,
-            'average' => $average
+            'average' => $average,
+            'reviewed' => $reviewed,
+            'user' => $user
         ]));
     }
 
@@ -73,6 +77,7 @@ class CompanyController extends BaseController
         }
 
         $form = $companyFormHelper->getCompanyForm($company);
+        $user = $this->getUser($app);
 
         if ($request->isMethod('POST')) {
             $company->setFromArray($request->request->get($form->getName()));
@@ -90,6 +95,7 @@ class CompanyController extends BaseController
                 }
 
                 if (null === $id) {
+                    $company->user_id = $user['id'];
                     $app['dbs']['mysql_write']->insert('company', $company->toArray());
                     $id = $app['dbs']['mysql_write']->lastInsertId();
                 } else {
@@ -106,7 +112,25 @@ class CompanyController extends BaseController
             'message' => '',
             'form' => $form->createView(),
             'company' => $company,
-            'action' => $action
+            'action' => $action,
+            'user' => $user
         ]));
+    }
+
+    /**
+     * Check for current user review.
+     *
+     * @param  array   $reviews
+     * @param  int     $userId
+     * @return boolean
+     */
+    protected function checkForReview(array $reviews, int $userId)
+    {
+        foreach ($reviews as $review) {
+            if ($review->user_id == $userId) {
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -22,6 +22,7 @@ abstract class BaseController
     protected function getUser(Application $app)
     {
         $user = $app['session']->get('user');
-        return $user['username'];
+
+        return $user;
     }
 }

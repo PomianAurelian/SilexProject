@@ -21,7 +21,7 @@ class ReviewRepository extends BaseRepository
      * @param  int      $id
      * @return Review[]
      */
-    public function findAllForThisCompanyId($id)
+    public function findAllForThisCompanyId(int $id)
     {
         $sql = "SELECT * FROM review WHERE company_id = ?";
         $reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
@@ -35,7 +35,7 @@ class ReviewRepository extends BaseRepository
      * @param  int   $id
      * @return float
      */
-    public function getAverageRatingForThisCompanyId($id)
+    public function getAverageRatingForThisCompanyId(int $id)
     {
         $sql = "SELECT AVG(rating) FROM review WHERE company_id = ?";
         $ratingsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);

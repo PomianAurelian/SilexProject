@@ -48,7 +48,11 @@ class LoginController extends BaseController
                     $form->handleRequest($request);
 
                     if ($form->isValid()) {
-                        $app['session']->set('user', ['username' => $user->username]);
+                        $app['session']->set('user', [
+                                'username' => $user->username,
+                                'privilege' => $user->privilege,
+                                'id' => $user->id
+                        ]);
                         $app['session']->start();
 
                         return $app->redirect($app["url_generator"]->generate("homepage"));
@@ -57,9 +61,12 @@ class LoginController extends BaseController
             }
         }
 
+        $user = $this->getUser($app);
+
         return new Response($app['twig']->render('form/login_form.html.twig', [
             'form' => $form->createView(),
-            'message' => $message
+            'message' => $message,
+            'user' => $user
         ]));
     }
 }
