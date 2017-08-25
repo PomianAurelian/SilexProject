@@ -41,7 +41,7 @@ class CompanyController extends BaseController
 
         $average = $reviewRepository->getAverageRatingForThisCompanyId($id);
         $user = $this->getUser($app);
-        $reviewed = $this->checkForReview($reviews, $user['id']);
+        $reviewed = $this->checkForReview($reviews, (int) $user['id']);
 
         return new Response($app['twig']->render('company/company.html.twig', [
             'company' => $company,

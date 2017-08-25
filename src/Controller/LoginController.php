@@ -28,6 +28,8 @@ class LoginController extends BaseController
      */
     public function loginAction(Application $app, Request $request)
     {
+        echo $_SERVER['REQUEST_URI']; die;
+
         $userRepository = new UserRepository($app);
         $loginFormHelper = new LoginFormHelper($app);
         $form = $loginFormHelper->getLoginForm($app);

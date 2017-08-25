@@ -8,7 +8,7 @@ showDivs(slideIndex);
 setInterval(function() {
     if (play) {
         clk++;
-        if (clk == 20) {
+        if (clk == 50) {
             plusDivs(1);
         }
     }

@@ -62,31 +62,6 @@ $app['register.controller'] = function() use ($app) {
     return new RegisterController();
 };
 
-$app->get('/login2', function (Request $request) use ($app) {
-    $username = $request->server->get('PHP_AUTH_USER', false);
-    $password = $request->server->get('PHP_AUTH_PW');
-    if ('igor' === $username && 'password' === $password) {
-        $app['session']->set('user', array('username' => $username));
-        return $app->redirect('/account');
-    }
-
-    $response = new Response();
-    $response->headers->set('WWW-Authenticate', sprintf('Basic realm="%s"', 'site_login'));
-    $response->setStatusCode(401, 'Please sign in.');
-
-    return $response;
-});
-
-$app->get('/account', function () use ($app) {
-    $app['session']->start();
-
-    if (null === $user = $app['session']->get('user')) {
-        return $app->redirect('/login');
-    }
-
-    return "Welcome {$user['username']}!";
-});
-
 $app->get('/home', "home.controller:indexAction")->bind('homepage');
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
 $app->get('/company-save', "company.controller:createEditCompany")->bind('company_save');

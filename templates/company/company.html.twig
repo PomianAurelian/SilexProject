@@ -72,7 +72,9 @@
             {% else %}
                 <a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
             {% endif %}
-            <a href="/company-save/{{ company.id }}" class="nav-item fa fa-paperclip" aria-hidden="true">Edit</a>
+            {% if company.user_id == user.id %}
+                <a href="/company-save/{{ company.id }}" class="nav-item fa fa-paperclip" aria-hidden="true">Edit</a>
+            {% endif %}
         {% else %}
             {% if reviewed %}
                 <h3>You have reviewed this company.</h3>
