@@ -21,11 +21,21 @@
             <label for="field5"><span>Radio sample </span>{{ form_row(form.radio_choice) }}</label>
             <label for="field6"><span>Description</span>{{ form_row(form.description) }}</label>
             {% if company != null %}
-                <img class="company-form-page" src="/images/company/{{ company.logo_src }}">
+                {% if company.logo_src != null %}
+                    <img class="company-form-page" src="/images/company/{{ company.logo_src }}">
+                {% endif %}
             {% endif %}
-            <label for="field7"><span>Upload logo</span>{{ form_row(form.FileUpload) }}</label>
-            <label><span>&nbsp;</span><input type="submit" value="Submit" /></label>
+            <label for="field7"><span>Upload logo</span>{{ form_row(form.logo_src) }}</label>
+            <label><span>&nbsp;</span><button type="button" onclick="return postCompany()">Submit</button></label>
         {{ form_end(form) }}
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script src="../js/ajaxform.js"></script>
+    <script>
+        window.REDIRECT_ID = 1;
+        window.COMPANY_ID = {{ company.id }};
+    </script>
 {% endblock %}

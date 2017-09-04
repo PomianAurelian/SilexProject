@@ -44,7 +44,7 @@
         <hr>
     {% endfor %}
     {% if user is not null %}
-        {% if user.privilege == privilegeDefault or user.privilege == privilegeAdmin %}
+        {% if user.privilege == privilegeAdmin or user.privilege == privilegeSuperAdmin %}
             <a href="company-save" class="nav-item fa fa-building" aria-hidden="true">Register</a>
         {% endif %}
     {% endif %}

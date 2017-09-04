@@ -5,6 +5,7 @@ namespace Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Repository\CompanyRepository;
 use Repository\ReviewRepository;
 use Entity\Company;
@@ -58,7 +59,7 @@ class CompanyController extends BaseController
     }
 
     /**
-     * Handle company form page action and request for register and edit company.
+     * Handle company form page GET action and request for register and edit company.
      * Route: /company-save | /company-save/{$id}
      *
      * @param  Application $app
@@ -84,31 +85,9 @@ class CompanyController extends BaseController
         $form = $companyFormHelper->getCompanyForm($company);
         $user = $this->getUser($app);
 
-        if ($request->isMethod('POST')) {
-            $company->setFromArray($request->request->get($form->getName()));
+        if (null === $user) {
+            return $app->redirect($app["url_generator"]->generate("homepage"));
 
-            $form->handleRequest($request);
-
-            if ($form->isValid()) {
-                $files = $request->files->get($form->getName());
-                $path = 'images/company/';
-
-                if ($files['FileUpload'] != null ){
-                    $filename = $files['FileUpload']->getClientOriginalName();
-                    $files['FileUpload']->move($path, $filename);
-                    $company->logo_src = $filename;
-                }
-
-                if (null === $id) {
-                    $company->user_id = $user->id;
-                    $app['dbs']['mysql_write']->insert('company', $company->toArray());
-                    $id = $app['dbs']['mysql_write']->lastInsertId();
-                } else {
-                    $app['dbs']['mysql_write']->update('company', $company->toArray(), ['id' => $id]);
-                }
-
-                return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
-            }
         }
 
         $action = $id ? 'Edit company ' . $company->name : 'Register company here';
@@ -119,5 +98,72 @@ class CompanyController extends BaseController
             'company' => $company,
             'action' => $action
         ]));
+    }
+
+    /**
+     * Handle company form page POST action and request for register and edit company.
+     * Route: /post-company | post-company/{$id}
+     *
+     * @param  Application $app
+     * @param  Request     $request
+     * @return JsonResponse
+     */
+    public function postAction(Application $app, Request $request)
+    {
+        $data = (array)json_decode($request->getContent());
+
+        if (count($data) == 8) {
+            $id = $data['id'];
+        } else {
+            $id = null;
+        }
+
+        if (null === $id) {
+            $company = new Company();
+        } else {
+            $companyRepository = new CompanyRepository($app);
+            $company = $companyRepository->find($id);
+        }
+
+        $data['logo_src'] = $company->logo_src;
+        $company->setFromArray($data);
+        $errors = $app['validator']->validate($company);
+        $user = $this->getUser($app);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                echo $error->getPropertyPath().' - '.$error->getMessage()."\n";
+                //TODO handle errors
+            }
+        } else {
+            if (null === $id) {
+                $company->user_id = $user['id'];
+                $app['dbs']['mysql_write']->insert('company', $company->toArray());
+                $id = (int) $app['dbs']['mysql_write']->lastInsertId();
+            } else {
+                $app['dbs']['mysql_write']->update('company', $company->toArray(), ['id' => $id]);
+            }
+
+            return new JsonResponse($id);
+        }
+
+        return new JsonResponse($data);
+    }
+
+    /**
+     * Check for current user review.
+     *
+     * @param  array   $reviews
+     * @param  int     $userId
+     * @return boolean
+     */
+    protected function checkForReview(array $reviews, int $userId)
+    {
+        foreach ($reviews as $review) {
+            if ($review->user_id == $userId) {
+                return true;
+            }
+        }
+        return false;
     }
 }

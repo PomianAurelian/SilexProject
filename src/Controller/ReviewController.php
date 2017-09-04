@@ -6,6 +6,7 @@ use Silex\Application;
 use Entity\Review;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Repository\CompanyRepository;
 use Helper\ReviewFormHelper;
 use Controller\BaseController;
@@ -38,27 +39,50 @@ class ReviewController extends BaseController
 
         $user = $this->getUser($app);
 
-        if (null === $company) {
-            return new Response($app['twig']->render('errors/404.html.twig'));
+        if (null === $user) {
+            return $app->redirect($app["url_generator"]->generate("homepage"));
         }
 
-        if ($request->isMethod('POST')) {
-            $newReview = new Review();
-            $newReview->setFromArray($request->request->get($form->getName()));
-            $newReview->company_id = $id;
+        if (null === $company) {
+            return new Response($app['twig']->render('errors/404.html.twig'));
 
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $newReview->user_id = $user->id;
-                $app['dbs']['mysql_read']->insert('review', $newReview->toArray());
-
-                return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));
-            }
         }
 
         return new Response($app['twig']->render('form/review_form.html.twig', [
             'form' => $form->createView(),
             'company' => $company
         ]));
+    }
+
+    /**
+     * Handle review page form POST action and request.
+     * Route: /post-review
+     *
+     * @param  Application $app
+     * @param  Request     $request
+     * @return JsonResponse
+     */
+    function postAction(Application $app, Request $request)
+    {
+        $data = (array)json_decode($request->getContent());
+        $newReview = new Review();
+        $newReview->setFromArray($data);
+        $errors = $app['validator']->validate($newReview);
+        $user = $this->getUser($app);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                echo $error->getPropertyPath().' - '.$error->getMessage()."\n";
+                //TODO handle errors
+            }
+        } else {
+            $newReview->user_id = $user['id'];
+            $newReview->name = $user['username'];
+            $app['dbs']['mysql_read']->insert('review', $newReview->toArray());
+
+            return new JsonResponse($newReview->company_id);
+        }
+
+        return new JsonResponse(false);
     }
 }

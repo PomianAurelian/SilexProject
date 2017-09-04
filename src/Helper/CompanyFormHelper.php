@@ -34,17 +34,12 @@ class CompanyFormHelper extends BaseHelper
             ->add('name', TextType::class, array(
                     'data'        => $company instanceof Company ? $company->name : '',
                     'label'       => ' ',
-                    'attr'        => array('class' => 'input-field'),
-                    'constraints' => array(new Assert\NotBlank())
+                    'attr'        => array('class' => 'input-field')
             ))
             ->add('email', EmailType::class, array(
                     'data'        => $company instanceof Company ? $company->email : '',
                     'label'       => ' ',
-                    'attr'        => array('class' => 'input-field'),
-                    'constraints' => array(new Assert\Email(array(
-                        'message'     => 'The email "{{ value }}" is not a valid email.',
-                        'checkMX'     => true,
-                    )), new Assert\NotBlank())
+                    'attr'        => array('class' => 'input-field')
             ))
             ->add('category_id', ChoiceType::class, array(
                     'data'    => $company instanceof Company ? $company->category_id : 1,
@@ -67,9 +62,9 @@ class CompanyFormHelper extends BaseHelper
             ->add('radio_choice', ChoiceType::class, array (
                     'data'    => $company instanceof Company ? $company->radio_choice : 1,
                     'choices' => array (
-                        'Choice A' => 1,
-                        'Choice B' => 2,
-                        'Choice C' => 3
+                        'Choice A' => 'A',
+                        'Choice B' => 'B',
+                        'Choice C' => 'C'
                     ),
                     'label' => ' ',
                     'attr'  => array('class' => 'radio-field')
@@ -78,10 +73,10 @@ class CompanyFormHelper extends BaseHelper
                     'data'        => $company instanceof Company ? $company->description : '',
                     'label'       => ' ',
                     'required'    => false,
-                    'attr'        => array('class' => 'textarea-field'),
-                    'constraints' => new Assert\Length(array('max' => 255))
+                    'attr'        => array('class' => 'textarea-field')
             ))
-            ->add('FileUpload', FileType::class, array (
+            ->add('logo_src', FileType::class, array (
+                    'empty_data'     => $company instanceof Company ? $company->logo_src : 'empty',
                     'label'    => ' ',
                     'required' => false,
             ))

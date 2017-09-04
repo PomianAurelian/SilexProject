@@ -11,6 +11,7 @@ use Controller\CompanyFormController;
 use Controller\CompanyController;
 use Controller\ReviewController;
 use Controller\LoginController;
+use Controller\TestController;
 use Controller\RegisterController;
 use AppBundle\DependencyInjection\Configuration;
 use Home\Provider;
@@ -53,6 +54,7 @@ $app->extend('twig', function($twig, $app) {
     $twig->addGlobal('user', $userService->getAuthenticatedUser());
     $twig->addGlobal('privilegeDefault', User::PRIVILEGE_DEFAULT);
     $twig->addGlobal('privilegeAdmin', User::PRIVILEGE_ADMIN);
+    $twig->addGlobal('privilegeSuperAdmin', User::PRIVILEGE_SUPER_ADMIN);
 
     return $twig;
 });
@@ -71,20 +73,25 @@ $app['login.controller'] = function() use ($app) {
 $app['register.controller'] = function() use ($app) {
     return new RegisterController();
 };
+$app['test.controller'] = function() use ($app) {
+    return new TestController();
+};
 
 $app->get('/home', "home.controller:indexAction")->bind('home');
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
 $app->get('/company-save', "company.controller:createEditCompany")->bind('company_save');
-$app->post('/company-save', "company.controller:createEditCompany");
+$app->post('/post-company', "company.controller:postAction");
 $app->get('/review/{id}', "review.controller:createReviewAction");
-$app->post('/review/{id}', "review.controller:createReviewAction");
+$app->post('/post-review', "review.controller:postAction");
 $app->get('/company-save/{id}', "company.controller:createEditCompany");
-$app->post('/company-save/{id}', "company.controller:createEditCompany");
+$app->post('/post-company/{id}', "company.controller:postAction");
 $app->get('/login', "login.controller:loginAction")->bind('login');
-$app->post('/login', "login.controller:loginAction");
+$app->post('/post-login', "login.controller:postAction");
 $app->get('/register', "register.controller:registerAction");
-$app->post('/register', "register.controller:registerAction");
+$app->post('/post-register', "register.controller:postAction");
 $app->get('/logout', "home.controller:logoutAction");
+$app->get('/test', "test.controller:loginAction");
+$app->post('/post-test', "test.controller:testPostAction");
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

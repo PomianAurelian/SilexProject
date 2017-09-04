@@ -11,8 +11,16 @@
         {{ form_start(form) }}
             <label for="field1"><span>Username </span>{{ form_row(form.username) }}</label>
             <label for="field3"><span>Password </span>{{ form_row(form.password) }}</label>
-            <label><span>&nbsp;</span><input type="submit" value="Login" /></label>
+            <label><span>&nbsp;</span><button type="button" onclick="return postLogin()">Login</button></label>
         {{ form_end(form) }}
         </div>
     </div>
 {% endblock %}
+
+{% block scripts %}
+    <script src="../js/ajaxform.js"></script>
+    <script>
+        window.REDIRECT_ID = 2;
+    </script>
+{% endblock %}
+

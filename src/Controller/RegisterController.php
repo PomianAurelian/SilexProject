@@ -5,9 +5,12 @@ namespace Controller;
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Helper\RegisterFormHelper;
 use Entity\User;
 use Controller\BaseController;
+use Symfony\Component\Validator\Mapping\ClassMetadata;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Register controller
@@ -19,7 +22,7 @@ use Controller\BaseController;
 class RegisterController extends BaseController
 {
     /**
-     * Handle register action and request.
+     * Handle register GET action and request.
      * Route: /register
      *
      * @param  Application $app
@@ -30,26 +33,43 @@ class RegisterController extends BaseController
     {
         $registerFormHelper = new RegisterFormHelper($app);
         $form = $registerFormHelper->getRegisterForm($app);
-
-        if ($request->isMethod('POST')) {
-            $newUser = new User();
-            $newUser->setFromArray($request->request->get($form->getName()));
-
-            $form->handleRequest($request);
-            if ($form->isValid()) {
-                $app['dbs']['mysql_read']->insert('user', $newUser->toArray());
-
-                return $app->redirect($app["url_generator"]->generate("login"));
-            }
-        }
-
         $user = $this->getUser($app);
-        if (null !== $user) {
-            return $app->redirect($app["url_generator"]->generate("home"));
+
+        if (null != $user) {
+            return $app->redirect($app["url_generator"]->generate("homepage"));
         }
 
         return new Response($app['twig']->render('form/register_form.html.twig', [
             'form' => $form->createView()
         ]));
+    }
+
+    /**
+     * Handle register POST action and request.
+     * Route: /post-register
+     *
+     * @param  Application $app
+     * @param  Request     $request
+     * @return JsonResponse
+     */
+    public function postAction(Application $app, Request $request)
+    {
+        $data = (array)json_decode($request->getContent());
+        $newUser = new User();
+        $newUser->setFromArray($data);
+        $errors = $app['validator']->validate($newUser);
+
+        if (count($errors) > 0) {
+            foreach ($errors as $error) {
+                echo $error->getPropertyPath().' - '.$error->getMessage()."\n";
+                //TODO handle errors
+            }
+        } else {
+            // $app['dbs']['mysql_read']->insert('user', $newUser->toArray());
+
+            return new JsonResponse(true);
+        }
+
+        return new JsonResponse(false);
     }
 }
