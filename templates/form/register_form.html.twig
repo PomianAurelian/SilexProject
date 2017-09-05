@@ -8,9 +8,12 @@
     <div class="form-style-2">
         <div class="form-style-2-heading"> Login </div>
         {{ form_start(form) }}
-            <label for="field1"><span>Username <span class="required">*</span></span>{{ form_row(form.username) }}</label>
-            <label for="field3"><span>Email <span class="required">*</span></span>{{ form_row(form.email) }}</label>
-            <label for="field3"><span>Password <span class="required">*</span></span>{{ form_row(form.password) }}</label>
+            <label for="field1"><span>Username<span class="required">*</span></span>{{ form_row(form.username) }}</label>
+            <label id="username" class="error"></label>
+            <label for="field3"><span>Email<span class="required">*</span></span>{{ form_row(form.email) }}</label>
+            <label id="email" class="error"></label>
+            <label for="field3"><span>Password<span class="required">*</span></span>{{ form_row(form.password) }}</label>
+            <label id="password" class="error"></label>
             <label><span>&nbsp;</span><button type="button" onclick="return postRegister()">Create Account</button></label>
         {{ form_end(form) }}
         </div>

@@ -55,12 +55,20 @@ class LoginController extends BaseController
     {
         $data = (array)json_decode($request->getContent());
         $userRepository = new UserRepository($app);
-        $user = $userRepository->findUser($data['username']);
+        $user = $userRepository->findOneBy(['username' => $data['username']]);
         if (null === $user) {
-            //TODO handle user doesn't exist
+            return new JsonResponse([
+                'success' => false,
+                'errors' => ['invalid' => "Username or password (or both) invalid."],
+                'form' => 'login'
+            ]);
         } else {
             if ($user->password != $data['password']) {
-                //TODO handle password incorect
+                return new JsonResponse([
+                    'success' => false,
+                    'errors' => ['invalid' => "Username or password (or both) invalid."],
+                    'form' => 'login'
+                ]);
             } else {
                 $app['session']->set('user', [
                         'username' => $user->username,
@@ -68,11 +76,10 @@ class LoginController extends BaseController
                         'id' => $user->id
                 ]);
                 $app['session']->start();
-                return new JsonResponse(true);
+                return new JsonResponse([
+                    'success' => true
+                ]);
             }
-            //TODO redirect to reference page
         }
-
-        return new JsonResponse(false);
     }
 }

@@ -16,6 +16,7 @@
             <label for="field1"><span>Name</span>{{ user.username }}</label>
             <label for="field3"><span>Rating</span>{{ form_row(form.rating) }}</label>
             <label for="field6"><span>Comment</span>{{ form_row(form.comment) }}</label>
+            <label id="comment" class="error"></label>
             <label><span>&nbsp;</span><button type="button" onclick="return postReview()">Post Review</button></label>
         {{ form_end(form) }}
         </div>

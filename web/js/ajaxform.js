@@ -71,16 +71,24 @@ function postReview()
 function HttpRequest(data, route, redirect, id)
 {
     var reqListener = function(response) {
-        if (this.readyState==4 && this.status==200) {
-            console.log(redirect, id);
-            if (redirect == 1) {
-                if (undefined === id) {
-                    id = this.responseText;
-                }
-                window.location.replace('../company/' + id);
-            } else if (redirect == 2) {
-                if (this.response) {
+        if (this.readyState == 4 && this.status == 200) {
+            var objJson = JSON.parse(this.response);
+            if (objJson.success) {
+                if (redirect == 1) {
+                    if (undefined === id) {
+                        id = objJson.id;
+                    }
+                    window.location.replace('../company/' + id);
+                } else if (redirect == 2) {
                     window.location.replace('../home');
+                }
+            } else {
+                clearErrors(objJson.form);
+                var errorKeys = Object.keys(objJson.errors);
+                for (var i = 0; i < errorKeys.length; ++i) {
+                    var key = errorKeys[i];
+                    var message = objJson.errors[key];
+                    document.getElementById(key).innerHTML = '<span></span>' + message;
                 }
             }
         }
@@ -91,4 +99,28 @@ function HttpRequest(data, route, redirect, id)
     oReq.open("POST", route);
     oReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     oReq.send(JSON.stringify(data));
+}
+
+function clearErrors(form)
+{
+    switch(form) {
+        case 'company':
+            var errorId = ["name", "email", "description"];
+            break;
+        case 'login':
+            var errorId = ["invalid"];
+            break;
+        case 'register':
+            var errorId = ["username", "email", "password"];
+            break;
+        case 'review':
+            var errorId = ["comment"];
+            break;
+        default:
+            var errorId = [];
+            break;
+    }
+    for (var i = 0; i < errorId.length; ++i) {
+        document.getElementById(errorId[i]).innerHTML = '';
+    }
 }

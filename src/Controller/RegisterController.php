@@ -60,14 +60,21 @@ class RegisterController extends BaseController
         $errors = $app['validator']->validate($newUser);
 
         if (count($errors) > 0) {
+            $errorsArr = [];
             foreach ($errors as $error) {
-                echo $error->getPropertyPath().' - '.$error->getMessage()."\n";
-                //TODO handle errors
+                $errorsArr[$error->getPropertyPath()] = $error->getMessage();
             }
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorsArr,
+                'form' => 'register'
+            ]);
         } else {
-            // $app['dbs']['mysql_read']->insert('user', $newUser->toArray());
+            $app['dbs']['mysql_read']->insert('user', $newUser->toArray());
 
-            return new JsonResponse(true);
+            return new JsonResponse([
+                'success' => true
+            ]);
         }
 
         return new JsonResponse(false);

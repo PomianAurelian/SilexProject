@@ -84,6 +84,12 @@ a.nav-item {
     float: left;
 }
 
+.error {
+    color: #E01010;
+    margin: 0px;
+    padding: 0px;
+}
+
 .company {
     border: 5px solid transparent;
     width: 350px;

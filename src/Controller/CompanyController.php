@@ -131,10 +131,15 @@ class CompanyController extends BaseController
         $user = $this->getUser($app);
 
         if (count($errors) > 0) {
+            $errorsArr = [];
             foreach ($errors as $error) {
-                echo $error->getPropertyPath().' - '.$error->getMessage()."\n";
-                //TODO handle errors
+                $errorsArr[$error->getPropertyPath()] = $error->getMessage();
             }
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorsArr,
+                'form' => 'company'
+            ]);
         } else {
             if (null === $id) {
                 $company->user_id = $user['id'];
@@ -144,10 +149,11 @@ class CompanyController extends BaseController
                 $app['dbs']['mysql_write']->update('company', $company->toArray(), ['id' => $id]);
             }
 
-            return new JsonResponse($id);
+            return new JsonResponse([
+                'success' => true,
+                'id' => $id
+            ]);
         }
-
-        return new JsonResponse($data);
     }
 
     /**

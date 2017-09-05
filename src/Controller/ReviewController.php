@@ -71,18 +71,24 @@ class ReviewController extends BaseController
         $user = $this->getUser($app);
 
         if (count($errors) > 0) {
+            $errorsArr = [];
             foreach ($errors as $error) {
-                echo $error->getPropertyPath().' - '.$error->getMessage()."\n";
-                //TODO handle errors
+                $errorsArr[$error->getPropertyPath()] = $error->getMessage();
             }
+            return new JsonResponse([
+                'success' => false,
+                'errors' => $errorsArr,
+                'form' => 'review'
+            ]);
         } else {
-            $newReview->user_id = $user['id'];
-            $newReview->name = $user['username'];
+            $newReview->user_id = $user->id;
+            $newReview->name = $user->username;
             $app['dbs']['mysql_read']->insert('review', $newReview->toArray());
 
-            return new JsonResponse($newReview->company_id);
+            return new JsonResponse([
+                'success' => true,
+                'id' => $newReview->company_id
+            ]);
         }
-
-        return new JsonResponse(false);
     }
 }

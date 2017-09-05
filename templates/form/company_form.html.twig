@@ -14,12 +14,15 @@
     <div class="form-style-2">
         <div class="form-style-2-heading">{{ action }}</div>
         {{ form_start(form) }}
-            <label for="field1"><span>Name <span class="required">*</span></span>{{ form_row(form.name) }}</label>
-            <label for="field2"><span>Email <span class="required">*</span></span>{{ form_row(form.email) }}</label>
+            <label for="field1"><span>Name<span class="required">*</span></span>{{ form_row(form.name) }}</label>
+            <label id="name" class="error"></label>
+            <label for="field2"><span>Email<span class="required">*</span></span>{{ form_row(form.email) }}</label>
+            <label id="email" class="error"></label>
             <label for="field3"><span>Category</span>{{ form_row(form.category_id) }}</label>
-            <label for="field4"><span>Delivery service </span>{{ form_row(form.delivery) }}</label>
-            <label for="field5"><span>Radio sample </span>{{ form_row(form.radio_choice) }}</label>
+            <label for="field4"><span>Delivery service</span>{{ form_row(form.delivery) }}</label>
+            <label for="field5"><span>Radio sample</span>{{ form_row(form.radio_choice) }}</label>
             <label for="field6"><span>Description</span>{{ form_row(form.description) }}</label>
+            <label id="description" class="error"></label>
             {% if company != null %}
                 {% if company.logo_src != null %}
                     <img class="company-form-page" src="/images/company/{{ company.logo_src }}">
