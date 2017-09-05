@@ -11,34 +11,20 @@ use Repository\BaseRepository;
  *
  * @see BaseRepository
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class ReviewRepository extends BaseRepository
 {
-    /**
-     * Find all reviews for given company id.
-     *
-     * @param  int      $id
-     * @return Review[]
-     */
-    public function findAllForThisCompanyId(int $id)
-    {
-        $sql = "SELECT * FROM review WHERE company_id = ?";
-        $reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
-
-        return $this->convertArraysToObjects($reviewsArr);
-    }
-
     /**
      * Get average rating for given company id.
      *
      * @param  int   $id
      * @return float
      */
-    public function getAverageRatingForThisCompanyId(int $id)
+    public function getCompanyAverageRating(int $companyId)
     {
         $sql = "SELECT AVG(rating) FROM review WHERE company_id = ?";
-        $ratingsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $id]);
+        $ratingsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $companyId]);
 
         return (float) $ratingsArr[0]['AVG(rating)'];
     }

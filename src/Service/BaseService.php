@@ -1,17 +1,17 @@
 <?php
 
-namespace Helper;
+namespace Service;
 
 use Silex\Application;
 
 /**
- * Base Helper
+ * Base Service
  *
  * @abstract
  *
  * @author Pomian Ghe. Aurelian
  */
-abstract class BaseHelper
+abstract class BaseService
 {
     /**
      * @var Application

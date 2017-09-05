@@ -13,7 +13,9 @@ use Controller\BaseController;
 /**
  * Home Controller
  *
- * @author  Pomian Ghe. Aurelian
+ * @see BaseController
+ *
+ * @author Pomian Ghe. Aurelian
  */
 class HomeController extends BaseController
 {
@@ -46,11 +48,18 @@ class HomeController extends BaseController
         ]));
     }
 
+    /**
+     * Logout action.
+     *
+     * @param  Application $app
+     * @param  Request     $request
+     * @return Response
+     */
     public function logoutAction(Application $app, Request $request)
     {
         $app['session']->start();
         $app['session']->invalidate();
 
-        return $app->redirect($app["url_generator"]->generate("homepage"));
+        return $app->redirect($app["url_generator"]->generate("home"));
     }
 }

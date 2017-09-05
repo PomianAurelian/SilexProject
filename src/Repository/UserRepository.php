@@ -11,7 +11,7 @@ use Repository\BaseRepository;
  *
  * @see BaseRepository
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class UserRepository extends BaseRepository
 {

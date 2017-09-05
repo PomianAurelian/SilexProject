@@ -9,7 +9,7 @@ use Entity\BaseEntity;
  *
  * @see BaseEntity
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class Category extends BaseEntity
 {

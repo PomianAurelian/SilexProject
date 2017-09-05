@@ -7,7 +7,7 @@ namespace Entity;
  *
  * @abstract
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 abstract class BaseEntity
 {

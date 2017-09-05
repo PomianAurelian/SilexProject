@@ -9,7 +9,7 @@ use Silex\Application;
  *
  * @abstract
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 abstract class BaseRepository
 {
@@ -29,21 +29,23 @@ abstract class BaseRepository
     }
 
     /**
-     * Find all records.
+     * Find records.
      *
-     * @param  string       $where
+     * @param  array        $criteria
      * @param  string       $order
      * @return BaseEntity[]
      */
-    public function findAll(string $where = null, string $order = null)
+    public function findBy(array $criteria = null, string $order = null)
     {
         $sql = "SELECT * FROM " . $this->getTableName();
-        $sql = $this->applyWhere($sql, $where);
+        if (null !== $criteria) {
+            $sql .= " WHERE ";
+            $sql = $this->applyCriteria($sql, $criteria);
+        }
         $sql = $this->applyOrder($sql, $order);
         $sql .= ';';
 
         $recordsArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
-
         if (0 === count($recordsArr)) {
             return null;
         }
@@ -52,15 +54,29 @@ abstract class BaseRepository
     }
 
     /**
-     * Find record by id.
+     * Find all records.
      *
-     * @param  int        $id
-     * @return BaseEntity
+     * @param  string        $order
+     * @return BaseEntity[];
      */
-    public function find(int $id)
+    public function findAll(string $order = null)
     {
-        $sql = "SELECT * FROM " . $this->getTableName() . " WHERE id = ?";
-        $recordsArr = $this->app['dbs']['mysql_read']->fetchAssoc($sql, [(int) $id]);
+        return $this->findBy(null, $order);
+    }
+
+    /**
+     * Find record by criteria.
+     *
+     * @param  array        $criteria
+     * @return BaseEntity[]
+     */
+    public function findOneBy(array $criteria = null)
+    {
+        $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
+        $sql = $this->applyCriteria($sql, $criteria);
+        $sql .= ';';
+
+        $recordsArr = $this->app['dbs']['mysql_read']->fetchAssoc($sql);
         if (!$recordsArr) {
             return null;
         }
@@ -69,21 +85,22 @@ abstract class BaseRepository
     }
 
     /**
-     * Convert records from array to object.
+     * Apply criteria to query.
      *
-     * @param  array[]      $arrays
-     * @return BaseEntity[]
+     * @param  string $sql
+     * @param  array  $criteria
+     * @return string
      */
-    protected function convertArraysToObjects(array $arrays)
+    protected function applyCriteria(string $sql, array $criteria = null)
     {
-        $objects = [];
-
-        foreach ($arrays as $array) {
-            $object = $this->convertArrayToObject($array);
-            $objects[] = $object;
+        if (null === $criteria) {
+            return $sql;
         }
-
-        return $objects;
+        foreach ($criteria as $key => $value) {
+            $sql .= "{$key} = {$value} AND ";
+        }
+        $sql = substr($sql, 0, -5);
+        return $sql;
     }
 
     /**
@@ -94,24 +111,6 @@ abstract class BaseRepository
      * @return string
      */
     protected function applyOrder(string $sql, string $order = null)
-    {
-        if (null === $order) {
-            return $sql;
-        }
-
-        $sql .= " WHERE " . $order;
-
-        return $sql;
-    }
-
-    /**
-     * Apply where.
-     *
-     * @param  string $sql
-     * @param  string $order
-     * @return string
-     */
-    protected function applyWhere(string $sql, string $order = null)
     {
         if (null === $order) {
             return $sql;
@@ -141,6 +140,24 @@ abstract class BaseRepository
         $object->setFromArray($array);
 
         return $object;
+    }
+
+    /**
+     * Convert records from array to object.
+     *
+     * @param  array[]      $arrays
+     * @return BaseEntity[]
+     */
+    protected function convertArraysToObjects(array $arrays)
+    {
+        $objects = [];
+
+        foreach ($arrays as $array) {
+            $object = $this->convertArrayToObject($array);
+            $objects[] = $object;
+        }
+
+        return $objects;
     }
 
     /**

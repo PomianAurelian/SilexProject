@@ -18,14 +18,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @see BaseHelper
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class CompanyFormHelper extends BaseHelper
 {
     /**
      * Create and get company form.
      *
-     * @param  Application                 $app
      * @param  Company                     $company
      * @return Symfony\Component\Form\Form
      */

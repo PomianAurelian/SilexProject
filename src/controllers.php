@@ -62,7 +62,7 @@ $app['register.controller'] = function() use ($app) {
     return new RegisterController();
 };
 
-$app->get('/home', "home.controller:indexAction")->bind('homepage');
+$app->get('/home', "home.controller:indexAction")->bind('home');
 $app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
 $app->get('/company-save', "company.controller:createEditCompany")->bind('company_save');
 $app->post('/company-save', "company.controller:createEditCompany");

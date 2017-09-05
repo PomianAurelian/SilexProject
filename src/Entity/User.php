@@ -9,7 +9,7 @@ use Entity\BaseEntity;
  *
  * @see BaseEntity
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class User extends BaseEntity
 {
@@ -34,9 +34,8 @@ class User extends BaseEntity
     public $email;
 
     /**
-     * @var int
+     * @var int 1-user | 2-admin | 3-super admin
      *
-     * 1-user | 2-admin
      */
     public $privilege;
 

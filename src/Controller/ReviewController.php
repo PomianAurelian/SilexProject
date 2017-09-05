@@ -13,7 +13,9 @@ use Controller\BaseController;
 /**
  * Review Controller
  *
- * @author  Pomian Ghe. Aurelian
+ * @see BaseController
+ *
+ * @author Pomian Ghe. Aurelian
  */
 class ReviewController extends BaseController
 {
@@ -32,7 +34,8 @@ class ReviewController extends BaseController
         $form = $reviewFormHelper->getReviewForm($app);
 
         $companyRepository = new CompanyRepository($app);
-        $company = $companyRepository->find($id);
+        $companyCriteria['id'] = $id;
+        $company = $companyRepository->findOneBy($companyCriteria);
 
         $user = $this->getUser($app);
 
@@ -47,7 +50,7 @@ class ReviewController extends BaseController
 
             $form->handleRequest($request);
             if ($form->isValid()) {
-                $newReview->user_id = $user['id'];
+                $newReview->user_id = $user->id;
                 $app['dbs']['mysql_read']->insert('review', $newReview->toArray());
 
                 return $app->redirect($app["url_generator"]->generate("company_details", ['id' => $id]));

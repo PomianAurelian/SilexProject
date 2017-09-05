@@ -13,7 +13,9 @@ use Controller\BaseController;
 /**
  * Login controller
  *
- * @author  Pomian Ghe. Aurelian
+ * @see BaseController
+ *
+ * @author Pomian Ghe. Aurelian
  */
 class LoginController extends BaseController
 {
@@ -28,37 +30,29 @@ class LoginController extends BaseController
      */
     public function loginAction(Application $app, Request $request)
     {
-        echo $_SERVER['REQUEST_URI']; die;
-
         $userRepository = new UserRepository($app);
         $loginFormHelper = new LoginFormHelper($app);
         $form = $loginFormHelper->getLoginForm($app);
         $message = '';
 
         if ($request->isMethod('POST')) {
-            $loginUser = new User();
-            $loginUser->setFromArray($request->request->get($form->getName()));
-            $user = $userRepository->findUser($loginUser->username);
+            $loginUser = $request->request->get($form->getName());
+            $user = $userRepository->findUser($loginUser['username']);
 
-            if (null === $user) {
-                $message = 'User does not exist!';
+            if (null === $user || $user->password != $loginUser['password']) {
+                $message = 'Invalid credentials!';
             } else {
+                $form->handleRequest($request);
 
-                if ($user->password != $loginUser->password) {
-                    $message = 'Invalid password!';
-                } else {
-                    $form->handleRequest($request);
+                if ($form->isValid()) {
+                    $app['session']->set('user', [
+                            'username' => $user->username,
+                            'privilege' => $user->privilege,
+                            'id' => $user->id
+                    ]);
+                    $app['session']->start();
 
-                    if ($form->isValid()) {
-                        $app['session']->set('user', [
-                                'username' => $user->username,
-                                'privilege' => $user->privilege,
-                                'id' => $user->id
-                        ]);
-                        $app['session']->start();
-
-                        return $app->redirect($app["url_generator"]->generate("homepage"));
-                    }
+                    return $app->redirect($app["url_generator"]->generate("home"));
                 }
             }
         }

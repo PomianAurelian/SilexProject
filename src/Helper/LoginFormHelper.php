@@ -14,24 +14,29 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @see BaseHelper
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class LoginFormHelper extends BaseHelper
 {
-    public function getLoginForm($app)
+    /**
+     * Create and get login form.
+     *
+     * @return Symfony\Component\Form\Form
+     */
+    public function getLoginForm()
     {
-        $form = $app['form.factory']->createBuilder(FormType::class)
-        ->add('username', TextType::class, array(
-                    'label'       => ' ',
-                    'attr'        => array('class' => 'input-field'),
-                    'constraints' => array(new Assert\NotBlank())
-        ))
-        ->add('password', PasswordType::class, array(
-                    'label'       => ' ',
-                    'attr'        => array('class' => 'input-field'),
-                    'constraints' => array(new Assert\NotBlank())
-        ))
-        ->getForm();
+        $form = $this->app['form.factory']->createBuilder(FormType::class)
+            ->add('username', TextType::class, array(
+                        'label'       => ' ',
+                        'attr'        => array('class' => 'input-field'),
+                        'constraints' => array(new Assert\NotBlank())
+            ))
+            ->add('password', PasswordType::class, array(
+                        'label'       => ' ',
+                        'attr'        => array('class' => 'input-field'),
+                        'constraints' => array(new Assert\NotBlank())
+            ))
+            ->getForm();
 
         return $form;
     }

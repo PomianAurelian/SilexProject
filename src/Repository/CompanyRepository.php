@@ -12,7 +12,7 @@ use Repository\CategoryRepository;
  *
  * @see BaseRepository
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class CompanyRepository extends BaseRepository
 {

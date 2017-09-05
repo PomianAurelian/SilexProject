@@ -9,7 +9,7 @@ use Entity\BaseEntity;
  *
  * @see BaseEntity
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class Review extends BaseEntity
 {
@@ -53,6 +53,7 @@ class Review extends BaseEntity
      */
     public function __construct()
     {
-        $this->review_date = date('Y-m-d H:i:s');
+        $date = new \DateTime();
+        $this->review_date = $date->format('Y-m-d H:i:s');
     }
 }

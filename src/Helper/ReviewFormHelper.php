@@ -14,19 +14,18 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @see BaseHelper
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 class ReviewFormHelper extends BaseHelper
 {
     /**
      * Create and get review form.
      *
-     * @param  Application                 $app
      * @return Symfony\Component\Form\Form
      */
-    public function getReviewForm($app)
+    public function getReviewForm()
     {
-        $form = $app['form.factory']->createBuilder(FormType::class)
+        $form = $this->app['form.factory']->createBuilder(FormType::class)
             ->add('name', TextType::class, array(
                 'label'  => ' ',
                 'attr'   =>  array(

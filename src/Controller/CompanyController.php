@@ -10,11 +10,14 @@ use Repository\ReviewRepository;
 use Entity\Company;
 use Helper\CompanyFormHelper;
 use Controller\BaseController;
+use Service\CompanyService;
 
 /**
  * Company Controller
  *
- * @author  Pomian Ghe. Aurelian
+ * @see BaseController
+ *
+ * @author Pomian Ghe. Aurelian
  */
 class CompanyController extends BaseController
 {
@@ -30,18 +33,22 @@ class CompanyController extends BaseController
     public function indexAction(Application $app, Request $request, int $id)
     {
         $companyRepository = new CompanyRepository($app);
-        $company = $companyRepository->find($id);
+        $companyCriteria['id'] = $id;
+        $company = $companyRepository->findOneBy($companyCriteria);
 
         if (null === $company) {
             return new Response($app['twig']->render('errors/404.html.twig'));
         }
 
         $reviewRepository = new ReviewRepository($app);
-        $reviews = $reviewRepository->findAllForThisCompanyId($id);
-
-        $average = $reviewRepository->getAverageRatingForThisCompanyId($id);
+        $reviewCriteria['company_id'] = $id;
+        $reviews = $reviewRepository->findBy($reviewCriteria, null);
+        $average = $reviewRepository->getCompanyAverageRating($id);
         $user = $this->getUser($app);
-        $reviewed = $this->checkForReview($reviews, (int) $user['id']);
+
+        $companyService = new CompanyService($app);
+
+        $reviewed = $companyService->userHasReview($company, $user);
 
         return new Response($app['twig']->render('company/company.html.twig', [
             'company' => $company,
@@ -69,7 +76,8 @@ class CompanyController extends BaseController
             $company = new Company();
         } else {
             $companyRepository = new CompanyRepository($app);
-            $company = $companyRepository->find($id);
+            $companyCriteria['id'] = $id;
+            $company = $companyRepository->findOneBy($companyCriteria);
         }
 
         if (null === $company) {
@@ -115,22 +123,5 @@ class CompanyController extends BaseController
             'action' => $action,
             'user' => $user
         ]));
-    }
-
-    /**
-     * Check for current user review.
-     *
-     * @param  array   $reviews
-     * @param  int     $userId
-     * @return boolean
-     */
-    protected function checkForReview(array $reviews, int $userId)
-    {
-        foreach ($reviews as $review) {
-            if ($review->user_id == $userId) {
-                return true;
-            }
-        }
-        return false;
     }
 }

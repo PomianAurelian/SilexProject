@@ -3,13 +3,14 @@
 namespace Controller;
 
 use Silex\Application;
+use Entity\User;
 
 /**
  * Base Controller
  *
  * @abstract
  *
- * @author  Pomian Ghe. Aurelian
+ * @author Pomian Ghe. Aurelian
  */
 abstract class BaseController
 {
@@ -17,11 +18,17 @@ abstract class BaseController
      * Get current user.
      *
      * @param  Application $app
-     * @return array[]
+     * @return User
      */
     protected function getUser(Application $app)
     {
-        $user = $app['session']->get('user');
+        $aux = $app['session']->get('user');
+        if (null !== $aux){
+            $user = new User();
+            $user->setFromArray($aux);
+        } else {
+            $user = null;
+        }
 
         return $user;
     }

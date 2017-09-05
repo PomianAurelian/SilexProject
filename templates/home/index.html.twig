@@ -1,7 +1,7 @@
 {% extends "base_layout.html.twig" %}
 
 {% block title  %}
-    Silex Project Homepage
+    Silex Project Home
 {% endblock %}
 
 {% block content %}
@@ -44,7 +44,7 @@
         <hr>
     {% endfor %}
     {% if user is not null %}
-        {% if user.privilege > 1 %}
+        {% if user.privilege == 1 or user.privilege == 2 %}
             <a href="company-save" class="nav-item fa fa-building" aria-hidden="true">Register</a>
         {% endif %}
     {% endif %}
