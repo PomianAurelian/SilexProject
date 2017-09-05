@@ -4,6 +4,7 @@ namespace Controller;
 
 use Silex\Application;
 use Entity\User;
+use Service\UserService;
 
 /**
  * Base Controller
@@ -22,14 +23,7 @@ abstract class BaseController
      */
     protected function getUser(Application $app)
     {
-        $aux = $app['session']->get('user');
-        if (null !== $aux){
-            $user = new User();
-            $user->setFromArray($aux);
-        } else {
-            $user = null;
-        }
-
-        return $user;
+        $userService = new UserService($app);
+        return $userService->getAuthenticatedUser();
     }
 }

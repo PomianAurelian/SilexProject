@@ -27,11 +27,14 @@ class CompanyService extends BaseService
         if (null === $user) {
             return true;
         }
+
         $sql = "SELECT * FROM review WHERE company_id = " . $company->id . " AND user_id = " . $user->id;
         $reviewsArr = $this->app['dbs']['mysql_read']->fetchAll($sql);
+
         if (0 === count($reviewsArr)) {
             return false;
         }
+
         return true;
     }
 }

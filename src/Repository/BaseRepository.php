@@ -37,11 +37,8 @@ abstract class BaseRepository
      */
     public function findBy(array $criteria = null, string $order = null)
     {
-        $sql = "SELECT * FROM " . $this->getTableName();
-        if (null !== $criteria) {
-            $sql .= " WHERE ";
-            $sql = $this->applyCriteria($sql, $criteria);
-        }
+        $sql = $this->getBaseSelect();
+        $sql = $this->applyCriteria($sql, $criteria);
         $sql = $this->applyOrder($sql, $order);
         $sql .= ';';
 
@@ -72,7 +69,7 @@ abstract class BaseRepository
      */
     public function findOneBy(array $criteria = null)
     {
-        $sql = "SELECT * FROM " . $this->getTableName() . " WHERE ";
+        $sql = $this->getBaseSelect();
         $sql = $this->applyCriteria($sql, $criteria);
         $sql .= ';';
 
@@ -96,10 +93,16 @@ abstract class BaseRepository
         if (null === $criteria) {
             return $sql;
         }
+
+        $sql .= " WHERE ";
+        $arr = [];
+
         foreach ($criteria as $key => $value) {
-            $sql .= "{$key} = {$value} AND ";
+            $arr[] = "{$key} = \"{$value}\"";
         }
-        $sql = substr($sql, 0, -5);
+
+        $sql .= implode(" AND ", $arr);
+
         return $sql;
     }
 
@@ -158,6 +161,16 @@ abstract class BaseRepository
         }
 
         return $objects;
+    }
+
+    /**
+     * Get base select query.
+     *
+     * @return string
+     */
+    protected function getBaseSelect()
+    {
+        return "SELECT * FROM " . $this->getTableName();
     }
 
     /**

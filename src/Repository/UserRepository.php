@@ -16,23 +16,6 @@ use Repository\BaseRepository;
 class UserRepository extends BaseRepository
 {
     /**
-     * Find user by username.
-     *
-     * @param  string     $username
-     * @return BaseEntity
-     */
-    public function findUser(string $username)
-    {
-        $sql = "SELECT * FROM user WHERE username = ?";
-        $userArr = $this->app['dbs']['mysql_read']->fetchAssoc($sql, [(string) $username]);
-        if (!$userArr) {
-            return null;
-        }
-
-        return $this->convertArrayToObject($userArr);
-    }
-
-    /**
      * {@inheritdoc}
      */
     protected function getTableName()

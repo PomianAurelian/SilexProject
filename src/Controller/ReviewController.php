@@ -34,8 +34,7 @@ class ReviewController extends BaseController
         $form = $reviewFormHelper->getReviewForm($app);
 
         $companyRepository = new CompanyRepository($app);
-        $companyCriteria['id'] = $id;
-        $company = $companyRepository->findOneBy($companyCriteria);
+        $company = $companyRepository->findOneBy(['id' => $id]);
 
         $user = $this->getUser($app);
 
@@ -59,8 +58,7 @@ class ReviewController extends BaseController
 
         return new Response($app['twig']->render('form/review_form.html.twig', [
             'form' => $form->createView(),
-            'company' => $company,
-            'user' => $user
+            'company' => $company
         ]));
     }
 }

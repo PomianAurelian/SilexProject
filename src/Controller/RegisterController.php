@@ -49,8 +49,7 @@ class RegisterController extends BaseController
         }
 
         return new Response($app['twig']->render('form/register_form.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user
+            'form' => $form->createView()
         ]));
     }
 }

@@ -14,6 +14,21 @@ use Entity\BaseEntity;
 class User extends BaseEntity
 {
     /**
+     * @const PRIVILEGE_DEFAULT
+     */
+    const PRIVILEGE_DEFAULT = 1;
+
+    /**
+     * @const PRRIVILEGE_ADMIN
+     */
+    const PRIVILEGE_ADMIN = 2;
+
+    /**
+     * @const PRRIVILEGE_SUPER_ADMIN
+     */
+    const PRIVILEGE_SUPER_ADMIN = 3;
+
+    /**
      * @var int
      */
     public $id;
@@ -35,7 +50,6 @@ class User extends BaseEntity
 
     /**
      * @var int 1-user | 2-admin | 3-super admin
-     *
      */
     public $privilege;
 
@@ -44,6 +58,6 @@ class User extends BaseEntity
      */
     public function __construct()
     {
-        $this->privilege = 1;
+        $this->privilege = self::PRIVILEGE_DEFAULT;
     }
 }

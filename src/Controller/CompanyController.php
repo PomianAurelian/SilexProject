@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Repository\CompanyRepository;
 use Repository\ReviewRepository;
 use Entity\Company;
+use Entity\User;
 use Helper\CompanyFormHelper;
 use Controller\BaseController;
 use Service\CompanyService;
@@ -33,16 +34,14 @@ class CompanyController extends BaseController
     public function indexAction(Application $app, Request $request, int $id)
     {
         $companyRepository = new CompanyRepository($app);
-        $companyCriteria['id'] = $id;
-        $company = $companyRepository->findOneBy($companyCriteria);
+        $company = $companyRepository->findOneBy(['id' => $id]);
 
         if (null === $company) {
             return new Response($app['twig']->render('errors/404.html.twig'));
         }
 
         $reviewRepository = new ReviewRepository($app);
-        $reviewCriteria['company_id'] = $id;
-        $reviews = $reviewRepository->findBy($reviewCriteria, null);
+        $reviews = $reviewRepository->findBy(['company_id' => $id]);
         $average = $reviewRepository->getCompanyAverageRating($id);
         $user = $this->getUser($app);
 
@@ -54,8 +53,7 @@ class CompanyController extends BaseController
             'company' => $company,
             'reviews' => $reviews,
             'average' => $average,
-            'reviewed' => $reviewed,
-            'user' => $user
+            'reviewed' => $reviewed
         ]));
     }
 
@@ -76,8 +74,7 @@ class CompanyController extends BaseController
             $company = new Company();
         } else {
             $companyRepository = new CompanyRepository($app);
-            $companyCriteria['id'] = $id;
-            $company = $companyRepository->findOneBy($companyCriteria);
+            $company = $companyRepository->findOneBy(['id' => $id]);
         }
 
         if (null === $company) {
@@ -103,7 +100,7 @@ class CompanyController extends BaseController
                 }
 
                 if (null === $id) {
-                    $company->user_id = $user['id'];
+                    $company->user_id = $user->id;
                     $app['dbs']['mysql_write']->insert('company', $company->toArray());
                     $id = $app['dbs']['mysql_write']->lastInsertId();
                 } else {
@@ -120,8 +117,7 @@ class CompanyController extends BaseController
             'message' => '',
             'form' => $form->createView(),
             'company' => $company,
-            'action' => $action,
-            'user' => $user
+            'action' => $action
         ]));
     }
 }

@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Repository\CompanyRepository;
 use Repository\CategoryRepository;
 use Controller\BaseController;
+use Entity\User;
 
 /**
  * Home Controller
@@ -43,8 +44,7 @@ class HomeController extends BaseController
 
         return new Response($app['twig']->render('home/index.html.twig', [
             'companiesGroupedByCategory' => $companiesGroupedByCategory,
-            'categories' => $categories,
-            'user' => $user
+            'categories' => $categories
         ]));
     }
 

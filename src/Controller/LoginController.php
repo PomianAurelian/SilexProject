@@ -37,7 +37,7 @@ class LoginController extends BaseController
 
         if ($request->isMethod('POST')) {
             $loginUser = $request->request->get($form->getName());
-            $user = $userRepository->findUser($loginUser['username']);
+            $user = $userRepository->findOneBy(['username' => $loginUser['username']]);
 
             if (null === $user || $user->password != $loginUser['password']) {
                 $message = 'Invalid credentials!';
@@ -61,8 +61,7 @@ class LoginController extends BaseController
 
         return new Response($app['twig']->render('form/login_form.html.twig', [
             'form' => $form->createView(),
-            'message' => $message,
-            'user' => $user
+            'message' => $message
         ]));
     }
 }

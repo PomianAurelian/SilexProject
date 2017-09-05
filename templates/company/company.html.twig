@@ -58,13 +58,13 @@
     <!-- Add review -->
     <hr>
     {% if user is not null %}
-        {% if user.privilege == 1 %}
+        {% if user.privilege == privilegeDefault %}
             {% if reviewed %}
                 <h3>You have reviewed this company.</h3>
             {% else %}
                 <a href="/review/{{ company.id }}" class="nav-item fa fa-pencil-square-o" aria-hidden="true">Review</a>
             {% endif %}
-        {% elseif user.privilege == 2 %}
+        {% elseif user.privilege == privilegeAdmin %}
             {% if reviewed %}
                 <h3>You have reviewed this company.</h3>
             {% elseif company.user_id == user.id %}

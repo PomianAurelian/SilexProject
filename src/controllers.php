@@ -14,6 +14,8 @@ use Controller\LoginController;
 use Controller\RegisterController;
 use AppBundle\DependencyInjection\Configuration;
 use Home\Provider;
+use Entity\User;
+use Service\UserService;
 
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'dbs.options' => array(
@@ -46,6 +48,14 @@ $app->register(new Silex\Provider\TranslationServiceProvider(), array(
 ));
 $app->register(new FormServiceProvider());
 
+$app->extend('twig', function($twig, $app) {
+    $userService = new UserService($app);
+    $twig->addGlobal('user', $userService->getAuthenticatedUser());
+    $twig->addGlobal('privilegeDefault', User::PRIVILEGE_DEFAULT);
+    $twig->addGlobal('privilegeAdmin', User::PRIVILEGE_ADMIN);
+
+    return $twig;
+});
 $app['home.controller'] = function() use ($app) {
     return new HomeController();
 };
