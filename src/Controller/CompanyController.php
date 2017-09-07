@@ -13,6 +13,7 @@ use Entity\User;
 use Helper\CompanyFormHelper;
 use Controller\BaseController;
 use Service\CompanyService;
+use Helper\ValidatorHelper;
 
 /**
  * Company Controller
@@ -67,7 +68,7 @@ class CompanyController extends BaseController
      * @param  int         $id
      * @return Response
      */
-    public function createEditCompany(Application $app, Request $request, int $id = null)
+    public function createEditCompanyAction(Application $app, Request $request, int $id = null)
     {
         $companyFormHelper = new CompanyFormHelper($app);
 
@@ -85,8 +86,8 @@ class CompanyController extends BaseController
         $form = $companyFormHelper->getCompanyForm($company);
         $user = $this->getUser($app);
 
-        if (null === $user) {
-            return $app->redirect($app["url_generator"]->generate("homepage"));
+        if (!$user instanceof User) {
+            return $app->redirect($app['url_generator']->generate('home'));
 
         }
 
@@ -104,15 +105,15 @@ class CompanyController extends BaseController
      * Handle company form page POST action and request for register and edit company.
      * Route: /post-company | post-company/{$id}
      *
-     * @param  Application $app
-     * @param  Request     $request
+     * @param  Application  $app
+     * @param  Request      $request
      * @return JsonResponse
      */
-    public function postAction(Application $app, Request $request)
+    public function processCompanySaveAction(Application $app, Request $request)
     {
-        $data = (array)json_decode($request->getContent());
+        $data = (array) json_decode($request->getContent());
 
-        if (count($data) == 8) {
+        if (8 === count($data)) {
             $id = $data['id'];
         } else {
             $id = null;
@@ -122,19 +123,17 @@ class CompanyController extends BaseController
             $company = new Company();
         } else {
             $companyRepository = new CompanyRepository($app);
-            $company = $companyRepository->find($id);
+            $company = $companyRepository->findOneBy(['id' => $id]);
         }
 
         $data['logo_src'] = $company->logo_src;
         $company->setFromArray($data);
         $errors = $app['validator']->validate($company);
         $user = $this->getUser($app);
+        $validatorHelper = new ValidatorHelper($app);
 
-        if (count($errors) > 0) {
-            $errorsArr = [];
-            foreach ($errors as $error) {
-                $errorsArr[$error->getPropertyPath()] = $error->getMessage();
-            }
+        if (0 < count($errors)) {
+            $errorsArr = $validatorHelper->getErrorsArr($errors);
             return new JsonResponse([
                 'success' => false,
                 'errors' => $errorsArr,
@@ -142,7 +141,7 @@ class CompanyController extends BaseController
             ]);
         } else {
             if (null === $id) {
-                $company->user_id = $user['id'];
+                $company->user_id = $user->id;
                 $app['dbs']['mysql_write']->insert('company', $company->toArray());
                 $id = (int) $app['dbs']['mysql_write']->lastInsertId();
             } else {
@@ -154,22 +153,5 @@ class CompanyController extends BaseController
                 'id' => $id
             ]);
         }
-    }
-
-    /**
-     * Check for current user review.
-     *
-     * @param  array   $reviews
-     * @param  int     $userId
-     * @return boolean
-     */
-    protected function checkForReview(array $reviews, int $userId)
-    {
-        foreach ($reviews as $review) {
-            if ($review->user_id == $userId) {
-                return true;
-            }
-        }
-        return false;
     }
 }

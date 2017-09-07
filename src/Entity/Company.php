@@ -78,10 +78,10 @@ class Company extends BaseEntity
     public static function loadValidatorMetadata(ClassMetadata $metadata)
     {
         $metadata->addPropertyConstraint('name', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('name', new Assert\Length(array('min' => 5, 'max' => 20)));
+        $metadata->addPropertyConstraint('name', new Assert\Length(['min' => 5, 'max' => 20]));
         $metadata->addPropertyConstraint('email', new Assert\NotBlank());
         $metadata->addPropertyConstraint('email', new Assert\Email());
         $metadata->addPropertyConstraint('description', new Assert\NotBlank());
-        $metadata->addPropertyConstraint('description', new Assert\Length(array('min' => 30, 'max' => 500)));
+        $metadata->addPropertyConstraint('description', new Assert\Length(['min' => 30, 'max' => 500]));
     }
 }

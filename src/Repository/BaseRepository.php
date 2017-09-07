@@ -94,14 +94,14 @@ abstract class BaseRepository
             return $sql;
         }
 
-        $sql .= " WHERE ";
+        $sql .= ' WHERE ';
         $arr = [];
 
         foreach ($criteria as $key => $value) {
-            $arr[] = "{$key} = \"{$value}\"";
+            $arr[] = '{$key} = \'{$value}\'';
         }
 
-        $sql .= implode(" AND ", $arr);
+        $sql .= implode(' AND ', $arr);
 
         return $sql;
     }
@@ -119,7 +119,7 @@ abstract class BaseRepository
             return $sql;
         }
 
-        $sql .= " ORDER BY " . $order;
+        $sql .= ' ORDER BY ' . $order;
 
         return $sql;
     }
@@ -170,7 +170,7 @@ abstract class BaseRepository
      */
     protected function getBaseSelect()
     {
-        return "SELECT * FROM " . $this->getTableName();
+        return 'SELECT * FROM ' . $this->getTableName();
     }
 
     /**

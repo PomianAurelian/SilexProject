@@ -7,23 +7,23 @@ function postCompany()
     var data = {};
 
     data['id'] = id;
-    data[textarea[0].name.substr(5, textarea[0].name.length-6)] = textarea[0].value;
+    data[textarea[0].name.substr(5, textarea[0].name.length - 6)] = textarea[0].value;
     for (var i = 0; i < inputs.length; ++i) {
         var input = inputs[i];
-        key = input.name.substr(5, input.name.length-6);
+        key = input.name.substr(5, input.name.length - 6);
         data[key] = input.value;
-        if (key == 'logo_src') {
+        if ('logo_src' === key) {
             data[key] = input.value.substr(12);
-        } else if (key == 'delivery') {
-            data[key] = input.checked === true ? '1' : '0';
+        } else if ('delivery' === key) {
+            data[key] = input.checked ? '1' : '0';
         }
     }
     for (var i = 0; i < selects.length; ++i) {
         var select = selects[i];
-        data[select.name.substr(5, select.name.length-6)] = select.value;
+        data[select.name.substr(5, select.name.length - 6)] = select.value;
     }
 
-    HttpRequest(data, "/post-company", window.REDIRECT_ID, id);
+    XhrRequest(data, "/post-company", window.REDIRECT_ID, id);
 }
 
 function postLogin()
@@ -33,11 +33,11 @@ function postLogin()
 
     for (var i = 0; i < inputs.length; ++i) {
         var input = inputs[i];
-        var key = input.name.substr(5, input.name.length-6);
+        var key = input.name.substr(5, input.name.length - 6);
         data[key] = input.value;
     }
 
-    HttpRequest(data, "/post-login", window.REDIRECT_ID, undefined);
+    XhrRequest(data, "/post-login", window.REDIRECT_ID, undefined);
 }
 
 function postRegister()
@@ -47,11 +47,11 @@ function postRegister()
 
     for (var i = 0; i < inputs.length; ++i) {
         var input = inputs[i];
-        var key = input.name.substr(5, input.name.length-6);
+        var key = input.name.substr(5, input.name.length - 6);
         data[key] = input.value;
     }
 
-    HttpRequest(data, "/post-register", window.REDIRECT_ID, undefined);
+    XhrRequest(data, "/post-register", window.REDIRECT_ID, undefined);
 }
 
 function postReview()
@@ -61,21 +61,21 @@ function postReview()
     var id = window.COMPANY_ID;
     var data = {}
 
-    data[textarea[0].name.substr(5, textarea[0].name.length-6)] = textarea[0].value;
-    data[select[0].name.substr(5, select[0].name.length-6)] = select[0].value;
+    data[textarea[0].name.substr(5, textarea[0].name.length - 6)] = textarea[0].value;
+    data[select[0].name.substr(5, select[0].name.length - 6)] = select[0].value;
     data['company_id'] = id;
 
-    HttpRequest(data, "/post-review", window.REDIRECT_ID, id);
+    XhrRequest(data, "/post-review", window.REDIRECT_ID, id);
 }
 
-function HttpRequest(data, route, redirect, id)
+function XhrRequest(data, route, redirect, id)
 {
     var reqListener = function(response) {
         if (this.readyState == 4 && this.status == 200) {
             var objJson = JSON.parse(this.response);
             if (objJson.success) {
                 if (redirect == 1) {
-                    if (undefined === id) {
+                    if ('undefined' === typeof id) {
                         id = objJson.id;
                     }
                     window.location.replace('../company/' + id);
@@ -94,33 +94,32 @@ function HttpRequest(data, route, redirect, id)
         }
     }
 
-    var oReq = new XMLHttpRequest();
-    oReq.onreadystatechange = reqListener;
-    oReq.open("POST", route);
-    oReq.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-    oReq.send(JSON.stringify(data));
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = reqListener;
+    xmlhttp.open("POST", route);
+    xmlhttp.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xmlhttp.send(JSON.stringify(data));
 }
 
 function clearErrors(form)
 {
     switch(form) {
         case 'company':
-            var errorId = ["name", "email", "description"];
+            var formErrorFields = ["name", "email", "description"];
             break;
         case 'login':
-            var errorId = ["invalid"];
+            var formErrorFields = ["invalid"];
             break;
         case 'register':
-            var errorId = ["username", "email", "password"];
+            var formErrorFields = ["username", "email", "password"];
             break;
         case 'review':
-            var errorId = ["comment"];
+            var formErrorFields = ["comment"];
             break;
         default:
-            var errorId = [];
-            break;
+            var formErrorFields = [];
     }
-    for (var i = 0; i < errorId.length; ++i) {
-        document.getElementById(errorId[i]).innerHTML = '';
+    for (var i = 0; i < formErrorFields.length; ++i) {
+        document.getElementById(formErrorFields[i]).innerHTML = '';
     }
 }

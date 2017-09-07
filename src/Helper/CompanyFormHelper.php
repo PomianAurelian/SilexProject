@@ -31,55 +31,55 @@ class CompanyFormHelper extends BaseHelper
     public function getCompanyForm(Company $company = null)
     {
         $form = $this->app['form.factory']->createBuilder(FormType::class)
-            ->add('name', TextType::class, array(
-                    'data'        => $company instanceof Company ? $company->name : '',
-                    'label'       => ' ',
-                    'attr'        => array('class' => 'input-field')
-            ))
-            ->add('email', EmailType::class, array(
-                    'data'        => $company instanceof Company ? $company->email : '',
-                    'label'       => ' ',
-                    'attr'        => array('class' => 'input-field')
-            ))
-            ->add('category_id', ChoiceType::class, array(
-                    'data'    => $company instanceof Company ? $company->category_id : 1,
-                    'choices' => array(
-                        'Restaurant' => 1,
-                        'Fast Food'  => 2,
-                        'Market'     => 3,
-                        'Drug Store' => 4,
-                        'Other'      => 5
-                    ),
+            ->add('name', TextType::class, [
+                    'data' => $company instanceof Company ? $company->name : '',
                     'label' => ' ',
-                    'attr'  => array('class' => 'select-field')
-            ))
-            ->add('delivery', CheckboxType::class, array(
-                    'data'     => (Boolean)($company instanceof Company ? $company->delivery : 0),
-                    'label'    => ' ',
+                    'attr' => ['class' => 'input-field']
+            ])
+            ->add('email', EmailType::class, [
+                    'data' => $company instanceof Company ? $company->email : '',
+                    'label' => ' ',
+                    'attr' => ['class' => 'input-field']
+            ])
+            ->add('category_id', ChoiceType::class, [
+                    'data' => $company instanceof Company ? $company->category_id : 1,
+                    'choices' => [
+                        'Restaurant' => 1,
+                        'Fast Food' => 2,
+                        'Market' => 3,
+                        'Drug Store' => 4,
+                        'Other' => 5
+                    ],
+                    'label' => ' ',
+                    'attr' => ['class' => 'select-field']
+            ])
+            ->add('delivery', CheckboxType::class, [
+                    'data' => (Boolean)($company instanceof Company ? $company->delivery : 0),
+                    'label' => ' ',
                     'required' => false,
-                    'attr'     => array('class' => 'checkbox-field')
-            ))
-            ->add('radio_choice', ChoiceType::class, array (
-                    'data'    => $company instanceof Company ? $company->radio_choice : 1,
-                    'choices' => array (
+                    'attr' => ['class' => 'checkbox-field']
+            ])
+            ->add('radio_choice', ChoiceType::class, [
+                    'data' => $company instanceof Company ? $company->radio_choice : 1,
+                    'choices' => [
                         'Choice A' => 'A',
                         'Choice B' => 'B',
                         'Choice C' => 'C'
-                    ),
+                    ],
                     'label' => ' ',
-                    'attr'  => array('class' => 'radio-field')
-            ))
-            ->add('description', TextareaType::class, array(
-                    'data'        => $company instanceof Company ? $company->description : '',
-                    'label'       => ' ',
-                    'required'    => false,
-                    'attr'        => array('class' => 'textarea-field')
-            ))
-            ->add('logo_src', FileType::class, array (
-                    'empty_data'     => $company instanceof Company ? $company->logo_src : 'empty',
-                    'label'    => ' ',
+                    'attr' => ['class' => 'radio-field']
+            ])
+            ->add('description', TextareaType::class, [
+                    'data' => $company instanceof Company ? $company->description : '',
+                    'label' => ' ',
                     'required' => false,
-            ))
+                    'attr' => array('class' => 'textarea-field')
+            ])
+            ->add('logo_src', FileType::class, [
+                    'empty_data' => $company instanceof Company ? $company->logo_src : 'empty',
+                    'label' => ' ',
+                    'required' => false,
+            ])
             ->getForm();
 
         return $form;

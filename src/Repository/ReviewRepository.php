@@ -23,7 +23,7 @@ class ReviewRepository extends BaseRepository
      */
     public function getCompanyAverageRating(int $companyId)
     {
-        $sql = "SELECT AVG(rating) FROM review WHERE company_id = ?";
+        $sql = 'SELECT AVG(rating) FROM review WHERE company_id = ?';
         $ratingsArr = $this->app['dbs']['mysql_read']->fetchAll($sql, [(int) $companyId]);
 
         return (float) $ratingsArr[0]['AVG(rating)'];

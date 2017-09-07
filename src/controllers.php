@@ -77,21 +77,21 @@ $app['test.controller'] = function() use ($app) {
     return new TestController();
 };
 
-$app->get('/home', "home.controller:indexAction")->bind('home');
-$app->get('/company/{id}', "company.controller:indexAction")->bind('company_details');
-$app->get('/company-save', "company.controller:createEditCompany")->bind('company_save');
-$app->post('/post-company', "company.controller:postAction");
-$app->get('/review/{id}', "review.controller:createReviewAction");
-$app->post('/post-review', "review.controller:postAction");
-$app->get('/company-save/{id}', "company.controller:createEditCompany");
-$app->post('/post-company/{id}', "company.controller:postAction");
-$app->get('/login', "login.controller:loginAction")->bind('login');
-$app->post('/post-login', "login.controller:postAction");
-$app->get('/register', "register.controller:registerAction");
-$app->post('/post-register', "register.controller:postAction");
-$app->get('/logout', "home.controller:logoutAction");
-$app->get('/test', "test.controller:loginAction");
-$app->post('/post-test', "test.controller:testPostAction");
+$app->get('/home', 'home.controller:indexAction')->bind('home');
+$app->get('/company/{id}', 'company.controller:indexAction')->bind('company_details');
+$app->get('/company-save', 'company.controller:createEditCompanyAction')->bind('company_save');
+$app->post('/post-company', 'company.controller:processCompanySaveAction');
+$app->get('/review/{id}', 'review.controller:createReviewAction');
+$app->post('/post-review', 'review.controller:processReviewAction');
+$app->get('/company-save/{id}', 'company.controller:createEditCompanyAction');
+$app->post('/post-company/{id}', 'company.controller:processCompanySaveAction');
+$app->get('/login', 'login.controller:loginAction')->bind('login');
+$app->post('/post-login', 'login.controller:processLoginAction');
+$app->get('/register', 'register.controller:registerAction');
+$app->post('/post-register', 'register.controller:processRegisterAction');
+$app->get('/logout', 'home.controller:logoutAction');
+$app->get('/test', 'test.controller:loginAction');
+$app->post('/post-test', 'test.controller:testPostAction');
 
 $app->error(function (\Exception $e, Request $request, $code) use ($app) {
     if ($app['debug']) {

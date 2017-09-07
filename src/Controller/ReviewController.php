@@ -4,11 +4,14 @@ namespace Controller;
 
 use Silex\Application;
 use Entity\Review;
+use Entity\User;
+use Entity\Company;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Repository\CompanyRepository;
 use Helper\ReviewFormHelper;
+use Helper\ValidatorHelper;
 use Controller\BaseController;
 
 /**
@@ -39,11 +42,11 @@ class ReviewController extends BaseController
 
         $user = $this->getUser($app);
 
-        if (null === $user) {
-            return $app->redirect($app["url_generator"]->generate("homepage"));
+        if (!$user instanceof User) {
+            return $app->redirect($app['url_generator']->generate('homepage'));
         }
 
-        if (null === $company) {
+        if (!$company instanceof Company) {
             return new Response($app['twig']->render('errors/404.html.twig'));
 
         }
@@ -58,23 +61,21 @@ class ReviewController extends BaseController
      * Handle review page form POST action and request.
      * Route: /post-review
      *
-     * @param  Application $app
-     * @param  Request     $request
+     * @param  Application  $app
+     * @param  Request      $request
      * @return JsonResponse
      */
-    function postAction(Application $app, Request $request)
+    function processReviewAction(Application $app, Request $request)
     {
-        $data = (array)json_decode($request->getContent());
+        $data = (array) json_decode($request->getContent());
         $newReview = new Review();
         $newReview->setFromArray($data);
         $errors = $app['validator']->validate($newReview);
         $user = $this->getUser($app);
+        $validatorHelper = new ValidatorHelper($app);
 
-        if (count($errors) > 0) {
-            $errorsArr = [];
-            foreach ($errors as $error) {
-                $errorsArr[$error->getPropertyPath()] = $error->getMessage();
-            }
+        if (0 < count($errors)) {
+            $errorsArr = $validatorHelper->getErrorsArr($errors);
             return new JsonResponse([
                 'success' => false,
                 'errors' => $errorsArr,

@@ -60,6 +60,6 @@ class HomeController extends BaseController
         $app['session']->start();
         $app['session']->invalidate();
 
-        return $app->redirect($app["url_generator"]->generate("home"));
+        return $app->redirect($app['url_generator']->generate('home'));
     }
 }

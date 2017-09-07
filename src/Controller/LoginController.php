@@ -47,26 +47,26 @@ class LoginController extends BaseController
      * Handle login POST action and request.
      * Route: /post-login
      *
-     * @param  Application $app
-     * @param  Request     $request
+     * @param  Application  $app
+     * @param  Request      $request
      * @return JsonResponse
      */
-    public function postAction(Application $app, Request $request)
+    public function processLoginAction(Application $app, Request $request)
     {
-        $data = (array)json_decode($request->getContent());
+        $data = (array) json_decode($request->getContent());
         $userRepository = new UserRepository($app);
         $user = $userRepository->findOneBy(['username' => $data['username']]);
-        if (null === $user) {
+        if (!$user instanceof User) {
             return new JsonResponse([
                 'success' => false,
-                'errors' => ['invalid' => "Username or password (or both) invalid."],
+                'errors' => ['invalid' => 'Username or password (or both) invalid.'],
                 'form' => 'login'
             ]);
         } else {
-            if ($user->password != $data['password']) {
+            if ($data['password'] !== $user->password) {
                 return new JsonResponse([
                     'success' => false,
-                    'errors' => ['invalid' => "Username or password (or both) invalid."],
+                    'errors' => ['invalid' => 'Username or password (or both) invalid.'],
                     'form' => 'login'
                 ]);
             } else {

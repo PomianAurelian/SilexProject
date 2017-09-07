@@ -27,18 +27,18 @@ class RegisterFormHelper extends BaseHelper
     public function getRegisterForm()
     {
         $form = $this->app['form.factory']->createBuilder(FormType::class)
-            ->add('username', TextType::class, array(
-                        'label'       => ' ',
-                        'attr'        => array('class' => 'input-field')
-            ))
-            ->add('email', EmailType::class, array(
-                        'label'       => ' ',
-                        'attr'        => array('class' => 'input-field')
-            ))
-            ->add('password', PasswordType::class, array(
-                        'label'       => ' ',
-                        'attr'        => array('class' => 'input-field')
-            ))
+            ->add('username', TextType::class, [
+                        'label' => ' ',
+                        'attr' => ['class' => 'input-field']
+            ])
+            ->add('email', EmailType::class, [
+                        'label' => ' ',
+                        'attr' => ['class' => 'input-field']
+            ])
+            ->add('password', PasswordType::class, [
+                        'label' => ' ',
+                        'attr' => ['class' => 'input-field']
+            ])
             ->getForm();
 
         return $form;

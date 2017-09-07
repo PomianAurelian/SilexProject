@@ -26,8 +26,8 @@ class ReviewFormHelper extends BaseHelper
     public function getReviewForm()
     {
         $form = $this->app['form.factory']->createBuilder(FormType::class)
-            ->add('rating', ChoiceType::class, array (
-                'choices' => array (
+            ->add('rating', ChoiceType::class, [
+                'choices' => [
                     '0.5' => 0.5,
                     '1.0' => 1,
                     '1.5' => 1.5,
@@ -38,15 +38,15 @@ class ReviewFormHelper extends BaseHelper
                     '4.0' => 4,
                     '4.5' => 4.5,
                     '5.0' => 5
-                ),
+                ],
                 'label' => ' '
-            ))
-            ->add('comment', TextareaType::class, array(
-                'label'  => ' ',
-                'attr'   =>  array(
-                    'class'  => 'textarea-field'
-                )
-            ))
+            ])
+            ->add('comment', TextareaType::class, [
+                'label' => ' ',
+                'attr' =>  [
+                    'class' => 'textarea-field'
+                ]
+            ])
             ->getForm();
 
         return $form;

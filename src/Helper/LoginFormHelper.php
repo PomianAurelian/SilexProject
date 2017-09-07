@@ -25,14 +25,14 @@ class LoginFormHelper extends BaseHelper
     public function getLoginForm()
     {
         $form = $this->app['form.factory']->createBuilder(FormType::class)
-            ->add('username', TextType::class, array(
-                        'label'       => ' ',
-                        'attr'        => array('class' => 'input-field')
-            ))
-            ->add('password', PasswordType::class, array(
-                        'label'       => ' ',
-                        'attr'        => array('class' => 'input-field')
-            ))
+            ->add('username', TextType::class, [
+                        'label' => ' ',
+                        'attr' => ['class' => 'input-field']
+            ])
+            ->add('password', PasswordType::class, [
+                        'label' => ' ',
+                        'attr' => ['class' => 'input-field']
+            ])
             ->getForm();
 
         return $form;

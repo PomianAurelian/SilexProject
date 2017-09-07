@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Helper\RegisterFormHelper;
 use Entity\User;
+use Helper\ValidatorHelper;
 use Controller\BaseController;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -35,8 +36,8 @@ class RegisterController extends BaseController
         $form = $registerFormHelper->getRegisterForm($app);
         $user = $this->getUser($app);
 
-        if (null != $user) {
-            return $app->redirect($app["url_generator"]->generate("homepage"));
+        if (!$user instanceof User) {
+            return $app->redirect($app['url_generator']->generate('homepage'));
         }
 
         return new Response($app['twig']->render('form/register_form.html.twig', [
@@ -52,18 +53,16 @@ class RegisterController extends BaseController
      * @param  Request     $request
      * @return JsonResponse
      */
-    public function postAction(Application $app, Request $request)
+    public function processRegisterAction(Application $app, Request $request)
     {
-        $data = (array)json_decode($request->getContent());
+        $data = (array) json_decode($request->getContent());
         $newUser = new User();
         $newUser->setFromArray($data);
         $errors = $app['validator']->validate($newUser);
+        $validatorHelper = new ValidatorHelper($app);
 
-        if (count($errors) > 0) {
-            $errorsArr = [];
-            foreach ($errors as $error) {
-                $errorsArr[$error->getPropertyPath()] = $error->getMessage();
-            }
+        if (0 < count($errors)) {
+            $errorsArr = $validatorHelper->getErrorsArr($errors);
             return new JsonResponse([
                 'success' => false,
                 'errors' => $errorsArr,
@@ -76,7 +75,5 @@ class RegisterController extends BaseController
                 'success' => true
             ]);
         }
-
-        return new JsonResponse(false);
     }
 }
